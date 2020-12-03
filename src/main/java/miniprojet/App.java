@@ -9,9 +9,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.Course;
-import model.Student;
-import model.School;
 
 import java.util.*;
 
@@ -26,78 +23,43 @@ public class App extends Application {
     }
 
     //Initialisation données
+
+    private static final Map<String, Set<String>> subscriptions = new TreeMap<>();
+    private static final Set<String> students = new TreeSet<>();
+
     private static void initData() {
-        Student delphine = new Student("Delphine");
-        Student caroline = new Student("Caroline");
-        Student eddy = new Student("Eddy");
-        Student mohamed = new Student("Mohamed");
-        Student bernard = new Student("Bernard");
-        Student amelie = new Student("Amélie");
+        students.add("Delphine");
+        students.add("Caroline");
+        students.add("Eddy");
+        students.add("Mohamed");
+        students.add("Bernard");
+        students.add("Amélie");
 
-        Set<Student> students = new TreeSet<>();
-        students.add(delphine);
-        students.add(caroline);
-        students.add(eddy);
-        students.add(mohamed);
-        students.add(bernard);
-        students.add(amelie);
-        School.setStudents(students);
+        Set<String> anc3_subscriptions = new TreeSet<>(),
+                prwb_subscriptions = new TreeSet<>(),
+                pro2_subscriptions = new TreeSet<>();
+        anc3_subscriptions.add("Delphine");
+        anc3_subscriptions.add("Amélie");
+        anc3_subscriptions.add("Bernard");
 
-        students = new TreeSet<>();
-        students.add(delphine);
-        students.add(amelie);
-        students.add(bernard);
-        Course anc3 = new Course("ANC3", students);
+        pro2_subscriptions.add("Mohamed");
+        pro2_subscriptions.add("Caroline");
+        pro2_subscriptions.add("Delphine");
+        pro2_subscriptions.add("Bernard");
+        pro2_subscriptions.add("Eddy");
 
-        students = new TreeSet<>();
-        students.add(mohamed);
-        students.add(caroline);
-        students.add(delphine);
-        students.add(bernard);
-        students.add(eddy);
-        Course pro2 = new Course("PRO2", students);
+        prwb_subscriptions.add("Amélie");
+        prwb_subscriptions.add("Eddy");
+        prwb_subscriptions.add("Caroline");
 
-        students = new TreeSet<>();
-        students.add(amelie);
-        students.add(eddy);
-        students.add(caroline);
-        Course prwb = new Course("PRWB", students);
-
-        Set<Course> subscriptions = new TreeSet<>();
-        subscriptions.add(anc3);
-        subscriptions.add(pro2);
-        subscriptions.add(prwb);
-        School.setSubscriptions(subscriptions);
-
-        subscriptions = new TreeSet<>();
-        subscriptions.add(anc3);
-        delphine.setSubscriptions(subscriptions);
-
-        subscriptions = new TreeSet<>();
-        subscriptions.add(pro2);
-        subscriptions.add(prwb);
-        caroline.setSubscriptions(subscriptions);
-
-        subscriptions = new TreeSet<>();
-        subscriptions.add(pro2);
-        subscriptions.add(prwb);
-        eddy.setSubscriptions(subscriptions);
-
-        subscriptions = new TreeSet<>();
-        subscriptions.add(pro2);
-        mohamed.setSubscriptions(subscriptions);
-
-        subscriptions = new TreeSet<>();
-        subscriptions.add(anc3);
-        subscriptions.add(pro2);
-        bernard.setSubscriptions(subscriptions);
-
-        subscriptions = new TreeSet<>();
-        subscriptions.add(anc3);
-        subscriptions.add(prwb);
-        amelie.setSubscriptions(subscriptions);
-
+        subscriptions.put("PRO2", pro2_subscriptions);
+        subscriptions.put("PRWB", prwb_subscriptions);
+        subscriptions.put("ANC3", anc3_subscriptions);
     }
+
+    // Règles métiers
+    private static final int MAX_STUDENTS_PER_COURSE = 5;
+    private static final int MAX_COURSES_PER_STUDENT = 2;
 
     // Utilitaires graphiques
     private static final double SPACING = 10;
@@ -166,13 +128,13 @@ public class App extends Application {
     }
 
     private void configModel() {
-        lvCourses.getItems().addAll(School.getSubscriptionsName());
+        lvCourses.getItems().addAll(subscriptions.keySet());
         makeCbStudents();
     }
 
     private void makeCbStudents() {
         cbStudents.getItems().clear();
-        cbStudents.getItems().addAll(School.getStudentName());
+        cbStudents.getItems().addAll(students);
     }
 
     private void configComponents() {
@@ -189,34 +151,33 @@ public class App extends Application {
     }
 
     private boolean btSubscribeHasToBeDisabled() {
-        String cs = getSelectedCourse(), ss = getSelectedStudent();
-        if (cs == null || ss == null) {
+        String c = getSelectedCourse(), s = getSelectedStudent();
+        if (c == null || s == null
+                || isCourseComplete()
+                || isStudentComplete(s))
             return true;
-        } else {
-            Course c = School.findCourse(cs);
-            Student s = School.findStudent(ss);
-            if (c == null || s == null || c.isCourseComplete() || s.isStudentComplete()) {
-                return true;
-            }
-            return false;
-        }
+        return subscriptions.get(c).contains(s);
     }
 
     private boolean btNewStudentHasToBeDisabled() {
-        String cs = getSelectedCourse();
         if (getSelectedCourse() == null
                 || tfNewStudent.getText().isEmpty()
-                || tfNewStudent.getText().isBlank()) {
-            return true;
-        } else {
-            Course c = School.findCourse(cs);
-            if (c == null || c.isCourseComplete()) {
-                return true;
-            }
-            return false;
-        }
+                || tfNewStudent.getText().isBlank()
+                || isCourseComplete()) return true;
+        return students.contains(tfNewStudent.getText());
     }
 
+    private boolean isCourseComplete() {
+        return subscriptions.get(getSelectedCourse()).size() >= MAX_STUDENTS_PER_COURSE;
+    }
+
+    private boolean isStudentComplete(String student) {
+        int nbcours = 0;
+        for (Set<String> studentsOfCourse : subscriptions.values()) {
+            if (studentsOfCourse.contains(student)) ++nbcours;
+        }
+        return nbcours >= MAX_COURSES_PER_STUDENT;
+    }
 
     private void makeComponentsHierarchy() {
         hbMainPanel.getChildren().addAll(vbCourses, vbStudents, bpSubscribe);
@@ -261,29 +222,21 @@ public class App extends Application {
 
     private void configActions() {
         btSubscribe.setOnAction(e -> {
-            Course c = School.findCourse(getSelectedCourse());
-            Student s = School.findStudent(getSelectedStudent());
-            c.addStudent(s);
-            s.addCourse(c);
+            subscriptions.get(getSelectedCourse()).add(getSelectedStudent());
             updateCourseStudents();
         });
         btUnsubscribe.setOnAction(e -> {
-            Course c = School.findCourse(getSelectedCourse());
-            Student s = School.findStudent(getSelectedCourseStudent());
-            c.removeStudent(s);
-            s.removeCourse(c);
+            subscriptions.get(getSelectedCourse()).remove(getSelectedCourseStudent());
             updateCourseStudents();
         });
         btNewStudent.setOnAction(e -> createStudentAndAddToCourse());
     }
 
     private void createStudentAndAddToCourse() {
-        Student s = new Student(tfNewStudent.getText());
-        School.getStudents().add(s);
+        String student = tfNewStudent.getText();
+        students.add(student);
         makeCbStudents();
-        Course c = School.findCourse(getSelectedCourse());
-        c.addStudent(s);
-        s.addCourse(c);
+        subscriptions.get(getSelectedCourse()).add(student);
         updateCourseStudents();
         tfNewStudent.clear();
     }
@@ -299,10 +252,9 @@ public class App extends Application {
 
     private void lvStudentsUpdate() {
         lvStudents.getItems().clear();
-        String cs = getSelectedCourse();
-        Course c = School.findCourse(cs);
+        String c = getSelectedCourse();
         if (c != null) {
-            lvStudents.getItems().addAll(c.getStudentsName());
+            lvStudents.getItems().addAll(subscriptions.get(c));
         }
     }
 
