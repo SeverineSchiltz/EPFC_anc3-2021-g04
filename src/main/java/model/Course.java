@@ -31,6 +31,10 @@ public class Course implements Comparable<Course> {
         students.remove(s);
     }
 
+    public boolean isFollowBy(Student s) {
+        return students.contains(s);
+    }
+
     public Set<String> getStudentsName() {
         Set<String> stuName = new TreeSet<>();
         for (Student s : students) {

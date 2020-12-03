@@ -71,6 +71,7 @@ public class App extends Application {
 
         subscriptions = new TreeSet<>();
         subscriptions.add(anc3);
+        subscriptions.add(pro2);
         delphine.setSubscriptions(subscriptions);
 
         subscriptions = new TreeSet<>();
@@ -198,7 +199,7 @@ public class App extends Application {
             if (c == null || s == null || c.isCourseComplete() || s.isStudentComplete()) {
                 return true;
             }
-            return false;
+            return c.isFollowBy(s);
         }
     }
 
@@ -212,6 +213,10 @@ public class App extends Application {
             Course c = School.findCourse(cs);
             if (c == null || c.isCourseComplete()) {
                 return true;
+            }
+            Student s = School.findStudent(tfNewStudent.getText());
+            if(s != null){
+                return School.getStudents().contains(s);
             }
             return false;
         }
