@@ -10,8 +10,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.Course;
+import model.Student;
 import model.School;
-import model.Text;
 
 import java.util.*;
 
@@ -19,29 +19,89 @@ import java.util.*;
  * JavaFX App
  */
 
+// !!! Version de Séverine
+
 public class AppInes extends Application {
 
     public static void main(String[] args) {
-        //initData();
+        initData();
         launch();
     }
 
     //Initialisation données
-    private static final Map<String, Set<String>> subscriptions = new TreeMap<>();
-    private static final Set<String> students = new TreeSet<>();
-    // on ajoute cet attribut
-    private final School school;
+    private static void initData() {
+        Student delphine = new Student("Delphine");
+        Student caroline = new Student("Caroline");
+        Student eddy = new Student("Eddy");
+        Student mohamed = new Student("Mohamed");
+        Student bernard = new Student("Bernard");
+        Student amelie = new Student("Amélie");
 
-    // maintenant
-    public AppInes() {
-        school = new School();
-        //lvLines.getItems().setAll(text.getLines());
-        //lbNbLines.setText("Nombre de lignes : " + text.nbLines());
+        Set<Student> students = new TreeSet<>();
+        students.add(delphine);
+        students.add(caroline);
+        students.add(eddy);
+        students.add(mohamed);
+        students.add(bernard);
+        students.add(amelie);
+        School.setStudents(students);
+
+        students = new TreeSet<>();
+        students.add(delphine);
+        students.add(amelie);
+        students.add(bernard);
+        Course anc3 = new Course("ANC3", students);
+
+        students = new TreeSet<>();
+        students.add(mohamed);
+        students.add(caroline);
+        students.add(delphine);
+        students.add(bernard);
+        students.add(eddy);
+        Course pro2 = new Course("PRO2", students);
+
+        students = new TreeSet<>();
+        students.add(amelie);
+        students.add(eddy);
+        students.add(caroline);
+        Course prwb = new Course("PRWB", students);
+
+        Set<Course> subscriptions = new TreeSet<>();
+        subscriptions.add(anc3);
+        subscriptions.add(pro2);
+        subscriptions.add(prwb);
+        School.setSubscriptions(subscriptions);
+
+        subscriptions = new TreeSet<>();
+        subscriptions.add(anc3);
+        subscriptions.add(pro2);
+        delphine.setSubscriptions(subscriptions);
+
+        subscriptions = new TreeSet<>();
+        subscriptions.add(pro2);
+        subscriptions.add(prwb);
+        caroline.setSubscriptions(subscriptions);
+
+        subscriptions = new TreeSet<>();
+        subscriptions.add(pro2);
+        subscriptions.add(prwb);
+        eddy.setSubscriptions(subscriptions);
+
+        subscriptions = new TreeSet<>();
+        subscriptions.add(pro2);
+        mohamed.setSubscriptions(subscriptions);
+
+        subscriptions = new TreeSet<>();
+        subscriptions.add(anc3);
+        subscriptions.add(pro2);
+        bernard.setSubscriptions(subscriptions);
+
+        subscriptions = new TreeSet<>();
+        subscriptions.add(anc3);
+        subscriptions.add(prwb);
+        amelie.setSubscriptions(subscriptions);
+
     }
-
-    // Règles métiers
-    private static final int MAX_STUDENTS_PER_COURSE = 5;
-    private static final int MAX_COURSES_PER_STUDENT = 2;
 
     // Utilitaires graphiques
     private static final double SPACING = 10;
@@ -110,13 +170,13 @@ public class AppInes extends Application {
     }
 
     private void configModel() {
-        lvCourses.getItems().addAll(subscriptions.keySet());
+        lvCourses.getItems().addAll(School.getSubscriptionsName());
         makeCbStudents();
     }
 
     private void makeCbStudents() {
         cbStudents.getItems().clear();
-        cbStudents.getItems().addAll(students);
+        cbStudents.getItems().addAll(School.getStudentName());
     }
 
     private void configComponents() {
@@ -133,33 +193,38 @@ public class AppInes extends Application {
     }
 
     private boolean btSubscribeHasToBeDisabled() {
-        String c = getSelectedCourse(), s = getSelectedStudent();
-        if (c == null || s == null
-                || school.isCourseComplete(c)
-                || school.course.isStudentComplete(s))
+        String cs = getSelectedCourse(), ss = getSelectedStudent();
+        if (cs == null || ss == null) {
             return true;
-        return subscriptions.get(c).contains(s);
+        } else {
+            Course c = School.findCourse(cs);
+            Student s = School.findStudent(ss);
+            if (c == null || s == null || c.isCourseComplete() || s.isStudentComplete()) {
+                return true;
+            }
+            return c.isFollowBy(s);
+        }
     }
 
     private boolean btNewStudentHasToBeDisabled() {
+        String cs = getSelectedCourse();
         if (getSelectedCourse() == null
                 || tfNewStudent.getText().isEmpty()
-                || tfNewStudent.getText().isBlank()
-                || isCourseComplete(c)) return true;
-        return students.contains(tfNewStudent.getText());
+                || tfNewStudent.getText().isBlank()) {
+            return true;
+        } else {
+            Course c = School.findCourse(cs);
+            if (c == null || c.isCourseComplete()) {
+                return true;
+            }
+            Student s = School.findStudent(tfNewStudent.getText());
+            if(s != null){
+                return School.getStudents().contains(s);
+            }
+            return false;
+        }
     }
 
-//    private boolean isCourseComplete() {
-//        return subscriptions.get(getSelectedCourse()).size() >= MAX_STUDENTS_PER_COURSE;
-//    }
-//
-//    private boolean isStudentComplete(String student) {
-//        int nbcours = 0;
-//        for (Set<String> studentsOfCourse : subscriptions.values()) {
-//            if (studentsOfCourse.contains(student)) ++nbcours;
-//        }
-//        return nbcours >= MAX_COURSES_PER_STUDENT;
-//    }
 
     private void makeComponentsHierarchy() {
         hbMainPanel.getChildren().addAll(vbCourses, vbStudents, bpSubscribe);
@@ -204,21 +269,29 @@ public class AppInes extends Application {
 
     private void configActions() {
         btSubscribe.setOnAction(e -> {
-            subscriptions.get(getSelectedCourse()).add(getSelectedStudent());
+            Course c = School.findCourse(getSelectedCourse());
+            Student s = School.findStudent(getSelectedStudent());
+            c.addStudent(s);
+            s.addCourse(c);
             updateCourseStudents();
         });
         btUnsubscribe.setOnAction(e -> {
-            subscriptions.get(getSelectedCourse()).remove(getSelectedCourseStudent());
+            Course c = School.findCourse(getSelectedCourse());
+            Student s = School.findStudent(getSelectedCourseStudent());
+            c.removeStudent(s);
+            s.removeCourse(c);
             updateCourseStudents();
         });
         btNewStudent.setOnAction(e -> createStudentAndAddToCourse());
     }
 
     private void createStudentAndAddToCourse() {
-        String student = tfNewStudent.getText();
-        students.add(student);
+        Student s = new Student(tfNewStudent.getText());
+        School.getStudents().add(s);
         makeCbStudents();
-        subscriptions.get(getSelectedCourse()).add(student);
+        Course c = School.findCourse(getSelectedCourse());
+        c.addStudent(s);
+        s.addCourse(c);
         updateCourseStudents();
         tfNewStudent.clear();
     }
@@ -234,10 +307,234 @@ public class AppInes extends Application {
 
     private void lvStudentsUpdate() {
         lvStudents.getItems().clear();
-        String c = getSelectedCourse();
+        String cs = getSelectedCourse();
+        Course c = School.findCourse(cs);
         if (c != null) {
-            lvStudents.getItems().addAll(subscriptions.get(c));
+            lvStudents.getItems().addAll(c.getStudentsName());
         }
     }
 
 }
+
+//public class AppInes extends Application {
+//
+//    public static void main(String[] args) {
+//        //initData();
+//        launch();
+//    }
+//
+//    //Initialisation données
+//    private static final Map<String, Set<String>> subscriptions = new TreeMap<>();
+//    private static final Set<String> students = new TreeSet<>();
+//    // on ajoute cet attribut
+//    private final School school;
+//
+//    // maintenant
+//    public AppInes() {
+//        school = new School();
+//        //lvLines.getItems().setAll(text.getLines());
+//        //lbNbLines.setText("Nombre de lignes : " + text.nbLines());
+//    }
+//
+//    // Règles métiers
+//    private static final int MAX_STUDENTS_PER_COURSE = 5;
+//    private static final int MAX_COURSES_PER_STUDENT = 2;
+//
+//    // Utilitaires graphiques
+//    private static final double SPACING = 10;
+//
+//    private static void spacing(Pane pane) {
+//        if (pane instanceof HBox) {
+//            HBox b = (HBox) pane;
+//            b.setSpacing(SPACING);
+//        } else if (pane instanceof VBox) {
+//            VBox b = (VBox) pane;
+//            b.setSpacing(SPACING);
+//        }
+//    }
+//
+//    private static void padding(Pane pane) {
+//        pane.setPadding(new Insets(SPACING));
+//    }
+//
+//    private static void paddingAndSpacing(Pane pane) {
+//        padding(pane);
+//        spacing(pane);
+//    }
+//
+//    // Composants graphiques
+//    private final HBox hbMainPanel = new HBox(),
+//            hbNewSubscription = new HBox(),
+//            hbNewStudent = new HBox();
+//    private final VBox vbCourses = new VBox(),
+//            vbStudents = new VBox(),
+//            vbSubscriptions = new VBox();
+//    private final BorderPane bpSubscribe = new BorderPane();
+//    private final ListView<String> lvCourses = new ListView<>();
+//    private final ListView<String> lvStudents = new ListView<>();
+//
+//    private final Label lbCourses = new Label("Cours"),
+//            lbStudents = new Label("Etudiants"),
+//            lbNewSubscription = new Label("Nouvelle inscription");
+//    private final ComboBox<String> cbStudents = new ComboBox<>();
+//    private final Button btSubscribe = new Button("Inscrire"),
+//            btNewStudent = new Button("Ajouter et inscrire"),
+//            btUnsubscribe = new Button("Désinscrire étudiant");
+//    private final TextField tfNewStudent = new TextField();
+//
+//    // Etat de la vue
+//    private String getSelectedCourse() {
+//        return lvCourses.getSelectionModel().getSelectedItem();
+//    }
+//
+//    private String getSelectedCourseStudent() {
+//        return lvStudents.getSelectionModel().getSelectedItem();
+//    }
+//
+//    private String getSelectedStudent() {
+//        return cbStudents.getSelectionModel().getSelectedItem();
+//    }
+//
+//    // Lancement de l'application
+//    @Override
+//    public void start(Stage primaryStage) {
+//        configModel();
+//        configComponents();
+//        Scene scene = new Scene(hbMainPanel);
+//        primaryStage.setScene(scene);
+//        primaryStage.setTitle("Gestion des inscriptions");
+//        primaryStage.show();
+//    }
+//
+//    private void configModel() {
+//        lvCourses.getItems().addAll(subscriptions.keySet());
+//        makeCbStudents();
+//    }
+//
+//    private void makeCbStudents() {
+//        cbStudents.getItems().clear();
+//        cbStudents.getItems().addAll(students);
+//    }
+//
+//    private void configComponents() {
+//        makeComponentsHierarchy();
+//        componentsDecoration();
+//        configHandlers();
+//        configDisabledButtons();
+//    }
+//
+//    private void configDisabledButtons() {
+//        btSubscribe.setDisable(btSubscribeHasToBeDisabled());
+//        btUnsubscribe.setDisable(getSelectedCourseStudent() == null);
+//        btNewStudent.setDisable(btNewStudentHasToBeDisabled());
+//    }
+//
+//    private boolean btSubscribeHasToBeDisabled() {
+//        String c = getSelectedCourse(), s = getSelectedStudent();
+//        if (c == null || s == null
+//                || school.isCourseComplete(c)
+//                || school.course.isStudentComplete(s))
+//            return true;
+//        return subscriptions.get(c).contains(s);
+//    }
+//
+//    private boolean btNewStudentHasToBeDisabled() {
+//        if (getSelectedCourse() == null
+//                || tfNewStudent.getText().isEmpty()
+//                || tfNewStudent.getText().isBlank()
+//                || isCourseComplete(c)) return true;
+//        return students.contains(tfNewStudent.getText());
+//    }
+//
+////    private boolean isCourseComplete() {
+////        return subscriptions.get(getSelectedCourse()).size() >= MAX_STUDENTS_PER_COURSE;
+////    }
+////
+////    private boolean isStudentComplete(String student) {
+////        int nbcours = 0;
+////        for (Set<String> studentsOfCourse : subscriptions.values()) {
+////            if (studentsOfCourse.contains(student)) ++nbcours;
+////        }
+////        return nbcours >= MAX_COURSES_PER_STUDENT;
+////    }
+//
+//    private void makeComponentsHierarchy() {
+//        hbMainPanel.getChildren().addAll(vbCourses, vbStudents, bpSubscribe);
+//        vbCourses.getChildren().addAll(lbCourses, lvCourses);
+//        vbStudents.getChildren().addAll(lbStudents, lvStudents);
+//        hbNewSubscription.getChildren().addAll(cbStudents, btSubscribe);
+//        hbNewStudent.getChildren().addAll(tfNewStudent, btNewStudent);
+//        vbSubscriptions.getChildren().addAll(lbNewSubscription, hbNewSubscription, hbNewStudent);
+//        bpSubscribe.setTop(vbSubscriptions);
+//        bpSubscribe.setBottom(btUnsubscribe);
+//    }
+//
+//    private void componentsDecoration() {
+//        paddingAndSpacing(hbMainPanel);
+//        paddingAndSpacing(vbCourses);
+//        paddingAndSpacing(vbStudents);
+//        padding(bpSubscribe);
+//        spacing(vbSubscriptions);
+//        spacing(hbNewSubscription);
+//        spacing(hbNewStudent);
+//    }
+//
+//    private void configHandlers() {
+//        configSelectionHandlers();
+//        configActions();
+//        configTextField();
+//    }
+//
+//    private void configSelectionHandlers() {
+//        lvCourses.getSelectionModel().selectedIndexProperty()
+//                .addListener(o -> updateCourseStudents());
+//        lvStudents.getSelectionModel().selectedIndexProperty()
+//                .addListener(o -> btUnsubscribe.setDisable(getSelectedCourseStudent() == null));
+//        cbStudents.getSelectionModel().selectedIndexProperty()
+//                .addListener(o -> configDisabledButtons());
+//    }
+//
+//    private void updateCourseStudents() {
+//        lvStudentsUpdate();
+//        configDisabledButtons();
+//    }
+//
+//    private void configActions() {
+//        btSubscribe.setOnAction(e -> {
+//            subscriptions.get(getSelectedCourse()).add(getSelectedStudent());
+//            updateCourseStudents();
+//        });
+//        btUnsubscribe.setOnAction(e -> {
+//            subscriptions.get(getSelectedCourse()).remove(getSelectedCourseStudent());
+//            updateCourseStudents();
+//        });
+//        btNewStudent.setOnAction(e -> createStudentAndAddToCourse());
+//    }
+//
+//    private void createStudentAndAddToCourse() {
+//        String student = tfNewStudent.getText();
+//        students.add(student);
+//        makeCbStudents();
+//        subscriptions.get(getSelectedCourse()).add(student);
+//        updateCourseStudents();
+//        tfNewStudent.clear();
+//    }
+//
+//    private void configTextField() {
+//        tfNewStudent.setOnKeyTyped(keyEvent ->
+//                btNewStudent.setDisable(btNewStudentHasToBeDisabled()));
+//        tfNewStudent.setOnAction(ae -> {
+//            if (!btNewStudent.isDisable())
+//                createStudentAndAddToCourse();
+//        });
+//    }
+//
+//    private void lvStudentsUpdate() {
+//        lvStudents.getItems().clear();
+//        String c = getSelectedCourse();
+//        if (c != null) {
+//            lvStudents.getItems().addAll(subscriptions.get(c));
+//        }
+//    }
+//
+//}

@@ -1,7 +1,8 @@
 package model;
 
-
-import java.util.*;
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
 
 /*
 Créer des classes qui représentent votre modèle métier, dans lesquelles vous placez
@@ -10,96 +11,83 @@ Créer des classes qui représentent votre modèle métier, dans lesquelles vous
 - les règles métier associées.
  */
 
-public class Course {
 
-    // Règles métiers
+public class Course implements Comparable<Course> {
+    private String name;
+    private Set<Student> students = new TreeSet<>();
     private static final int MAX_STUDENTS_PER_COURSE = 5;
-    private static final int MAX_COURSES_PER_STUDENT = 2;
 
-    //Initialisation données
-    private static final Map<String, Set<String>> subscriptions = new TreeMap<>();
-
-
-    public Course() {
-        initData(); // initialise les entrées
+    public Course(String name, Set<Student> students) {
+        this.name = name;
+        this.students = students;
     }
 
-    private void initData() {
-        Set<String> anc3_subscriptions = new TreeSet<>(),
-                prwb_subscriptions = new TreeSet<>(),
-                pro2_subscriptions = new TreeSet<>();
-
-        addStudent("anc3_subscriptions", "Delphine");
-        addStudent("anc3_subscriptions", "Amélie");
-        addStudent("anc3_subscriptions", "Bernard");
-
-        addStudent("pro2_subscriptions", "Mohamed");
-        addStudent("pro2_subscriptions", "Caroline");
-        addStudent("pro2_subscriptions", "Delphine");
-        addStudent("pro2_subscriptions", "Bernard");
-        addStudent("pro2_subscriptions", "Eddy");
-
-        addStudent("prwb_subscriptions", "Amélie");
-        addStudent("prwb_subscriptions", "Eddy");
-        addStudent("prwb_subscriptions", "Caroline");
-
-        subscriptions.put("PRO2", pro2_subscriptions);
-        subscriptions.put("PRWB", prwb_subscriptions);
-        subscriptions.put("ANC3", anc3_subscriptions);
-
-//        anc3_subscriptions.add("Delphine");
-//        anc3_subscriptions.add("Amélie");
-//        anc3_subscriptions.add("Bernard");
-//
-//        pro2_subscriptions.add("Mohamed");
-//        pro2_subscriptions.add("Caroline");
-//        pro2_subscriptions.add("Delphine");
-//        pro2_subscriptions.add("Bernard");
-//        pro2_subscriptions.add("Eddy");
-//
-//        prwb_subscriptions.add("Amélie");
-//        prwb_subscriptions.add("Eddy");
-//        prwb_subscriptions.add("Caroline");
-
-
+    public Course(String name) {
+        this.name = name;
     }
 
-    // getter qui retourne la map
-    public Map<String, Set<String>> getSubscriptions() {
-        return Collections.unmodifiableMap(subscriptions);
-    }
-
-    public boolean addStudent(String course, String student) {
-        if (acceptableStudent(course, student)) {
-            getSubscriptions().get(course).add(student);
-            return true;
+    public void setStudents(Set<Student> students) {
+        if (students.size() <= MAX_STUDENTS_PER_COURSE) {
+            this.students = students;
+        } else {
+            throw new RuntimeException("L'étudiant ne peut pas avoir plus de 2 cours");
         }
-        return false;
     }
 
-    // règles métiers
-
-    private boolean acceptableStudent(String course, String student) {
-        return (!isCourseComplete(course) && !isStudentComplete(student));
-    }
-
-    public int nbStudentsByCourse(Map<String, Set<String>> map, String codeCourse) {
-        if (map.containsKey(codeCourse))
-            return map.get(codeCourse).size();
-        else
-            return 0;
-    }
-
-    public boolean isCourseComplete(String codeCourse) {
-        return nbStudentsByCourse(getSubscriptions(), codeCourse) >= MAX_STUDENTS_PER_COURSE;
-    }
-
-    public boolean isStudentComplete(String student) {
-        int nbcours = 0;
-        for (Set<String> studentsOfCourse : getSubscriptions().values()) {
-            if (studentsOfCourse.contains(student)) ++nbcours;
+    public void addStudent(Student s) {
+        if (!isCourseComplete()) {
+            students.add(s);
         }
-        return nbcours >= MAX_COURSES_PER_STUDENT;
     }
 
+    public void removeStudent(Student s) {
+        students.remove(s);
+    }
+
+    public boolean isFollowBy(Student s) {
+        return students.contains(s);
+    }
+
+    //j'aurais du plutôt faire ceci que getStudentsName
+    public Set<Student> getStudents() {
+        return Collections.unmodifiableSet(students);
+    }
+
+    public Set<String> getStudentsName() {
+        Set<String> stuName = new TreeSet<>();
+        for (Student s : students) {
+            stuName.add(s.toString());
+        }
+        return stuName;
+    }
+
+    public boolean isCourseComplete() {
+        return isCourseComplete(this.students);
+    }
+
+    public static boolean isCourseComplete(Set<Student> students) {
+        return students.size() >= MAX_STUDENTS_PER_COURSE;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        boolean isEq = false;
+        if (o instanceof Course) {
+            Course other = (Course) o;
+            if (other.name.equals(this.name)) {
+                isEq = true;
+            }
+        }
+        return isEq;
+    }
+
+    @Override
+    public int compareTo(Course o) {
+        return this.name.compareToIgnoreCase(o.name);
+    }
 }

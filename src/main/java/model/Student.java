@@ -11,50 +11,68 @@ Créer des classes qui représentent votre modèle métier, dans lesquelles vous
 - les règles métier associées.
  */
 
-public class Student {
+import java.util.Set;
+import java.util.TreeSet;
 
-    //Initialisation données
-    private static final Set<String> students = new TreeSet<>();
+public class Student implements Comparable<Student> {
+    private String name;
+    private Set<Course> subscriptions = new TreeSet<>();
+    private static final int MAX_COURSES_PER_STUDENT = 2;
 
-    public Student() {
-        initData(); // initialise les entrées
+    public Student(String name, Set<Course> subscriptions) {
+        this.name = name;
+        this.subscriptions = subscriptions;
     }
 
-    private void initData() {
-        addStudent("Delphine");
-        addStudent("Caroline");
-        addStudent("Eddy");
-        addStudent("Mohamed");
-        addStudent("Bernard");
-        addStudent("Amélie");
+    public Student(String name) {
+        this.name = name;
     }
 
-    // getter qui retourne la liste "lines" avec 1 él intéressant
-    public Set<String> getStudents() {
-        return Collections.unmodifiableSet(students);
-        // ce n'est que pour afficher donc vue de la liste non modifiable
+    public void setSubscriptions(Set<Course> subscriptions) {
+        if (subscriptions.size() <= MAX_COURSES_PER_STUDENT) {
+            this.subscriptions = subscriptions;
+        } else {
+            throw new RuntimeException("L'étudiant " + this.name + " ne peut pas avoir plus de 2 cours");
+        }
     }
 
-    // taille du set
-    public int nbStudents() {
-        return getStudents().size();
+    public void addCourse(Course c) {
+        if (!isStudentComplete()) {
+            subscriptions.add(c);
+        }
     }
 
-    // retourne un student stocké àpd une position
-    // pas possible car pas set n'est pas trié !
-//    public String textLine(int numLineSelected) {
-//        return students.get(numLineSelected);
-//    }
-
-    public boolean addStudent(String student) {
-        return getStudents().add(student);
+    public void removeCourse(Course c) {
+        subscriptions.remove(c);
     }
 
-    public String existingStudent(String student) {
-        if(getStudents().contains(student))
-            return student;
-        else
-            return null;
+    public boolean isStudentComplete() {
+        return isStudentComplete(subscriptions);
     }
 
+    public static boolean isStudentComplete(Set<Course> subscriptions) {
+        return subscriptions.size() >= MAX_COURSES_PER_STUDENT;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        boolean isEq = false;
+        if (o instanceof Student) {
+            Student other = (Student) o;
+            if (other.name.equals(this.name)) {
+                isEq = true;
+            }
+        }
+        return isEq;
+    }
+
+    @Override
+    public int compareTo(Student o) {
+        return this.name.compareToIgnoreCase(o.name);
+    }
 }
