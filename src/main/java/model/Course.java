@@ -1,5 +1,6 @@
 package model;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -11,6 +12,10 @@ public class Course implements Comparable<Course> {
     public Course(String name, Set<Student> students) {
         this.name = name;
         this.students = students;
+    }
+
+    public Course(String name) {
+        this.name = name;
     }
 
     public void setStudents(Set<Student> students) {
@@ -33,6 +38,11 @@ public class Course implements Comparable<Course> {
 
     public boolean isFollowBy(Student s) {
         return students.contains(s);
+    }
+
+    //j'aurais du plutôt faire ceci que getStudentsName
+    public Set<Student> getStudents() {
+        return Collections.unmodifiableSet(students);
     }
 
     public Set<String> getStudentsName() {

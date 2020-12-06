@@ -37,8 +37,9 @@ public class School {
     }
 
     public static Student findStudent(String name) {
+        Student s2 = new Student(name);
         for (Student s : students) {
-            if (s.toString().equals(name)) {
+            if (s.equals(s2)) {
                 return s;
             }
         }
@@ -46,8 +47,9 @@ public class School {
     }
 
     public static Course findCourse(String name) {
+        Course c2 = new Course(name);
         for (Course c : subscriptions) {
-            if (c.toString().equals(name)) {
+            if (c.equals(c2)) {
                 return c;
             }
         }
