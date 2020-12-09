@@ -9,57 +9,21 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.util.*;
+import model.Course;
+import model.School;
+import model.Student;
 
 /**
  * JavaFX App
  */
 public class App extends Application {
 
+    // Référence vers le modèle (façade)
+    private final School school = new School();
+
     public static void main(String[] args) {
-        initData();
         launch();
     }
-
-    //Initialisation données
-
-    private static final Map<String, Set<String>> subscriptions = new TreeMap<>();
-    private static final Set<String> students = new TreeSet<>();
-
-    private static void initData() {
-        students.add("Delphine");
-        students.add("Caroline");
-        students.add("Eddy");
-        students.add("Mohamed");
-        students.add("Bernard");
-        students.add("Amélie");
-
-        Set<String> anc3_subscriptions = new TreeSet<>(),
-                prwb_subscriptions = new TreeSet<>(),
-                pro2_subscriptions = new TreeSet<>();
-        anc3_subscriptions.add("Delphine");
-        anc3_subscriptions.add("Amélie");
-        anc3_subscriptions.add("Bernard");
-
-        pro2_subscriptions.add("Mohamed");
-        pro2_subscriptions.add("Caroline");
-        pro2_subscriptions.add("Delphine");
-        pro2_subscriptions.add("Bernard");
-        pro2_subscriptions.add("Eddy");
-
-        prwb_subscriptions.add("Amélie");
-        prwb_subscriptions.add("Eddy");
-        prwb_subscriptions.add("Caroline");
-
-        subscriptions.put("PRO2", pro2_subscriptions);
-        subscriptions.put("PRWB", prwb_subscriptions);
-        subscriptions.put("ANC3", anc3_subscriptions);
-    }
-
-    // Règles métiers
-    private static final int MAX_STUDENTS_PER_COURSE = 5;
-    private static final int MAX_COURSES_PER_STUDENT = 2;
 
     // Utilitaires graphiques
     private static final double SPACING = 10;
@@ -91,28 +55,28 @@ public class App extends Application {
             vbStudents = new VBox(),
             vbSubscriptions = new VBox();
     private final BorderPane bpSubscribe = new BorderPane();
-    private final ListView<String> lvCourses = new ListView<>();
-    private final ListView<String> lvStudents = new ListView<>();
+    private final ListView<Course> lvCourses = new ListView<>();
+    private final ListView<Student> lvStudents = new ListView<>();
 
     private final Label lbCourses = new Label("Cours"),
             lbStudents = new Label("Etudiants"),
             lbNewSubscription = new Label("Nouvelle inscription");
-    private final ComboBox<String> cbStudents = new ComboBox<>();
+    private final ComboBox<Student> cbStudents = new ComboBox<>();
     private final Button btSubscribe = new Button("Inscrire"),
             btNewStudent = new Button("Ajouter et inscrire"),
             btUnsubscribe = new Button("Désinscrire étudiant");
     private final TextField tfNewStudent = new TextField();
 
     // Etat de la vue
-    private String getSelectedCourse() {
+    private Course getSelectedCourse() {
         return lvCourses.getSelectionModel().getSelectedItem();
     }
 
-    private String getSelectedCourseStudent() {
+    private Student getSelectedCourseStudent() {
         return lvStudents.getSelectionModel().getSelectedItem();
     }
 
-    private String getSelectedStudent() {
+    private Student getSelectedStudent() {
         return cbStudents.getSelectionModel().getSelectedItem();
     }
 
@@ -128,13 +92,13 @@ public class App extends Application {
     }
 
     private void configModel() {
-        lvCourses.getItems().addAll(subscriptions.keySet());
+        lvCourses.getItems().addAll(school.getCourses());
         makeCbStudents();
     }
 
     private void makeCbStudents() {
         cbStudents.getItems().clear();
-        cbStudents.getItems().addAll(students);
+        cbStudents.getItems().addAll(school.getStudents());
     }
 
     private void configComponents() {
@@ -151,32 +115,18 @@ public class App extends Application {
     }
 
     private boolean btSubscribeHasToBeDisabled() {
-        String c = getSelectedCourse(), s = getSelectedStudent();
-        if (c == null || s == null
-                || isCourseComplete()
-                || isStudentComplete(s))
-            return true;
-        return subscriptions.get(c).contains(s);
+        Course c = getSelectedCourse();
+        Student s = getSelectedStudent();
+        return (c == null || s == null || !school.studentCanBeAdded(s, c));
     }
 
     private boolean btNewStudentHasToBeDisabled() {
-        if (getSelectedCourse() == null
+        Course c = getSelectedCourse();
+        if (c == null
                 || tfNewStudent.getText().isEmpty()
                 || tfNewStudent.getText().isBlank()
-                || isCourseComplete()) return true;
-        return students.contains(tfNewStudent.getText());
-    }
-
-    private boolean isCourseComplete() {
-        return subscriptions.get(getSelectedCourse()).size() >= MAX_STUDENTS_PER_COURSE;
-    }
-
-    private boolean isStudentComplete(String student) {
-        int nbcours = 0;
-        for (Set<String> studentsOfCourse : subscriptions.values()) {
-            if (studentsOfCourse.contains(student)) ++nbcours;
-        }
-        return nbcours >= MAX_COURSES_PER_STUDENT;
+                || school.isCourseComplete(c)) return true;
+        return school.existsStudent(new Student(tfNewStudent.getText()));
     }
 
     private void makeComponentsHierarchy() {
@@ -222,39 +172,39 @@ public class App extends Application {
 
     private void configActions() {
         btSubscribe.setOnAction(e -> {
-            subscriptions.get(getSelectedCourse()).add(getSelectedStudent());
-            updateCourseStudents();
+            if (school.addStudentToCourse(getSelectedStudent(), getSelectedCourse()))
+                updateCourseStudents();
         });
         btUnsubscribe.setOnAction(e -> {
-            subscriptions.get(getSelectedCourse()).remove(getSelectedCourseStudent());
-            updateCourseStudents();
+            if (school.removeStudentFromCourse(getSelectedCourseStudent(), getSelectedCourse()))
+                updateCourseStudents();
         });
         btNewStudent.setOnAction(e -> createStudentAndAddToCourse());
     }
 
     private void createStudentAndAddToCourse() {
-        String student = tfNewStudent.getText();
-        students.add(student);
-        makeCbStudents();
-        subscriptions.get(getSelectedCourse()).add(student);
-        updateCourseStudents();
-        tfNewStudent.clear();
+        Student student = new Student(tfNewStudent.getText());
+        if (school.createStudentAndAddToCourse(student, getSelectedCourse())) {
+            makeCbStudents();
+            lvStudentsUpdate();
+            tfNewStudent.clear();
+            configDisabledButtons();
+        }
     }
 
     private void configTextField() {
         tfNewStudent.setOnKeyTyped(keyEvent ->
                 btNewStudent.setDisable(btNewStudentHasToBeDisabled()));
         tfNewStudent.setOnAction(ae -> {
-            if (!btNewStudent.isDisable())
                 createStudentAndAddToCourse();
         });
     }
 
     private void lvStudentsUpdate() {
         lvStudents.getItems().clear();
-        String c = getSelectedCourse();
+        Course c = getSelectedCourse();
         if (c != null) {
-            lvStudents.getItems().addAll(subscriptions.get(c));
+            lvStudents.getItems().addAll(c.getStudents());
         }
     }
 

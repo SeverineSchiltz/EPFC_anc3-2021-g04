@@ -6,10 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="V1_Façade" />
         <module name="V0" />
-        <module name="3_V0_regle_metier_Sol" />
         <module name="V0 - Règle métier" />
+        <module name="V1_facade" />
         <module name="MiniProjet21" />
+        <module name="V1_SansFaçade" />
       </profile>
     </annotationProcessing>
   </component>
