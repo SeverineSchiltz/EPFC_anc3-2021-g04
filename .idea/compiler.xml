@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="V0" />
+        <module name="anc3_2021_g04" />
         <module name="3_V0_regle_metier_Sol" />
         <module name="V0 - Règle métier" />
         <module name="MiniProjet21" />

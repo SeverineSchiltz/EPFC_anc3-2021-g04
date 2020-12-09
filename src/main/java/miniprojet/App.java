@@ -9,11 +9,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import model.Course;
-import model.Student;
-import model.School;
+import model.*;
 
 import java.util.*;
+
+import static model.School.*;
 
 /**
  * JavaFX App
@@ -26,79 +26,64 @@ public class App extends Application {
     }
 
     //Initialisation données
+
+    //private static final Map<String, Set<String>> subscriptions = new TreeMap<>();
+    //private static final Set<String> students = new TreeSet<>();
+
+    private static final School school = new School();
+
     private static void initData() {
-        Student delphine = new Student("Delphine");
+        Student delphine = new Student("Delphine"); //permet de réutiliser les students après
         Student caroline = new Student("Caroline");
         Student eddy = new Student("Eddy");
         Student mohamed = new Student("Mohamed");
         Student bernard = new Student("Bernard");
         Student amelie = new Student("Amélie");
 
-        Set<Student> students = new TreeSet<>();
-        students.add(delphine);
-        students.add(caroline);
-        students.add(eddy);
-        students.add(mohamed);
-        students.add(bernard);
-        students.add(amelie);
-        School.setStudents(students);
+        school.addStudent(delphine);
+        school.addStudent(caroline);
+        school.addStudent(eddy);
+        school.addStudent(mohamed);
+        school.addStudent(bernard);
+        school.addStudent(amelie);
 
-        students = new TreeSet<>();
-        students.add(delphine);
-        students.add(amelie);
-        students.add(bernard);
-        Course anc3 = new Course("ANC3", students);
+        /*students.add("Delphine"); //reliquat à effacer
+        students.add("Caroline");
+        students.add("Eddy");
+        students.add("Mohamed");
+        students.add("Bernard");
+        students.add("Amélie");*/
 
-        students = new TreeSet<>();
-        students.add(mohamed);
-        students.add(caroline);
-        students.add(delphine);
-        students.add(bernard);
-        students.add(eddy);
-        Course pro2 = new Course("PRO2", students);
+        Set<Student> anc3_subscriptions = new TreeSet<>(),
+                prwb_subscriptions = new TreeSet<>(),
+                pro2_subscriptions = new TreeSet<>();
+        anc3_subscriptions.add(delphine);
+        anc3_subscriptions.add(amelie);
+        anc3_subscriptions.add(bernard);
 
-        students = new TreeSet<>();
-        students.add(amelie);
-        students.add(eddy);
-        students.add(caroline);
-        Course prwb = new Course("PRWB", students);
+        pro2_subscriptions.add(mohamed);
+        pro2_subscriptions.add(caroline);
+        pro2_subscriptions.add(delphine);
+        pro2_subscriptions.add(bernard);
+        pro2_subscriptions.add(eddy);
 
-        Set<Course> subscriptions = new TreeSet<>();
-        subscriptions.add(anc3);
-        subscriptions.add(pro2);
-        subscriptions.add(prwb);
-        School.setSubscriptions(subscriptions);
+        prwb_subscriptions.add(amelie);
+        prwb_subscriptions.add(eddy);
+        prwb_subscriptions.add(caroline);
 
-        subscriptions = new TreeSet<>();
-        subscriptions.add(anc3);
-        subscriptions.add(pro2);
-        delphine.setSubscriptions(subscriptions);
+        school.addCourse(new Course("ANC3",anc3_subscriptions));
+        school.addCourse(new Course("PRWB",prwb_subscriptions));
+        school.addCourse(new Course("PRO2",pro2_subscriptions));
 
-        subscriptions = new TreeSet<>();
-        subscriptions.add(pro2);
-        subscriptions.add(prwb);
-        caroline.setSubscriptions(subscriptions);
-
-        subscriptions = new TreeSet<>();
-        subscriptions.add(pro2);
-        subscriptions.add(prwb);
-        eddy.setSubscriptions(subscriptions);
-
-        subscriptions = new TreeSet<>();
-        subscriptions.add(pro2);
-        mohamed.setSubscriptions(subscriptions);
-
-        subscriptions = new TreeSet<>();
-        subscriptions.add(anc3);
-        subscriptions.add(pro2);
-        bernard.setSubscriptions(subscriptions);
-
-        subscriptions = new TreeSet<>();
-        subscriptions.add(anc3);
-        subscriptions.add(prwb);
-        amelie.setSubscriptions(subscriptions);
-
+        /*subscriptions.put("PRO2", pro2_subscriptions);    //reliquat à effacer
+        subscriptions.put("PRWB", prwb_subscriptions);
+        subscriptions.put("ANC3", anc3_subscriptions);*/
     }
+
+    // Règles métiers
+    /*private static final int MAX_STUDENTS_PER_COURSE = 5;  //reliquat à effacer
+    private static final int MAX_COURSES_PER_STUDENT = 2;*/
+
 
     // Utilitaires graphiques
     private static final double SPACING = 10;
@@ -167,13 +152,14 @@ public class App extends Application {
     }
 
     private void configModel() {
-        lvCourses.getItems().addAll(School.getSubscriptionsName());
+        //lvCourses.getItems().addAll(subscriptions.keySet());
+        lvCourses.getItems().addAll(school.getClassesKeys());// subscriptions.keySet());
         makeCbStudents();
     }
 
     private void makeCbStudents() {
         cbStudents.getItems().clear();
-        cbStudents.getItems().addAll(School.getStudentName());
+        cbStudents.getItems().addAll(getStudentsNames());
     }
 
     private void configComponents() {
@@ -190,38 +176,39 @@ public class App extends Application {
     }
 
     private boolean btSubscribeHasToBeDisabled() {
-        String cs = getSelectedCourse(), ss = getSelectedStudent();
-        if (cs == null || ss == null) {
+        String c = getSelectedCourse(), s = getSelectedStudent();
+        if (c == null || s == null
+                //|| isCourseComplete()
+                || isClassComplete(c)
+                //|| isStudentComplete(s)
+                || isStudentComplete(s))
             return true;
-        } else {
-            Course c = School.findCourse(cs);
-            Student s = School.findStudent(ss);
-            if (c == null || s == null || c.isCourseComplete() || s.isStudentComplete()) {
-                return true;
-            }
-            return c.isFollowBy(s);
-        }
+        //return subscriptions.get(c).contains(s);
+        return studentAttendsClass(c,s);
     }
 
     private boolean btNewStudentHasToBeDisabled() {
-        String cs = getSelectedCourse();
         if (getSelectedCourse() == null
                 || tfNewStudent.getText().isEmpty()
-                || tfNewStudent.getText().isBlank()) {
+                || tfNewStudent.getText().isBlank()
+                //|| isCourseComplete()
+                || isClassComplete(getSelectedCourse()))
             return true;
-        } else {
-            Course c = School.findCourse(cs);
-            if (c == null || c.isCourseComplete()) {
-                return true;
-            }
-            Student s = School.findStudent(tfNewStudent.getText());
-            if(s != null){
-                return School.getStudents().contains(s);
-            }
-            return false;
-        }
+        //return students.contains(tfNewStudent.getText());
+        return isStudent(tfNewStudent.getText());
     }
 
+    /*private boolean isCourseComplete() {  => Course.isFull
+        return subscriptions.get(getSelectedCourse()).size() >= MAX_STUDENTS_PER_COURSE;
+    }*/
+
+    /*private boolean isStudentComplete(String student) { => Student.isFull
+        int nbcours = 0;
+        for (Set<String> studentsOfCourse : subscriptions.values()) {
+            if (studentsOfCourse.contains(student)) ++nbcours;
+        }
+        return nbcours >= MAX_COURSES_PER_STUDENT;
+    }*/
 
     private void makeComponentsHierarchy() {
         hbMainPanel.getChildren().addAll(vbCourses, vbStudents, bpSubscribe);
@@ -266,29 +253,26 @@ public class App extends Application {
 
     private void configActions() {
         btSubscribe.setOnAction(e -> {
-            Course c = School.findCourse(getSelectedCourse());
-            Student s = School.findStudent(getSelectedStudent());
-            c.addStudent(s);
-            s.addCourse(c);
+            //subscriptions.get(getSelectedCourse()).add(getSelectedStudent());
+            addStudentToclass(getSelectedStudent(),getSelectedCourse());
             updateCourseStudents();
         });
         btUnsubscribe.setOnAction(e -> {
-            Course c = School.findCourse(getSelectedCourse());
-            Student s = School.findStudent(getSelectedCourseStudent());
-            c.removeStudent(s);
-            s.removeCourse(c);
+            //subscriptions.get(getSelectedCourse()).remove(getSelectedCourseStudent());
+            removeStudentFromClass(getSelectedCourseStudent(),getSelectedCourse());// /!\getSelectedCourseStudent
             updateCourseStudents();
         });
         btNewStudent.setOnAction(e -> createStudentAndAddToCourse());
     }
 
     private void createStudentAndAddToCourse() {
-        Student s = new Student(tfNewStudent.getText());
-        School.getStudents().add(s);
+        //String student = tfNewStudent.getText();
+        //students.add(student);
+        Student student = new Student (tfNewStudent.getText());
+        school.addStudent(student);
         makeCbStudents();
-        Course c = School.findCourse(getSelectedCourse());
-        c.addStudent(s);
-        s.addCourse(c);
+        //subscriptions.get(getSelectedCourse()).add(student);
+        addStudentToclass(tfNewStudent.getText(),getSelectedCourse());
         updateCourseStudents();
         tfNewStudent.clear();
     }
@@ -304,10 +288,11 @@ public class App extends Application {
 
     private void lvStudentsUpdate() {
         lvStudents.getItems().clear();
-        String cs = getSelectedCourse();
-        Course c = School.findCourse(cs);
+        String c = getSelectedCourse();
         if (c != null) {
-            lvStudents.getItems().addAll(c.getStudentsName());
+            //lvStudents.getItems().addAll(subscriptions.get(c)); //renvoie un Set<String>
+            //                        school.getStudentsFromClass(c)
+            lvStudents.getItems().addAll(getStudentsFromClass(c));
         }
     }
 

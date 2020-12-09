@@ -1,67 +1,59 @@
 package model;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 public class Student implements Comparable<Student> {
-    private String name;
-    private Set<Course> subscriptions = new TreeSet<>();
     private static final int MAX_COURSES_PER_STUDENT = 2;
+    private String name;
+    private int nbCourses;
 
-    public Student(String name, Set<Course> subscriptions) {
+    public Student(String name){
         this.name = name;
-        this.subscriptions = subscriptions;
+        this.nbCourses = 0;
     }
 
-    public Student(String name) {
-        this.name = name;
+    /*public int getNbCourses(){
+        return nbCourses;
+    }*/
+
+    public String getName(){
+        return this.name;
     }
 
-    public void setSubscriptions(Set<Course> subscriptions) {
-        if (subscriptions.size() <= MAX_COURSES_PER_STUDENT) {
-            this.subscriptions = subscriptions;
-        } else {
-            throw new RuntimeException("L'étudiant " + this.name + " ne peut pas avoir plus de 2 cours");
+    public boolean isFull(){
+        return this.nbCourses >= MAX_COURSES_PER_STUDENT;
+    }
+
+    public boolean addCourse(){
+        boolean res = false;
+        if (!this.isFull()){
+            this.nbCourses++;
+            res = true;
         }
+        return res;
     }
 
-    public void addCourse(Course c) {
-        if (!isStudentComplete()) {
-            subscriptions.add(c);
+    public boolean removeCourse(){
+        boolean res = false;
+        if (this.nbCourses > 0){
+            this.nbCourses--;
+            res = true;
         }
-    }
-
-    public void removeCourse(Course c) {
-        subscriptions.remove(c);
-    }
-
-    public boolean isStudentComplete() {
-        return isStudentComplete(subscriptions);
-    }
-
-    public static boolean isStudentComplete(Set<Course> subscriptions) {
-        return subscriptions.size() >= MAX_COURSES_PER_STUDENT;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        boolean isEq = false;
-        if (o instanceof Student) {
-            Student other = (Student) o;
-            if (other.name.equals(this.name)) {
-                isEq = true;
-            }
-        }
-        return isEq;
+        return res;
     }
 
     @Override
     public int compareTo(Student o) {
         return this.name.compareToIgnoreCase(o.name);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        boolean res = false;
+        if (obj instanceof Student) {
+            Student other = (Student) obj;
+            if (other.name.equals(this.name)) {
+                res = true;
+            }
+        }
+        return res;
     }
 }

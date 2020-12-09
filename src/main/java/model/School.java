@@ -4,40 +4,64 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class School {
-    private static Set<Course> subscriptions = new TreeSet<>();
-    private static Set<Student> students = new TreeSet<>();
 
-    public static Set<String> getSubscriptionsName() {
-        Set<String> subName = new TreeSet<>();
-        for (Course s : subscriptions) {
-            subName.add(s.toString());
+    private static final Set<Course> classes = new TreeSet<>(); // = subscriptions
+    private static final Set<Student> students = new TreeSet<>();
+
+
+    /*public static Set<Student> getStudents() {
+        return (Set<Student>) Collections.unmodifiableSet(students);
+    }*/
+
+    public static Set<String> getStudentsNames(){
+        Set<String> studentsNames = new TreeSet<>();
+        for (Student s : students){
+            studentsNames.add(s.getName());
         }
-        return subName;
+        return studentsNames;
     }
 
-    public static Set<String> getStudentName() {
-        Set<String> stuName = new TreeSet<>();
-        for (Student s : students) {
-            stuName.add(s.toString());
+
+
+    public void addStudent(Student student){
+        students.add(student);
+    }
+
+    public void addCourse(Course course){
+        classes.add(course);
+    }
+
+    public Set<String> getClassesKeys(){
+        Set<String> classesNames = new TreeSet<>();
+        for (Course c : classes){
+            classesNames.add(c.getName());
         }
-        return stuName;
+        return classesNames;
     }
 
-
-    public static void setSubscriptions(Set<Course> subscriptions) {
-        School.subscriptions = subscriptions;
+    public static boolean studentAttendsClass(String c, String s){
+        //return findCourse(c).isFollowedBy(findStudent(s));
+        boolean res = false;
+        Course cCible = findCourse(c);
+        Student sCible = findStudent(s);
+        if (cCible != null && sCible != null){
+            res = cCible.isFollowedBy(sCible);
+        }
+        return res;
     }
 
-    public static Set<Student> getStudents() {
-        return students;
+    private static Course findCourse(String courseName) {
+        Course c2 = new Course(courseName);
+        for (Course c : classes) {
+            if (c.equals(c2)) {
+                return c;
+            }
+        }
+        return null;
     }
 
-    public static void setStudents(Set<Student> students) {
-        School.students = students;
-    }
-
-    public static Student findStudent(String name) {
-        Student s2 = new Student(name);
+    private static Student findStudent(String studentName) {
+        Student s2 = new Student(studentName);
         for (Student s : students) {
             if (s.equals(s2)) {
                 return s;
@@ -46,14 +70,59 @@ public class School {
         return null;
     }
 
-    public static Course findCourse(String name) {
-        Course c2 = new Course(name);
-        for (Course c : subscriptions) {
-            if (c.equals(c2)) {
-                return c;
-            }
+    public static boolean isClassComplete(String c){
+        //return findCourse(c).isFull();
+        boolean res = false;
+        Course cCible = findCourse(c);
+        if (cCible != null){
+            res = cCible.isFull();
         }
-        return null;
+        return res;
     }
 
+    public static boolean isStudentComplete(String s){
+        //return findStudent(s).isFull();
+        boolean res = false;
+        Student sCible = findStudent(s);
+        if (sCible != null){
+            res = sCible.isFull();
+        }
+        return res;
+    }
+
+    public static void addStudentToclass(String student, String course){
+        Course c=findCourse(course);
+        Student s=findStudent(student);
+        if (c != null && s != null){
+            if (!c.isFull() && !s.isFull()) {
+                c.addStudent(s);
+            }
+        }
+    }
+
+    public static void removeStudentFromClass(String student, String course){
+        Course c=findCourse(course);
+        Student s=findStudent(student);
+        if (c != null && s != null){
+            if (c.isFollowedBy(s)) {
+                s.removeCourse();
+                c.removeStudent(s);
+            }
+        }
+    }
+
+    public static Set<String> getStudentsFromClass(String course){
+        Set<String> studentsNames = new TreeSet<>();
+        Course c = findCourse(course);
+        if (c != null){
+            for (Student s : c.getStudents()) {
+                studentsNames.add(s.getName());
+            }
+        }
+        return studentsNames;
+    }
+
+    public static boolean isStudent (String s){
+        return findStudent(s) != null;
+    }
 }

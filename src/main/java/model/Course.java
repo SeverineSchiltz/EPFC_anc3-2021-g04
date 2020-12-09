@@ -4,82 +4,68 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Course implements Comparable<Course> {
+
+public class Course implements Comparable<Course>{
+    private static final int MAX_STUDENTS_PER_COURSE = 5;
     private String name;
     private Set<Student> students = new TreeSet<>();
-    private static final int MAX_STUDENTS_PER_COURSE = 5;
 
-    public Course(String name, Set<Student> students) {
+    public Course(String name, Set<Student> students){
         this.name = name;
         this.students = students;
     }
 
-    public Course(String name) {
-        this.name = name;
+    public String getName(){
+        return this.name;
     }
 
-    public void setStudents(Set<Student> students) {
-        if (students.size() <= MAX_STUDENTS_PER_COURSE) {
-            this.students = students;
-        } else {
-            throw new RuntimeException("L'étudiant ne peut pas avoir plus de 2 cours");
+    public Course(String name){
+        this.name=name;
+    } //doit-être gardé?
+
+    public Set<Student> getStudents(){
+        return (Set<Student>) Collections.unmodifiableSet(students);
+    }
+
+    public boolean addStudent(Student student){
+        if (!this.isFull()){
+            students.add(student);
+            return true;
         }
+        return false;
     }
 
-    public void addStudent(Student s) {
-        if (!isCourseComplete()) {
-            students.add(s);
-        }
+    public boolean isFull(){
+        return this.students.size() >= MAX_STUDENTS_PER_COURSE;
     }
 
-    public void removeStudent(Student s) {
-        students.remove(s);
-    }
+    public void removeStudent(Student student){
+        students.remove(student);
 
-    public boolean isFollowBy(Student s) {
-        return students.contains(s);
-    }
-
-    //j'aurais du plutôt faire ceci que getStudentsName
-    public Set<Student> getStudents() {
-        return Collections.unmodifiableSet(students);
-    }
-
-    public Set<String> getStudentsName() {
-        Set<String> stuName = new TreeSet<>();
-        for (Student s : students) {
-            stuName.add(s.toString());
-        }
-        return stuName;
-    }
-
-    public boolean isCourseComplete() {
-        return isCourseComplete(this.students);
-    }
-
-    public static boolean isCourseComplete(Set<Student> students) {
-        return students.size() >= MAX_STUDENTS_PER_COURSE;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        boolean isEq = false;
-        if (o instanceof Course) {
-            Course other = (Course) o;
-            if (other.name.equals(this.name)) {
-                isEq = true;
-            }
-        }
-        return isEq;
     }
 
     @Override
     public int compareTo(Course o) {
         return this.name.compareToIgnoreCase(o.name);
+    }
+
+    public boolean contains(Student s){
+        return true;
+    }
+
+    public boolean isFollowedBy(Student s) {
+        return students.contains(s);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        boolean res = false;
+        if (obj instanceof Course) {
+            Course other = (Course) obj;
+            if (other.name.equals(this.name)) {
+                res = true;
+            }
+        }
+        return res;
     }
 }
