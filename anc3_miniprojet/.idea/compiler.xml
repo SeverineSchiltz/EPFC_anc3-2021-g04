@@ -7,9 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="V1_Façade" />
+        <module name="V1_facade" />
+        <module name="anc3_miniprojet" />
         <module name="V0" />
         <module name="V0 - Règle métier" />
-        <module name="V1_facade" />
         <module name="MiniProjet21" />
         <module name="V1_SansFaçade" />
       </profile>
