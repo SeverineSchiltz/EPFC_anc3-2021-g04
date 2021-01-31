@@ -1,7 +1,9 @@
 package view;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import mvvm.ColumnViewModel;
 import model.*;
@@ -9,24 +11,44 @@ import model.*;
 public class ColumnView extends VBox {
 
     private final ColumnViewModel cvm;
+    private final BorderPane bp = new BorderPane();
+    private final Button btLeft = new Button();
+    private final Button btRight = new Button();
     private EditableLabel title;
     private final ListView<Card> cards = new ListView<>();
 
     public ColumnView(ColumnViewModel viewModel){
         this.cvm = viewModel;
+        config();
         configDataBindings();
-        this.getChildren().addAll(title.getLabel(), cards);
         customizeCards();
+        configButtons();
         setID();
+    }
+
+    private void config(){
+        title = new EditableLabel(cvm.getColumnTitleProperty());
+        this.bp.setLeft(btLeft);
+        this.bp.setRight(btRight);
+        this.bp.setCenter(title.getLabel());
+        this.getChildren().addAll(bp, cards);
+    }
+
+    private void configButtons(){
+        this.btLeft.setOnAction(e -> cvm.changePosition(-1));
+        this.btRight.setOnAction(e -> cvm.changePosition(1));
     }
 
     private void setID(){
         this.setId("column");
+        this.cards.setId("column_font");
+        this.bp.setId("hb_column");
         this.title.getLabel().setId("columnTitle");
+        this.btLeft.setId("bt_column_left");
+        this.btRight.setId("bt_column_right");
     }
 
     private void configDataBindings() {
-        title = new EditableLabel(cvm.getColumnTitleProperty());
         cards.itemsProperty().bind(cvm.cardsProperty());
     }
 

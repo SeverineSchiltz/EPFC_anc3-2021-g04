@@ -13,7 +13,7 @@ public class Trello {
         this.board = new Board("Mon Tableau");
         int nCard = 0;
         for (int i = 1; i<4; ++i){
-            Column c = new Column("Colonne " + i);
+            Column c = new Column("Colonne " + i, board);
             for (int j = 1; j<=i; ++j){
                 ++nCard;
                 c.addCard(new Card("Carte " + nCard));

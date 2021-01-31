@@ -1,6 +1,7 @@
 package model;
 
 public class Card {
+    private Column column;
     private String title;
 
     public Card(String title){

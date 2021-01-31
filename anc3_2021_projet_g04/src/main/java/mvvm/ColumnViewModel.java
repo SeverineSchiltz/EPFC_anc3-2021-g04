@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import model.*;
 
 public class ColumnViewModel {
-
     private final Column column;
     private final StringProperty title = new SimpleStringProperty("");
     private final ObservableList<Card> listCards = FXCollections.observableArrayList();
@@ -27,6 +26,10 @@ public class ColumnViewModel {
 
     public SimpleListProperty<Card> cardsProperty() {
         return new SimpleListProperty<>(listCards);
+    }
+
+    public void changePosition(int pos){
+        this.column.changePositioninBoard(pos);
     }
 
 }

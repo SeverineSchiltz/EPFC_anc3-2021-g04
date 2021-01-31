@@ -1,5 +1,10 @@
-#board {
+#board{
     -fx-orientation: horizontal;
+}
+
+#board .list-cell{
+    -fx-background-color: white;
+    -fx-pref-height: 50px;
 }
 
 #boardTitle {
@@ -9,18 +14,61 @@
 }
 
 #column {
-    -fx-background-color: lightgrey;
+    -fx-background-color: gainsboro;
+    -fx-min-width: 100px;
+    -fx-border-width: 1px;
+    -fx-border-color: black;
+}
+
+#column_font{
+    -fx-background-color: gainsboro;
+}
+
+#column_font .list-cell{
+    -fx-background-color: gainsboro;
 }
 
 #columnTitle{
-    -fx-stroke-color: green;
+    -fx-font-size: 15px;
+}
+
+#hb_column{
+
+    -fx-font-weight: bold;
+    -fx-min-height: 30px;
+    -fx-vertical-align: middle;
+    -fx-text-align: center;
+
+}
+
+#bt_column_left{
+    -fx-background-image: url("images/arrow_left.png");
+}
+
+#bt_column_right{
+    -fx-background-image: url("images/arrow_right.png");
+}
+
+.button {
+    -fx-font-size: 15px;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 7px;
+    -fx-margin-top: 5px;
+    -fx-padding: 0px;
+    -fx-border-width: 0px;
+    -fx-background-color: white;
+    -fx-background-size: auto 80%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
 }
 
 #card {
     /*-fx-min-height: 40px;*/
     -fx-background-color: lavender; /*rgb(215,214,254);*/
+    -fx-border-width: 1px;
+    -fx-border-color: black;
 }
 
 #cardTitle{
-    -fx-stroke-color: green;
+
 }

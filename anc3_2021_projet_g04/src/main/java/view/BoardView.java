@@ -13,17 +13,11 @@ public class BoardView extends ListView<Column> {
         this.bvm = viewModel;
         customizeThis();
         configDataBindings();
-        //configVMBindings();
-
     }
 
     private void configDataBindings() {
         this.itemsProperty().bind(bvm.columnsProperty());
     }
-
-//    private void configVMBindings() {
-//        bvm.selectedColumnsBinding(this.getSelectionModel().selectedIndexProperty());
-//    }
 
     private void customizeThis() {
         this.setCellFactory(view -> new ListCell<>() {
