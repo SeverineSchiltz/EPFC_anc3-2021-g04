@@ -1,0 +1,26 @@
+#board {
+    -fx-orientation: horizontal;
+}
+
+#boardTitle {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-min-height: 40px;
+}
+
+#column {
+    -fx-background-color: lightgrey;
+}
+
+#columnTitle{
+    -fx-stroke-color: green;
+}
+
+#card {
+    /*-fx-min-height: 40px;*/
+    -fx-background-color: lavender; /*rgb(215,214,254);*/
+}
+
+#cardTitle{
+    -fx-stroke-color: green;
+}
