@@ -1,5 +1,8 @@
 package model;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,12 +32,12 @@ public class Column {
         this.board.changeColumnPosition(this, pos);
     }
 
-    public boolean isLastInBoard(){
-        return this.board.isColumnLast(this);
+    public BooleanProperty isLastInBoard(){
+        return new SimpleBooleanProperty(this.board.isColumnLast(this));
     }
 
-    public boolean isFirstInBoard(){
-        return this.board.isColumnFirst(this);
+    public BooleanProperty isFirstInBoard(){
+        return new SimpleBooleanProperty(this.board.isColumnFirst(this));
     }
 
 }

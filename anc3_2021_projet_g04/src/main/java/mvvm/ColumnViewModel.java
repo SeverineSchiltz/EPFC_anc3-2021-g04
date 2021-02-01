@@ -32,4 +32,12 @@ public class ColumnViewModel {
         this.column.changePositioninBoard(pos);
     }
 
+    public BooleanProperty isFirstInBoardProperty(){
+        return column.isFirstInBoard();
+    }
+
+    public BooleanProperty isLastInBoardProperty(){
+        return column.isLastInBoard();
+    }
+
 }

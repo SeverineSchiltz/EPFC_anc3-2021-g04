@@ -1,7 +1,10 @@
 package view;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import model.*;
 import mvvm.BoardViewModel;
 
@@ -32,6 +35,20 @@ public class BoardView extends ListView<Column> {
             }
         });
         this.setId("board");
+
+        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
+                    //Use ListView's getSelected Item
+                    //currentItemSelected = playList.getSelectionModel().getSelectedItem();
+                    //use this to do whatever you want to. Open Link etc.
+                    System.out.println("test");
+                }
+            }
+        });
     }
+
+
 
 }

@@ -1,5 +1,6 @@
 package view;
 
+import javafx.beans.binding.Bindings;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -50,6 +51,8 @@ public class ColumnView extends VBox {
 
     private void configDataBindings() {
         cards.itemsProperty().bind(cvm.cardsProperty());
+        btLeft.disableProperty().bind(cvm.isFirstInBoardProperty());
+        btRight.disableProperty().bind(cvm.isLastInBoardProperty());
     }
 
     public ColumnView(Column column){
