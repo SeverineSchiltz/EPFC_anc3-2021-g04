@@ -90,14 +90,17 @@ public class Column {
             int curPosColumn = this.board.getColumns().indexOf(column); //this.board.getColumns().indexOf(card.getColumn());
             // column position to reach (current one -1 if left or +1 if right)
             int posColumnToReach = curPosColumn + posColumn;
-            // column to reach
-            Column columnToReach = this.board.getColumns().get(posColumnToReach);
             // if to check column position to reach (is in the range)
             if(posColumnToReach >= 0 && posColumnToReach < this.board.getColumns().size()) {
+                // column to reach
+                Column columnToReach = this.board.getColumns().get(posColumnToReach);
+                // set columnToReach as attribute of the card (if not, the card keeps column)
+                card.setColumn(columnToReach);
                 // add card on the column to reach
                 columnToReach.addCard(card);
                 // remove card on the column before the move
-                column.removeCardIndex(curPosCard); //column.removeCard(card); => remove the 1st occurence so not appropriate
+                column.removeCard(card);
+                //column.removeCardIndex(curPosCard); //column.removeCard(card); => remove the 1st occurence so not appropriate
             }
         }
     }

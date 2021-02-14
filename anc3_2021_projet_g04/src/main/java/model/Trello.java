@@ -16,7 +16,7 @@ public class Trello {
             Column c = new Column("Colonne " + i, board);
             for (int j = 1; j<=i; ++j){
                 ++nCard;
-                c.addCard(new Card("Carte " + nCard));
+                c.addCard(new Card("Carte " + nCard, c));
             }
             this.board.addColumn(c);
         }

@@ -25,6 +25,10 @@ public class Card {
         return this.column;
     }
 
+    public void setColumn(Column column){
+        this.column = column;
+    }
+
     public BooleanProperty isFirstInColumn(){
         return new SimpleBooleanProperty(this.getColumn().isCardFirst(this));
     }
@@ -34,7 +38,7 @@ public class Card {
     }
 
     public void changePositionInColumn(int posCard, int posColumn){
-        this.getColumn().changeCardPosition(this, posCard, posColumn);
+        this.getColumn().changeCardPosition(this, posCard, posColumn); //this.column
     }
 
 

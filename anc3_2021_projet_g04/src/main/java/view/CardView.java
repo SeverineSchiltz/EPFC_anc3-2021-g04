@@ -55,7 +55,7 @@ public class CardView extends BorderPane {
 
     private void configBindings() {
         //configDataBindings();
-        //configDisabledBindings();
+        configDisabledBindings();
     }
 
     private void configDataBindings() {
