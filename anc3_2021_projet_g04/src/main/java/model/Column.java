@@ -6,14 +6,10 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class Column {
     private Board board;
     private String title;
-    //private final List<Card> listCards = new ArrayList<>();
     private final ObservableList<Card> listCards = FXCollections.observableArrayList();
 
     public Column(String title, Board board){
@@ -28,18 +24,9 @@ public class Column {
         this.listCards.add(c);
     }
 
-    //TODO: to remove if we don't use it
     public void removeCard(Card c){
         this.listCards.remove(c);
     }
-
-    public void removeCardIndex(int index){
-        this.listCards.remove(index);
-    }
-
-//    public List<Card> getCards() {
-//        return Collections.unmodifiableList(listCards);
-//    }
 
     public SimpleListProperty<Card> getCards() {
         return new SimpleListProperty<>(listCards);
@@ -100,7 +87,6 @@ public class Column {
                 columnToReach.addCard(card);
                 // remove card on the column before the move
                 column.removeCard(card);
-                //column.removeCardIndex(curPosCard); //column.removeCard(card); => remove the 1st occurence so not appropriate
             }
         }
     }

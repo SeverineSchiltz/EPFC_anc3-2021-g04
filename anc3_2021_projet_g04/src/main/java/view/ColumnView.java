@@ -1,6 +1,5 @@
 package view;
 
-import javafx.beans.binding.Bindings;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;

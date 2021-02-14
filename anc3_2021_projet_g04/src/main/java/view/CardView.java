@@ -5,18 +5,13 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import model.Card;
-import model.Column;
 import mvvm.CardViewModel;
-import mvvm.ColumnViewModel;
 
 public class CardView extends BorderPane {
 
     private final CardViewModel cardvm;
     private EditableLabel title;
-    /* TODO: to remove
-    //private final HBox hbUp = new HBox();
-    //private final HBox hbDown = new HBox();
-     */
+    // TODO: to check if we can remove HBoxes and keep the arrows in the center (maybe in trello.css)
     // 2 HBoxes (up & down) where we store the Buttons (btUp & btDown)
     private final Button btUp = new Button();
     private final HBox hbUp = new HBox(btUp);
@@ -29,7 +24,7 @@ public class CardView extends BorderPane {
         this.cardvm = cardViewModel;
         title = new EditableLabel(cardvm.getCardTitleProperty());
         config();
-        configBindings(); //configDataBindings();
+        configBindings();
         configButtons();
         setID();
     }
@@ -41,14 +36,13 @@ public class CardView extends BorderPane {
     private void config(){
         this.title = new EditableLabel(cardvm.getCardTitleProperty());
         this.setCenter(title.getLabel());
-        //ajouter les images de flèches sur les boutons:
         // set HBoxes in the center
-        this.hbUp.setAlignment(Pos.BASELINE_CENTER); //hbUp.getChildren().add(btUp);
-        this.hbDown.setAlignment(Pos.BASELINE_CENTER); //hbDown.getChildren().add(btDown);
+        this.hbUp.setAlignment(Pos.BASELINE_CENTER);
+        this.hbDown.setAlignment(Pos.BASELINE_CENTER);
         // set nodes in the border pane
-        this.setTop(hbUp); //this.setTop(btUp);
+        this.setTop(hbUp);
         this.setRight(btRight);
-        this.setBottom(hbDown); //this.setBottom(btDown);
+        this.setBottom(hbDown);
         this.setLeft(btLeft);
         this.getChildren().addAll();
     }
@@ -58,6 +52,7 @@ public class CardView extends BorderPane {
         configDisabledBindings();
     }
 
+    // TODO: we may have to remove this method
     private void configDataBindings() {
 
     }

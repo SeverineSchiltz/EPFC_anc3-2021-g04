@@ -7,11 +7,11 @@ public class Card {
     private Column column;
     private String title;
 
+    // TODO: remove if not necessary (check later)
     public Card(String title){
         this.title = title;
     }
 
-    // TODO: remove if not necessary
     public Card(String title, Column column){
         this.title = title;
         this.column = column;
@@ -30,15 +30,15 @@ public class Card {
     }
 
     public BooleanProperty isFirstInColumn(){
-        return new SimpleBooleanProperty(this.getColumn().isCardFirst(this));
+        return new SimpleBooleanProperty(this.column.isCardFirst(this));
     }
 
     public BooleanProperty isLastInColumn(){
-        return new SimpleBooleanProperty(this.getColumn().isCardLast(this));
+        return new SimpleBooleanProperty(this.column.isCardLast(this));
     }
 
     public void changePositionInColumn(int posCard, int posColumn){
-        this.getColumn().changeCardPosition(this, posCard, posColumn); //this.column
+        this.column.changeCardPosition(this, posCard, posColumn);
     }
 
 
