@@ -19,5 +19,8 @@ public class BoardViewModel {
         return board.getColumns();
     }
 
+    public void addColumn(){
+        board.addColumn();
+    }
 
 }

@@ -40,4 +40,8 @@ public class Board {
         return listColumns.indexOf(c) == listColumns.size()-1;
     }
 
+    public void addColumn(){
+        listColumns.add(new Column("Column" + (listColumns.size()+1) , this));
+    }
+
 }

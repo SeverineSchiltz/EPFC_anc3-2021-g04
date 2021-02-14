@@ -23,30 +23,30 @@ public class BoardView extends ListView<Column> {
     }
 
     private void customizeThis() {
-        this.setCellFactory(view -> new ListCell<>() {
-            @Override
-            protected void updateItem(Column column, boolean b) {
-                super.updateItem(column, b);
-                ColumnView columnView = null;
-                if (column != null) {
-                    columnView = new ColumnView(column);
+        this.setCellFactory(lv -> {
+            ListCell<Column> cell = new ListCell<Column>() {
+                @Override
+                protected void updateItem(Column column, boolean b) {
+                    super.updateItem(column, b);
+                    ColumnView columnView = null;
+                    if (column != null) {
+                        columnView = new ColumnView(column);
+                    }
+                    setGraphic(columnView);
                 }
-                setGraphic(columnView);
-            }
+            };
+            cell.setOnMouseClicked(e -> {
+                if ((cell.isEmpty() || cell.getItem() == null) && e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+                    //lv.getItems().remove(null);
+                    bvm.addColumn();
+                    //lv.getItems().add(null);
+                }
+            });
+            return cell;
         });
-        this.setId("board");
 
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
-                    //Use ListView's getSelected Item
-                    //currentItemSelected = playList.getSelectionModel().getSelectedItem();
-                    //use this to do whatever you want to. Open Link etc.
-                    System.out.println("test");
-                }
-            }
-        });
+
+        this.setId("board");
     }
 
 
