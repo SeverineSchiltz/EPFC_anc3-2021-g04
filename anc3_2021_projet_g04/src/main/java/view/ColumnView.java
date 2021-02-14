@@ -1,12 +1,15 @@
 package view;
 
-import javafx.scene.control.Button;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.event.EventHandler;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import mvvm.ColumnViewModel;
 import model.*;
+
+import java.util.Optional;
 
 public class ColumnView extends VBox {
 
@@ -68,6 +71,23 @@ public class ColumnView extends VBox {
                     cardView = new CardView(card);
                 }
                 setGraphic(cardView);
+            }
+        });
+
+        title.getLabel().setTooltip(new Tooltip("Supprimer"));
+        title.getLabel().setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getButton() == MouseButton.SECONDARY && event.getClickCount() == 1) {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation");
+                    alert.setHeaderText("Confirmation");
+                    alert.setContentText("Are you ok to delete this?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK){
+                        cvm.delete();
+                    }
+                }
             }
         });
     }

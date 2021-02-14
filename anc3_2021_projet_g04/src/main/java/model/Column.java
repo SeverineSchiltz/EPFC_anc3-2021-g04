@@ -52,6 +52,10 @@ public class Column {
         return getCards().indexOf(card) == listCards.size() - 1;
     }
 
+    public void delete(){
+        board.deleteColumn(this);
+    }
+
     /*
     Method to change the card position: 4 options:
     (1) up      posCard: -1     posColumn:  0

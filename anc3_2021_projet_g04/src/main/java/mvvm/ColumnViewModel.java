@@ -36,4 +36,8 @@ public class ColumnViewModel {
         return column.isLastInBoard();
     }
 
+    public void delete(){
+        column.delete();
+    }
+
 }

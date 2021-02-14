@@ -44,4 +44,8 @@ public class Board {
         listColumns.add(new Column("Column" + (listColumns.size()+1) , this));
     }
 
+    public void deleteColumn(Column c){
+        listColumns.remove(c);
+    }
+
 }
