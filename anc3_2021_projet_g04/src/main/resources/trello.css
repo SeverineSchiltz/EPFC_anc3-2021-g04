@@ -49,6 +49,27 @@
     -fx-background-image: url("images/arrow_right.png");
 }
 
+/*TODO check if necessary to have bts left & right for cards and columns */
+#bt_card_up{
+    -fx-background-image: url("images/arrow_up.png");
+}
+
+#bt_card_right{
+    -fx-background-image: url("images/arrow_right.png");
+}
+
+#bt_card_down{
+    -fx-background-image: url("images/arrow_down.png");
+}
+
+#bt_card_left{
+    -fx-background-image: url("images/arrow_left.png");
+}
+
+#hb_card{
+    -fx-min-height: 10px;
+}
+
 .button {
     -fx-font-size: 15px;
     -fx-pref-width: 30px;

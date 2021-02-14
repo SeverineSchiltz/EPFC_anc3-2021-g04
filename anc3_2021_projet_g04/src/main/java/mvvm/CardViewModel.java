@@ -1,5 +1,6 @@
 package mvvm;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import model.Card;
@@ -16,4 +17,25 @@ public class CardViewModel {
     public StringProperty getCardTitleProperty(){
         return title;
     }
+
+    public void changePosition(int posCard, int posColumn){
+        this.card.changePositionInColumn(posCard, posColumn);
+    }
+
+    public BooleanProperty isFirstInColumnProperty(){
+        return card.isFirstInColumn();
+    }
+
+    public BooleanProperty isLastInColumnProperty(){
+        return card.isLastInColumn();
+    }
+
+    public BooleanProperty isInFirstColumnProperty(){
+        return card.getColumn().isFirstInBoard();
+    }
+
+    public BooleanProperty isInLastColumnProperty(){
+        return card.getColumn().isLastInBoard();
+    }
+
 }

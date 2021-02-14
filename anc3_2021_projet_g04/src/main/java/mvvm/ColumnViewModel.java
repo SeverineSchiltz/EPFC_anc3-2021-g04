@@ -26,6 +26,7 @@ public class ColumnViewModel {
 
     public SimpleListProperty<Card> cardsProperty() {
         return new SimpleListProperty<>(listCards);
+        //return column.getCards();
     }
 
     public void changePosition(int pos){
