@@ -40,4 +40,8 @@ public class ColumnViewModel {
         column.delete();
     }
 
+    public void addCard() {
+        this.column.addCard();
+    }
+
 }

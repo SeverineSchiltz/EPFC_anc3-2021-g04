@@ -74,6 +74,17 @@ public class ColumnView extends VBox {
             }
         });
 
+        // Add a card after a double click on the mouse (left button)
+        cards.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton() == MouseButton.PRIMARY && mouseEvent.getClickCount() == 2) {
+                    //System.out.println("testAddCard");
+                    cvm.addCard();
+                }
+            }
+        });
+
         title.getLabel().setTooltip(new Tooltip("Supprimer"));
         title.getLabel().setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

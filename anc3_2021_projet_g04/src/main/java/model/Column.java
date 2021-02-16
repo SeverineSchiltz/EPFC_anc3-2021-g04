@@ -24,6 +24,11 @@ public class Column {
         this.listCards.add(c);
     }
 
+    public void addCard() {
+        Card cardToAdd = new Card("Card", this); //new Card("Card " + (listCards.size() + 1), this);
+        this.addCard(cardToAdd);
+    }
+
     public void removeCard(Card c){
         this.listCards.remove(c);
     }
