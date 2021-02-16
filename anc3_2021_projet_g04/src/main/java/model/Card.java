@@ -41,5 +41,8 @@ public class Card {
         this.column.changeCardPosition(this, posCard, posColumn);
     }
 
+    public void removeCard() {
+        this.column.removeCard(this);
+    }
 
 }

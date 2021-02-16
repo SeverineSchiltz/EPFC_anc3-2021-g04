@@ -38,4 +38,9 @@ public class CardViewModel {
         return card.getColumn().isLastInBoard();
     }
 
+    public void removeCard() {
+        //this.card.getColumn().removeCard(this.card); //TODO: check not ideal
+        this.card.removeCard();
+    }
+
 }

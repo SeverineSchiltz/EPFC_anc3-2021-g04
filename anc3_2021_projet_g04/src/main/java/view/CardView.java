@@ -1,11 +1,18 @@
 package view;
 
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import model.Card;
 import mvvm.CardViewModel;
+
+import java.util.Optional;
 
 public class CardView extends BorderPane {
 
@@ -80,6 +87,28 @@ public class CardView extends BorderPane {
         this.btRight.setOnAction(e -> cardvm.changePosition(0, 1));
         this.btDown.setOnAction(e -> cardvm.changePosition(1, 0));
         this.btLeft.setOnAction(e -> cardvm.changePosition(0, -1));
+
+        // Delete a card after a click on the mouse (right button)
+        //TODO: check this is the right place
+        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton() == MouseButton.SECONDARY && mouseEvent.getClickCount() == 1) {
+                    //System.out.println("testRemoveCard");
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Delete");
+                    Alert alertDeleteConfirm = new Alert(Alert.AlertType.CONFIRMATION);
+                    //alertDeleteConfirm.setTitle("Confirmation"); //not necessary
+                    alertDeleteConfirm.setHeaderText("Confirmation");
+                    alertDeleteConfirm.setContentText("Are you sure to delete card \"" + title + "\" ?");
+                    Optional<ButtonType> result = alertDeleteConfirm.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        cardvm.removeCard();
+                    }
+                }
+            }
+        });
+
     }
 
     private void setID(){
