@@ -2,22 +2,19 @@ package model;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Card {
     private Column column;
-    private String title;
+    private StringProperty title;
 
-    // TODO: remove if not necessary (check later)
-    public Card(String title){
-        this.title = title;
-    }
-
-    public Card(String title, Column column){
-        this.title = title;
+    Card(String title, Column column){
+        this.title= new SimpleStringProperty(title);
         this.column = column;
     }
 
-    public String getTitle(){
+    public StringProperty getTitle(){
         return this.title;
     }
 

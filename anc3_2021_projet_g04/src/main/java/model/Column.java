@@ -1,22 +1,21 @@
 package model;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 
 public class Column {
     private Board board;
-    private String title;
+    private StringProperty title;
     private final ObservableList<Card> listCards = FXCollections.observableArrayList();
 
-    public Column(String title, Board board){
-        this.title = title;
+    Column(String title, Board board){
+        this.title= new SimpleStringProperty(title);
         this.board = board;
+        //listCards.add(null);
     }
-    public String getTitle(){
+    public StringProperty getTitle(){
         return this.title;
     }
 
@@ -33,8 +32,8 @@ public class Column {
         this.listCards.remove(c);
     }
 
-    public SimpleListProperty<Card> getCards() {
-        return new SimpleListProperty<>(listCards);
+    public ObservableList<Card> getCards() {
+        return FXCollections.unmodifiableObservableList(listCards);
     }
 
     public void changePositioninBoard(int pos){

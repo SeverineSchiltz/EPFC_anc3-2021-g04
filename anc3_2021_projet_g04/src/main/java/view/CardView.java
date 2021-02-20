@@ -1,14 +1,12 @@
 package view;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import model.Card;
 import mvvm.CardViewModel;
 
@@ -18,13 +16,9 @@ public class CardView extends BorderPane {
 
     private final CardViewModel cardvm;
     private EditableLabel title;
-    // TODO: to check if we can remove HBoxes and keep the arrows in the center (maybe in trello.css)
-    // 2 HBoxes (up & down) where we store the Buttons (btUp & btDown)
     private final Button btUp = new Button();
-    private final HBox hbUp = new HBox(btUp);
     private final Button btRight = new Button();
     private final Button btDown = new Button();
-    private final HBox hbDown = new HBox(btDown);
     private final Button btLeft = new Button();
 
     public CardView(CardViewModel cardViewModel) {
@@ -42,26 +36,22 @@ public class CardView extends BorderPane {
 
     private void config(){
         this.title = new EditableLabel(cardvm.getCardTitleProperty());
-        this.setCenter(title.getLabel());
-        // set HBoxes in the center
-        this.hbUp.setAlignment(Pos.BASELINE_CENTER);
-        this.hbDown.setAlignment(Pos.BASELINE_CENTER);
-        // set nodes in the border pane
-        this.setTop(hbUp);
+        this.setCenter(title);
+        title.setAlignment(Pos.CENTER);
+        this.setAlignment(btUp, Pos.CENTER);
+        this.setAlignment(btDown, Pos.CENTER);
+        this.setAlignment(btRight, Pos.CENTER);
+        this.setAlignment(btLeft, Pos.CENTER);
+
+        this.setTop(btUp);
         this.setRight(btRight);
-        this.setBottom(hbDown);
+        this.setBottom(btDown);
         this.setLeft(btLeft);
-        this.getChildren().addAll();
+
     }
 
     private void configBindings() {
-        //configDataBindings();
         configDisabledBindings();
-    }
-
-    // TODO: we may have to remove this method
-    private void configDataBindings() {
-
     }
 
     private void configDisabledBindings() {
@@ -88,23 +78,29 @@ public class CardView extends BorderPane {
         this.btDown.setOnAction(e -> cardvm.changePosition(1, 0));
         this.btLeft.setOnAction(e -> cardvm.changePosition(0, -1));
 
-        // Delete a card after a click on the mouse (right button)
-        //TODO: check this is the right place
         this.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton() == MouseButton.SECONDARY && mouseEvent.getClickCount() == 1) {
-                    //System.out.println("testRemoveCard");
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Delete");
-                    Alert alertDeleteConfirm = new Alert(Alert.AlertType.CONFIRMATION);
-                    //alertDeleteConfirm.setTitle("Confirmation"); //not necessary
-                    alertDeleteConfirm.setHeaderText("Confirmation");
-                    alertDeleteConfirm.setContentText("Are you sure to delete card \"" + title + "\" ?");
-                    Optional<ButtonType> result = alertDeleteConfirm.showAndWait();
-                    if (result.get() == ButtonType.OK) {
-                        cardvm.removeCard();
-                    }
+            public void handle(MouseEvent event) {
+                if (event.getButton() == MouseButton.SECONDARY && event.getClickCount() == 1) {
+                    ContextMenu contextMenu = new ContextMenu();
+                    MenuItem sup = new MenuItem("Supprimer");
+                    sup.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            Alert alert = new Alert(Alert.AlertType.WARNING);
+                            alert.setTitle("Delete");
+                            Alert alertDeleteConfirm = new Alert(Alert.AlertType.CONFIRMATION);
+                            //alertDeleteConfirm.setTitle("Confirmation"); //not necessary
+                            alertDeleteConfirm.setHeaderText("Confirmation");
+                            alertDeleteConfirm.setContentText("Are you sure to delete card \"" + title.getTitle() + "\" ?");
+                            Optional<ButtonType> result = alertDeleteConfirm.showAndWait();
+                            if (result.get() == ButtonType.OK) {
+                                cardvm.removeCard();
+                            }
+                        }
+                    });
+                    contextMenu.getItems().addAll(sup);
+                    contextMenu.show(btUp, event.getScreenX(), event.getScreenY());
                 }
             }
         });
@@ -113,9 +109,7 @@ public class CardView extends BorderPane {
 
     private void setID(){
         this.setId("card");
-        this.title.getLabel().setId("cardTitle");
-        this.hbUp.setId("hb_card");
-        this.hbDown.setId("hb_card");
+        this.title.setId("cardTitle");
         this.btUp.setId("bt_card_up");
         this.btRight.setId("bt_card_right");
         this.btDown.setId("bt_card_down");

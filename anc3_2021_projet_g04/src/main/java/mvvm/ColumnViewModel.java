@@ -5,23 +5,17 @@ import model.*;
 
 public class ColumnViewModel {
     private final Column column;
-    private final StringProperty title = new SimpleStringProperty("");
 
     public ColumnViewModel(Column column){
         this.column = column;
-        configData();
-    }
-
-    private void configData() {
-        title.setValue(this.column.getTitle());
     }
 
     public StringProperty getColumnTitleProperty(){
-        return title;
+        return column.getTitle();
     }
 
     public SimpleListProperty<Card> cardsProperty() {
-        return new SimpleListProperty<>(column.getCards());
+        return new SimpleListProperty(column.getCards());
     }
 
     public void changePosition(int pos){
