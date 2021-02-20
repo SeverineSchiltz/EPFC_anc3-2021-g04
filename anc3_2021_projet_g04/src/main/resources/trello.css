@@ -1,10 +1,10 @@
 #board{
-    -fx-orientation: horizontal;
+    /*-fx-orientation: horizontal;*/ /* préférence pour le mettre directement dans le code pour avoir déjà une belle forme sans le css */
+
 }
 
 #board .list-cell{
     -fx-background-color: white;
-    -fx-pref-height: 50px;
 }
 
 #boardTitle {
@@ -15,13 +15,13 @@
 
 #column {
     -fx-background-color: gainsboro;
-    -fx-min-width: 100px;
     -fx-border-width: 1px;
     -fx-border-color: black;
 }
 
 #column_font{
     -fx-background-color: gainsboro;
+
 }
 
 #column_font .list-cell{
@@ -33,28 +33,17 @@
 }
 
 #hb_column{
-
     -fx-font-weight: bold;
     -fx-min-height: 30px;
     -fx-vertical-align: middle;
     -fx-text-align: center;
-
 }
 
-#bt_column_left{
-    -fx-background-image: url("images/arrow_left.png");
-}
-
-#bt_column_right{
-    -fx-background-image: url("images/arrow_right.png");
-}
-
-/*TODO check if necessary to have bts left & right for cards and columns */
 #bt_card_up{
     -fx-background-image: url("images/arrow_up.png");
 }
 
-#bt_card_right{
+#bt_card_right, #bt_column_right{
     -fx-background-image: url("images/arrow_right.png");
 }
 
@@ -62,25 +51,23 @@
     -fx-background-image: url("images/arrow_down.png");
 }
 
-#bt_card_left{
+#bt_card_left, #bt_column_left{
     -fx-background-image: url("images/arrow_left.png");
-}
-
-#hb_card{
-    -fx-min-height: 10px;
 }
 
 .button {
     -fx-font-size: 15px;
     -fx-pref-width: 30px;
     -fx-pref-height: 7px;
-    -fx-margin-top: 5px;
+    -fx-margin: 0px;
     -fx-padding: 0px;
     -fx-border-width: 0px;
     -fx-background-color: white;
     -fx-background-size: auto 80%;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
+    -fx-border-width: 2px;
+    -fx-border-color: white;
 }
 
 #card {
@@ -88,8 +75,29 @@
     -fx-background-color: lavender; /*rgb(215,214,254);*/
     -fx-border-width: 1px;
     -fx-border-color: black;
+    -fx-border-radius: 5px;
 }
 
-#cardTitle{
+#cardTitle #tftitle{
+    -fx-max-width: 150px;
+    -fx-alignment: center;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
 
+#columnTitle #tftitle{
+    -fx-max-width: 150px;
+    -fx-alignment: center;
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+#cardTitle #lbtitle{
+    -fx-max-width: 150px;
+    -fx-alignment: center;
+}
+
+#columnTitle #lbtitle{
+    -fx-max-width: 150px;
+    -fx-alignment: center;
 }

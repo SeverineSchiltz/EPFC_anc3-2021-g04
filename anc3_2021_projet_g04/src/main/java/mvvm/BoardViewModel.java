@@ -5,18 +5,17 @@ import model.*;
 
 public class BoardViewModel {
     private Board board;
-    private StringProperty boardTitle = new SimpleStringProperty();
 
-    public BoardViewModel(Board board){
+    BoardViewModel(Board board){
         this.board = board;
     }
 
-    public StringProperty newBoardTitleProperty() {
-        return boardTitle;
+    public StringProperty getBoardTitleProperty() {
+        return board.getTitle();
     }
 
     public SimpleListProperty<Column> columnsProperty() {
-        return board.getColumns();
+        return new SimpleListProperty(board.getColumns());
     }
 
     public void addColumn(){

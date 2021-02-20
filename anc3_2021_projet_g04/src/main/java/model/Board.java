@@ -1,18 +1,19 @@
 package model;
 
-import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Board {
-    private String title;
+    private StringProperty title;
     private final ObservableList<Column> listColumns = FXCollections.observableArrayList();
 
-    public Board(String title){
-        this.title = title;
+    Board(String title){
+        this.title= new SimpleStringProperty(title);
     }
 
-    public String getTitle(){
+    public StringProperty getTitle(){
         return this.title;
     }
 
@@ -20,8 +21,8 @@ public class Board {
         listColumns.add(c);
     }
 
-    public SimpleListProperty<Column> getColumns() {
-        return new SimpleListProperty<>(listColumns);
+    public ObservableList<Column> getColumns() {
+        return FXCollections.unmodifiableObservableList(listColumns);
     }
 
     public void changeColumnPosition(Column c, int pos){
@@ -41,7 +42,7 @@ public class Board {
     }
 
     public void addColumn(){
-        listColumns.add(new Column("Column" + (listColumns.size()+1) , this));
+        listColumns.add(new Column("Column", this));
     }
 
     public void deleteColumn(Column c){

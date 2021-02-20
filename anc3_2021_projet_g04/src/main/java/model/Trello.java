@@ -1,5 +1,7 @@
 package model;
 
+import javafx.beans.property.StringProperty;
+
 public class Trello {
     private String title;
     private Board board;
@@ -26,7 +28,7 @@ public class Trello {
         return this.title;
     }
 
-    public String getBoardTitle(){
+    public StringProperty getBoardTitle(){
         return this.board.getTitle();
     }
 

@@ -1,10 +1,9 @@
 package view;
 
-import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import model.*;
 import mvvm.BoardViewModel;
 
@@ -16,6 +15,12 @@ public class BoardView extends ListView<Column> {
         this.bvm = viewModel;
         customizeThis();
         configDataBindings();
+        config();
+    }
+
+    private void config() {
+        //préférence pour le mettre ici plutôt que dans le css
+        this.setOrientation(Orientation.HORIZONTAL);
     }
 
     private void configDataBindings() {
@@ -36,15 +41,17 @@ public class BoardView extends ListView<Column> {
                 }
             };
             cell.setOnMouseClicked(e -> {
-                if ((cell.isEmpty() || cell.getItem() == null) && e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
-                    //lv.getItems().remove(null);
+                if (cell.isEmpty() && e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
                     bvm.addColumn();
-                    //lv.getItems().add(null);
                 }
             });
             return cell;
         });
-
+        this.setOnMouseClicked(e -> {
+            if (this.getItems().isEmpty() && e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2 ) {
+                bvm.addColumn();
+            }
+        });
 
         this.setId("board");
     }

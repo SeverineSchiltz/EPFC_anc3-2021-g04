@@ -18,11 +18,10 @@ public class TrelloViewModel {
     }
 
     public StringProperty getBoardTitleProperty() {
-        return new SimpleStringProperty(trello.getBoardTitle());
+        return trello.getBoardTitle();
     }
 
     public BoardViewModel getBoardVM(){
-        //TODO : pas génial, demander comment faire autrement
         return new BoardViewModel(this.trello.getBoard());
     }
 
