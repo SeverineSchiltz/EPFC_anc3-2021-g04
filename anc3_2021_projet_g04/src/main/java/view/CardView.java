@@ -78,33 +78,24 @@ public class CardView extends BorderPane {
         this.btDown.setOnAction(e -> cardvm.changePosition(1, 0));
         this.btLeft.setOnAction(e -> cardvm.changePosition(0, -1));
 
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton() == MouseButton.SECONDARY && event.getClickCount() == 1) {
-                    ContextMenu contextMenu = new ContextMenu();
-                    MenuItem sup = new MenuItem("Supprimer");
-                    sup.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            Alert alert = new Alert(Alert.AlertType.WARNING);
-                            alert.setTitle("Delete");
-                            Alert alertDeleteConfirm = new Alert(Alert.AlertType.CONFIRMATION);
-                            //alertDeleteConfirm.setTitle("Confirmation"); //not necessary
-                            alertDeleteConfirm.setHeaderText("Confirmation");
-                            alertDeleteConfirm.setContentText("Are you sure to delete card \"" + title.getTitle() + "\" ?");
-                            Optional<ButtonType> result = alertDeleteConfirm.showAndWait();
-                            if (result.get() == ButtonType.OK) {
-                                cardvm.removeCard();
-                            }
-                        }
-                    });
-                    contextMenu.getItems().addAll(sup);
-                    contextMenu.show(btUp, event.getScreenX(), event.getScreenY());
-                }
+        // This is to delete a card
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem sup = new MenuItem("Supprimer");
+        sup.setOnAction(actionEvent -> {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Delete");
+            Alert alertDeleteConfirm = new Alert(Alert.AlertType.CONFIRMATION);
+            alertDeleteConfirm.setTitle("Confirmation");
+            alertDeleteConfirm.setHeaderText("Confirmation");
+            alertDeleteConfirm.setContentText("Are you sure to delete card \"" + title.getTitle() + "\" ?");
+            Optional<ButtonType> result = alertDeleteConfirm.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                cardvm.removeCard();
             }
         });
-
+        contextMenu.getItems().addAll(sup);
+        this.setOnContextMenuRequested(contextMenuEvent ->
+                contextMenu.show(this, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY()));
     }
 
     private void setID(){

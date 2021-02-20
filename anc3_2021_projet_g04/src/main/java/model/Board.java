@@ -42,7 +42,7 @@ public class Board {
     }
 
     public void addColumn(){
-        listColumns.add(new Column("Column", this));
+        addColumn(new Column("Column", this));
     }
 
     public void deleteColumn(Column c){

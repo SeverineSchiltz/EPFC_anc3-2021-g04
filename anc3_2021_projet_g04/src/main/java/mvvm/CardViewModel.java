@@ -28,11 +28,11 @@ public class CardViewModel {
     }
 
     public BooleanProperty isInFirstColumnProperty(){
-        return card.getColumn().isFirstInBoard();
+        return card.isInFirstColumn();
     }
 
     public BooleanProperty isInLastColumnProperty(){
-        return card.getColumn().isLastInBoard();
+        return card.isInLastColumn();
     }
 
     public void removeCard() {

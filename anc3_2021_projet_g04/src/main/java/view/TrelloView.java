@@ -9,7 +9,7 @@ public class TrelloView extends VBox {
 
     private TrelloViewModel tvm;
     private EditableLabel boardTitle;
-    private BoardView board;
+    private BoardView boardView;
 
 
     public TrelloView(Stage primaryStage, TrelloViewModel viewModel){
@@ -23,14 +23,14 @@ public class TrelloView extends VBox {
 
     private void config(){
         this.boardTitle.setId("boardTitle");
-        this.board.setId("board");
+        this.boardView.setId("board");
         this.getStylesheets().add("/trello.css");
     }
 
     private void addComponent(){
         boardTitle = new EditableLabel(tvm.getBoardTitleProperty());
-        board = new BoardView(tvm.getBoardVM());
-        this.getChildren().addAll(boardTitle, board);
+        boardView = new BoardView(tvm.getBoardVM());
+        this.getChildren().addAll(boardTitle, boardView);
     }
 
     private void configBindings(Stage primaryStage) {

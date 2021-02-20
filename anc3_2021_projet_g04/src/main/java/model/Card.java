@@ -34,6 +34,14 @@ public class Card {
         return new SimpleBooleanProperty(this.column.isCardLast(this));
     }
 
+    public BooleanProperty isInFirstColumn(){
+        return this.column.isFirstInBoard();
+    }
+
+    public BooleanProperty isInLastColumn(){
+        return this.column.isLastInBoard();
+    }
+
     public void changePositionInColumn(int posCard, int posColumn){
         this.column.changeCardPosition(this, posCard, posColumn);
     }

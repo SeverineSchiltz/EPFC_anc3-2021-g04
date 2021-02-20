@@ -93,29 +93,22 @@ public class ColumnView extends VBox {
             }
         });
 
-        bp.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getButton() == MouseButton.SECONDARY && event.getClickCount() == 1) {
-                    ContextMenu contextMenu = new ContextMenu();
-                    MenuItem sup = new MenuItem("Supprimer");
-                    sup.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                            //alert.setTitle("Confirmation");
-                            alert.setHeaderText("Confirmation");
-                            alert.setContentText("Are you sure to delete column \"" + title.getTitle() + "\" ?");
-                            Optional<ButtonType> result = alert.showAndWait();
-                            if (result.get() == ButtonType.OK){
-                                cvm.delete();
-                            }
-                        }
-                    });
-                    contextMenu.getItems().addAll(sup);
-                    contextMenu.show(btLeft, event.getScreenX(), event.getScreenY());
-                }
+        // This is to delete a column
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem sup = new MenuItem("Supprimer");
+        sup.setOnAction(actionEvent -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+            alert.setHeaderText("Confirmation");
+            alert.setContentText("Are you sure to delete column \"" + title.getTitle() + "\" ?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK){
+                cvm.delete();
             }
         });
+        contextMenu.getItems().addAll(sup);
+        bp.setOnContextMenuRequested(contextMenuEvent ->
+                contextMenu.show(bp, contextMenuEvent.getScreenX(), contextMenuEvent.getScreenY()));
+
     }
 }
