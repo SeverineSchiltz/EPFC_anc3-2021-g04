@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import mvvm.ColumnViewModel;
 import model.*;
+import mvvm.commands.CommandManager;
 
 import java.util.Optional;
 
@@ -29,6 +30,10 @@ public class ColumnView extends VBox {
         customizeCards();
         configButtons();
         setID();
+    }
+
+    public ColumnView(Column column, CommandManager cmdManager){
+        this(new ColumnViewModel(column, cmdManager));
     }
 
     private void config(){
@@ -60,10 +65,6 @@ public class ColumnView extends VBox {
         cards.itemsProperty().bind(cvm.cardsProperty());
         btLeft.disableProperty().bind(cvm.isFirstInBoardProperty());
         btRight.disableProperty().bind(cvm.isLastInBoardProperty());
-    }
-
-    public ColumnView(Column column){
-        this(new ColumnViewModel(column));
     }
 
     private void customizeCards() {

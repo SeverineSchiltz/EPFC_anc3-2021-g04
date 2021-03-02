@@ -81,6 +81,20 @@ public class TrelloView extends VBox {
             }
         });
 
+        mniUndo.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                tvm.unexecuteCommand();
+            }
+        });
+
+        mniRedo.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                tvm.executeCommand();
+            }
+        });
+
         boardTitle = new EditableLabel(tvm.getBoardTitleProperty());
         boardView = new BoardView(tvm.getBoardVM());
         this.getChildren().addAll(menuBar, boardTitle, boardView);

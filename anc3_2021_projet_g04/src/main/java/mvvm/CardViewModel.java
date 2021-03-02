@@ -3,9 +3,11 @@ package mvvm;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import model.Card;
+import mvvm.commands.CommandManager;
 
 public class CardViewModel {
     private final Card card;
+    private CommandManager cmdManager;
 
     public CardViewModel(Card card){
         this.card = card;

@@ -35,7 +35,7 @@ public class BoardView extends ListView<Column> {
                     super.updateItem(column, b);
                     ColumnView columnView = null;
                     if (column != null) {
-                        columnView = new ColumnView(column);
+                        columnView = new ColumnView(column, bvm.getCmdManager());
                     }
                     setGraphic(columnView);
                 }

@@ -99,4 +99,9 @@ public class Column {
         }
     }
 
+    @Override
+    public String toString() {
+        return this.title.getValue();
+    }
+
 }
