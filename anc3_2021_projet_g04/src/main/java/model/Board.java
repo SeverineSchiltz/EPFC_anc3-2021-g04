@@ -49,4 +49,12 @@ public class Board {
         listColumns.remove(c);
     }
 
+    public void deleteColumn(int index){
+        listColumns.remove(index);
+    }
+
+    public int getNumberOfColumn(){
+        return listColumns.size();
+    }
+
 }

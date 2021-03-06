@@ -2,6 +2,8 @@ package mvvm;
 
 import javafx.beans.property.*;
 import model.*;
+import mvvm.commands.ColumnAdd;
+import mvvm.commands.ColumnMoveToRight;
 import mvvm.commands.CommandManager;
 
 public class BoardViewModel {
@@ -23,6 +25,7 @@ public class BoardViewModel {
 
     public void addColumn(){
         board.addColumn();
+        cmdManager.addCommand(new ColumnAdd(board));
     }
 
     public CommandManager getCmdManager(){
