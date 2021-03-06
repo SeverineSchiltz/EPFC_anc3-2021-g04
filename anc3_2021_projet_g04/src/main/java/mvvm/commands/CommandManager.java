@@ -10,12 +10,16 @@ public class CommandManager {
 
     public void addCommand(Command c){
         if(posInList < history.size()){
-            //TODO : redimensionner la list afin qu'il n'y ait plus de redo
-            history.set(posInList, c);
-        }else{
-            history.add(c);
+            removeNextCommandInList();
         }
+        history.add(c);
         ++posInList;
+    }
+
+    private void removeNextCommandInList(){
+        for(int i = history.size() -1; i >= posInList; --i){
+            history.remove(i);
+        }
     }
 
     public void execute(){
