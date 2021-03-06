@@ -4,7 +4,7 @@ import javafx.beans.property.*;
 import model.*;
 import mvvm.commands.*;
 
-public class ColumnViewModel {
+public class ColumnViewModel implements TitleManagement{
     private final Column column;
     private CommandManager cmdManager;
 
@@ -47,4 +47,9 @@ public class ColumnViewModel {
         this.column.addCard();
     }
 
+    @Override
+    public void changeTitle(String newTitle) {
+        cmdManager.addCommand(new ColumnChangeTitle(column, newTitle));
+        column.changeTitle(newTitle);
+    }
 }

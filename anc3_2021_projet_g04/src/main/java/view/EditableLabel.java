@@ -6,14 +6,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
+import mvvm.TitleManagement;
 
 public class EditableLabel extends VBox {
 
     private final TextField tfTitle = new TextField();
     private final Label lbTitle = new Label();
+    private final TitleManagement tm;
 
-    public EditableLabel(StringProperty title) {
+    public EditableLabel(StringProperty title, TitleManagement tm) {
         customizeThis(title);
+        this.tm = tm;
         this.lbTitle.requestFocus();
         this.setId("editableLabel");
         this.lbTitle.setId("lbtitle");
@@ -22,37 +25,38 @@ public class EditableLabel extends VBox {
 
     public void customizeThis(StringProperty str) {
         this.lbTitle.textProperty().bind(str);
-        tfTitle.textProperty().bindBidirectional(str);
+        //tfTitle.textProperty().bind(str);
+        tfTitle.setText(str.getValue());
+
         this.getChildren().add(lbTitle);
 
         lbTitle.setOnMouseClicked(e -> {
             if (e.getButton() == MouseButton.PRIMARY && e.getClickCount() ==2) {
-                labelFocus(false);
+                setOnExitLbTitle();
             }
         });
-        tfTitle.setOnKeyPressed(e -> {
-            if (e.getCode() == KeyCode.ENTER) {
-                labelFocus(true);
-            }
-        });
+//        tfTitle.setOnKeyPressed(e -> {
+//            if (e.getCode() == KeyCode.ENTER) {
+//                setOnExitTfTitle();
+//            }
+//        });
         tfTitle.setOnMouseExited(e -> {
-            labelFocus(true);
+            setOnExitTfTitle();
         });
 
         lbTitle.setWrapText(true);
     }
 
-    private void labelFocus(boolean lbVisible){
-        if(lbVisible){
-            this.getChildren().remove(tfTitle);
-            this.getChildren().add(lbTitle);
-        }else{
-            this.getChildren().remove(lbTitle);
-            this.getChildren().add(tfTitle);
-            tfTitle.requestFocus();
-            tfTitle.selectAll();
-        }
-
+    private void setOnExitTfTitle(){
+        tm.changeTitle(tfTitle.getText());
+        this.getChildren().remove(tfTitle);
+        this.getChildren().add(lbTitle);
+    }
+    private void setOnExitLbTitle(){
+        this.getChildren().remove(lbTitle);
+        this.getChildren().add(tfTitle);
+        tfTitle.requestFocus();
+        tfTitle.selectAll();
     }
 
     public String getTitle(){

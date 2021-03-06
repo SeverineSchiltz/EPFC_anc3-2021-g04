@@ -14,7 +14,7 @@ public class Board {
     }
 
     public StringProperty getTitle(){
-        return this.title;
+        return title;
     }
 
     public void addColumn(Column c){
@@ -67,6 +67,15 @@ public class Board {
             listColumns.set(i, listColumns.get(i-1));
         }
         listColumns.set(pos, c);
+    }
+
+    public void changeTitle(String newTitle){
+        title.setValue(newTitle);
+    }
+
+    @Override
+    public String toString() {
+        return this.title.getValue();
     }
 
 }

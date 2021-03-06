@@ -23,7 +23,7 @@ public class CardView extends BorderPane {
 
     public CardView(CardViewModel cardViewModel) {
         this.cardvm = cardViewModel;
-        title = new EditableLabel(cardvm.getCardTitleProperty());
+        title = new EditableLabel(cardvm.getCardTitleProperty(), cardvm);
         config();
         configBindings();
         configButtons();
@@ -35,7 +35,7 @@ public class CardView extends BorderPane {
     }
 
     private void config(){
-        this.title = new EditableLabel(cardvm.getCardTitleProperty());
+        //this.title = new EditableLabel(cardvm.getCardTitleProperty(), cardvm);
         this.setCenter(title);
         title.setAlignment(Pos.CENTER);
         this.setAlignment(btUp, Pos.CENTER);

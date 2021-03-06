@@ -5,7 +5,7 @@ import javafx.beans.property.StringProperty;
 import model.Card;
 import mvvm.commands.CommandManager;
 
-public class CardViewModel {
+public class CardViewModel implements TitleManagement{
     private final Card card;
     private CommandManager cmdManager;
 
@@ -41,4 +41,8 @@ public class CardViewModel {
         this.card.removeCard();
     }
 
+    @Override
+    public void changeTitle(String newTitle) {
+        card.changeTitle(newTitle);
+    }
 }

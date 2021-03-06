@@ -37,7 +37,7 @@ public class ColumnView extends VBox {
     }
 
     private void config(){
-        title = new EditableLabel(cvm.getColumnTitleProperty());
+        title = new EditableLabel(cvm.getColumnTitleProperty(), cvm);
         title.setAlignment(Pos.CENTER);
         this.bp.setLeft(btLeft);
         this.bp.setRight(btRight);

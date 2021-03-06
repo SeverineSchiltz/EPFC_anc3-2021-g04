@@ -3,9 +3,12 @@ package mvvm;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import model.Trello;
+import mvvm.commands.BoardChangeTitle;
+import mvvm.commands.ColumnAdd;
+import mvvm.commands.ColumnChangeTitle;
 import mvvm.commands.CommandManager;
 
-public class TrelloViewModel {
+public class TrelloViewModel implements TitleManagement{
     private Trello trello;
     private CommandManager cmdManager;
     private final StringProperty title = new SimpleStringProperty("");
@@ -36,4 +39,9 @@ public class TrelloViewModel {
         cmdManager.unexecute();
     }
 
+    @Override
+    public void changeTitle(String newTitle) {
+        cmdManager.addCommand(new BoardChangeTitle(trello.getBoard(), newTitle));
+        trello.getBoard().changeTitle(newTitle);
+    }
 }

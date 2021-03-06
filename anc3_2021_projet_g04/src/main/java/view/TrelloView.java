@@ -95,7 +95,7 @@ public class TrelloView extends VBox {
             }
         });
 
-        boardTitle = new EditableLabel(tvm.getBoardTitleProperty());
+        boardTitle = new EditableLabel(tvm.getBoardTitleProperty(), tvm);
         boardView = new BoardView(tvm.getBoardVM());
         this.getChildren().addAll(menuBar, boardTitle, boardView);
     }

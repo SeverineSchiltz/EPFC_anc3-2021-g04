@@ -112,4 +112,8 @@ public class Column {
         return this.title.getValue();
     }
 
+    public void changeTitle(String newTitle){
+        title.setValue(newTitle);
+    }
+
 }

@@ -50,4 +50,8 @@ public class Card {
         this.column.removeCard(this);
     }
 
+    public void changeTitle(String newTitle){
+        title.setValue(newTitle);
+    }
+
 }
