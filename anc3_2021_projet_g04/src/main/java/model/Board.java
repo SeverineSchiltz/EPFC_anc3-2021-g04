@@ -57,4 +57,16 @@ public class Board {
         return listColumns.size();
     }
 
+    public int getColumnPosition(Column c){
+        return listColumns.indexOf(c);
+    }
+
+    public void addColumnAtPosition(Column c, int pos){
+        listColumns.add(null);
+        for(int i = listColumns.size()-1; i> pos; --i){
+            listColumns.set(i, listColumns.get(i-1));
+        }
+        listColumns.set(pos, c);
+    }
+
 }

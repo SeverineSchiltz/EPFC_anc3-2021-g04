@@ -28,6 +28,14 @@ public class Column {
         this.addCard(cardToAdd);
     }
 
+    public Board getBoard(){
+        return this.board;
+    }
+
+    public int getPosition(){
+        return board.getColumnPosition(this);
+    }
+
     public void removeCard(Card c){
         this.listCards.remove(c);
     }

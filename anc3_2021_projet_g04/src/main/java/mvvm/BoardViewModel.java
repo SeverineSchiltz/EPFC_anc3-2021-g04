@@ -3,7 +3,6 @@ package mvvm;
 import javafx.beans.property.*;
 import model.*;
 import mvvm.commands.ColumnAdd;
-import mvvm.commands.ColumnMoveToRight;
 import mvvm.commands.CommandManager;
 
 public class BoardViewModel {

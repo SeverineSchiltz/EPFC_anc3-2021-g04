@@ -2,9 +2,7 @@ package mvvm;
 
 import javafx.beans.property.*;
 import model.*;
-import mvvm.commands.ColumnMoveToLeft;
-import mvvm.commands.ColumnMoveToRight;
-import mvvm.commands.CommandManager;
+import mvvm.commands.*;
 
 public class ColumnViewModel {
     private final Column column;
@@ -41,6 +39,7 @@ public class ColumnViewModel {
     }
 
     public void delete(){
+        cmdManager.addCommand(new ColumnDelete(column));
         column.delete();
     }
 
