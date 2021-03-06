@@ -48,10 +48,10 @@ public class Column {
         this.board.changeColumnPosition(this, pos);
     }
 
+    //TODO: à supprimer dès que sera changer dans les cartes
     public BooleanProperty isLastInBoard(){
         return new SimpleBooleanProperty(this.board.isColumnLast(this));
     }
-
     public BooleanProperty isFirstInBoard(){
         return new SimpleBooleanProperty(this.board.isColumnFirst(this));
     }

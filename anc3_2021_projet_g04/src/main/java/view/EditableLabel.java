@@ -53,6 +53,7 @@ public class EditableLabel extends VBox {
         this.getChildren().add(lbTitle);
     }
     private void setOnExitLbTitle(){
+        tfTitle.setText(lbTitle.getText());
         this.getChildren().remove(lbTitle);
         this.getChildren().add(tfTitle);
         tfTitle.requestFocus();

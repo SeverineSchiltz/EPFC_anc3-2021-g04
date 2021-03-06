@@ -33,10 +33,10 @@ public class Board {
         }
     }
 
+    //TODO: à supprimer dès que sera changer dans les cartes
     public boolean isColumnFirst(Column c){
         return listColumns.indexOf(c) == 0;
     }
-
     public boolean isColumnLast(Column c){
         return listColumns.indexOf(c) == listColumns.size()-1;
     }

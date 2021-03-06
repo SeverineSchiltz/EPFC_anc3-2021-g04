@@ -26,18 +26,16 @@ public class Card {
         this.column = column;
     }
 
+    //TODO: à supprimer, faut gérer ça dans les view models
     public BooleanProperty isFirstInColumn(){
         return new SimpleBooleanProperty(this.column.isCardFirst(this));
     }
-
     public BooleanProperty isLastInColumn(){
         return new SimpleBooleanProperty(this.column.isCardLast(this));
     }
-
     public BooleanProperty isInFirstColumn(){
         return this.column.isFirstInBoard();
     }
-
     public BooleanProperty isInLastColumn(){
         return this.column.isLastInBoard();
     }

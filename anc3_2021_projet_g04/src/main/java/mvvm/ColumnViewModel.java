@@ -30,13 +30,20 @@ public class ColumnViewModel implements TitleManagement{
         }
     }
 
-    public BooleanProperty isFirstInBoardProperty(){
-        return column.isFirstInBoard();
+    public BooleanProperty isLeftPossible(){
+        return new SimpleBooleanProperty(column.getBoard().getColumnPosition(column) ==0);
     }
 
-    public BooleanProperty isLastInBoardProperty(){
-        return column.isLastInBoard();
+    public BooleanProperty isRightPossible(){
+        return new SimpleBooleanProperty(column.getBoard().getColumnPosition(column) == column.getBoard().getNumberOfColumn()-1);
     }
+
+//    public BooleanProperty isFirstInBoardProperty(){
+//        return column.isLastInBoard();
+//    }
+//    public BooleanProperty isLastInBoardProperty(){
+//        return column.isLastInBoard();
+//    }
 
     public void delete(){
         cmdManager.addCommand(new ColumnDelete(column));

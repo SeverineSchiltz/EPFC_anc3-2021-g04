@@ -63,8 +63,8 @@ public class ColumnView extends VBox {
 
     private void configDataBindings() {
         cards.itemsProperty().bind(cvm.cardsProperty());
-        btLeft.disableProperty().bind(cvm.isFirstInBoardProperty());
-        btRight.disableProperty().bind(cvm.isLastInBoardProperty());
+        btLeft.disableProperty().bind(cvm.isLeftPossible());
+        btRight.disableProperty().bind(cvm.isRightPossible());
     }
 
     private void customizeCards() {
