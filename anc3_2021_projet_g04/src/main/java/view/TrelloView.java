@@ -88,6 +88,12 @@ public class TrelloView extends VBox {
             }
         });
 
+        mniUndo.disableProperty().bind(tvm.getCmdManager().isUndoNotPossible());
+        mniRedo.disableProperty().bind(tvm.getCmdManager().isRedoNotPossible());
+
+        mniUndo.textProperty().bind(tvm.getCmdManager().getTextLastCommand());
+        mniRedo.textProperty().bind(tvm.getCmdManager().getTextNextCommand());
+
         mniRedo.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

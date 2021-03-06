@@ -8,12 +8,12 @@ import mvvm.commands.ColumnAdd;
 import mvvm.commands.ColumnChangeTitle;
 import mvvm.commands.CommandManager;
 
-public class TrelloViewModel implements TitleManagement{
+public class TrelloViewModel implements TitleManagement {
     private Trello trello;
     private CommandManager cmdManager;
     private final StringProperty title = new SimpleStringProperty("");
 
-    public TrelloViewModel(Trello trello, CommandManager cmdManager){
+    public TrelloViewModel(Trello trello, CommandManager cmdManager) {
         this.trello = trello;
         this.cmdManager = cmdManager;
         title.setValue(this.trello.getTitle());
@@ -27,15 +27,15 @@ public class TrelloViewModel implements TitleManagement{
         return trello.getBoardTitle();
     }
 
-    public BoardViewModel getBoardVM(){
+    public BoardViewModel getBoardVM() {
         return new BoardViewModel(this.trello.getBoard(), cmdManager);
     }
 
-    public void executeCommand(){
+    public void executeCommand() {
         cmdManager.execute();
     }
 
-    public void unexecuteCommand(){
+    public void unexecuteCommand() {
         cmdManager.unexecute();
     }
 
@@ -44,4 +44,9 @@ public class TrelloViewModel implements TitleManagement{
         cmdManager.addCommand(new BoardChangeTitle(trello.getBoard(), newTitle));
         trello.getBoard().changeTitle(newTitle);
     }
+
+    public CommandManager getCmdManager() {
+        return cmdManager;
+    }
+
 }
