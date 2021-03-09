@@ -57,6 +57,7 @@ public class CardViewModel implements TitleManagement{
 
     @Override
     public void changeTitle(String newTitle) {
+        cmdManager.addCommand(new CardChangeTitle(card, newTitle));
         card.changeTitle(newTitle);
     }
 
