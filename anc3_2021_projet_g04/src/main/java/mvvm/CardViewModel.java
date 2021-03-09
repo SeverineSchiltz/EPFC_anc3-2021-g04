@@ -3,8 +3,7 @@ package mvvm;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import model.Card;
-import mvvm.commands.CardDelete;
-import mvvm.commands.CommandManager;
+import mvvm.commands.*;
 
 public class CardViewModel implements TitleManagement{
     private final Card card;
@@ -21,6 +20,19 @@ public class CardViewModel implements TitleManagement{
 
     public void changePosition(int posCard, int posColumn){
         this.card.changePositionInColumn(posCard, posColumn);
+        if(posCard == 0) {
+            if(posColumn == 1) {
+                cmdManager.addCommand(new CardMoveToRight(this.card));
+            } else {
+                cmdManager.addCommand(new CardMoveToLeft(this.card));
+            }
+        } else {
+            if(posCard == 1) {
+                cmdManager.addCommand(new CardMoveToDown(this.card));
+            } else {
+                cmdManager.addCommand(new CardMoveToUp(this.card));
+            }
+        }
     }
 
     public BooleanProperty isFirstInColumnProperty(){
