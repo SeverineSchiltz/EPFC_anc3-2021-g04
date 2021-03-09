@@ -68,6 +68,17 @@ public class Column {
         board.deleteColumn(this);
     }
 
+    // Called method by CardAdd for unexecute() method
+    public void deleteCard(int index){
+        this.listCards.remove(index);
+    }
+
+    // Called method by CardAdd for unexecute() method
+    // A card is added at the end of the column so should be remove at the end too
+    public int getNumberOfCards(){
+        return this.listCards.size();
+    }
+
     /*
     Method to change the card position: 4 options:
     (1) up      posCard: -1     posColumn:  0

@@ -52,6 +52,7 @@ public class ColumnViewModel implements TitleManagement{
 
     public void addCard() {
         this.column.addCard();
+        cmdManager.addCommand(new CardAdd(this.column));
     }
 
     @Override
