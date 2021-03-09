@@ -26,6 +26,11 @@ public class Card {
         this.column = column;
     }
 
+    // Called method by CardDelete for constructor
+    public int getPosition(){
+        return this.column.getCardPosition(this);
+    }
+
     //TODO: à supprimer, faut gérer ça dans les view models
     public BooleanProperty isFirstInColumn(){
         return new SimpleBooleanProperty(this.column.isCardFirst(this));
@@ -44,12 +49,23 @@ public class Card {
         this.column.changeCardPosition(this, posCard, posColumn);
     }
 
+    // TODO: maybe to remove
     public void removeCard() {
         this.column.removeCard(this);
     }
 
+    // Called method by CardDelete for execute() method
+    public void delete() {
+        this.column.deleteCard(this);
+    }
+
     public void changeTitle(String newTitle){
         title.setValue(newTitle);
+    }
+
+    @Override
+    public String toString() {
+        return this.title.getValue();
     }
 
 }

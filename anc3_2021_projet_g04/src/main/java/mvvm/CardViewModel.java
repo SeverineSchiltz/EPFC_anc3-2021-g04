@@ -3,14 +3,16 @@ package mvvm;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.StringProperty;
 import model.Card;
+import mvvm.commands.CardDelete;
 import mvvm.commands.CommandManager;
 
 public class CardViewModel implements TitleManagement{
     private final Card card;
     private CommandManager cmdManager;
 
-    public CardViewModel(Card card){
+    public CardViewModel(Card card, CommandManager cmdManager){
         this.card = card;
+        this.cmdManager = cmdManager;
     }
 
     public StringProperty getCardTitleProperty(){
@@ -44,5 +46,10 @@ public class CardViewModel implements TitleManagement{
     @Override
     public void changeTitle(String newTitle) {
         card.changeTitle(newTitle);
+    }
+
+    public void delete(){
+        cmdManager.addCommand(new CardDelete(card));
+        card.delete();
     }
 }

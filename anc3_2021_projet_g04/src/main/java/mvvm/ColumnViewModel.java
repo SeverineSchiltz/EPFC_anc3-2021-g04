@@ -13,6 +13,10 @@ public class ColumnViewModel implements TitleManagement{
         this.cmdManager = cmdManager;
     }
 
+    public CommandManager getCmdManager(){
+        return cmdManager;
+    }
+
     public StringProperty getColumnTitleProperty(){
         return column.getTitle();
     }

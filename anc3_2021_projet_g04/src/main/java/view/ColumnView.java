@@ -75,7 +75,7 @@ public class ColumnView extends VBox {
                     super.updateItem(card, b);
                     CardView cardView = null;
                     if (card != null) {
-                        cardView = new CardView(card);
+                        cardView = new CardView(card, cvm.getCmdManager());
                     }
                     setGraphic(cardView);
                 }

@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import model.Card;
 import mvvm.CardViewModel;
+import mvvm.commands.CommandManager;
 
 import java.util.Optional;
 
@@ -30,8 +31,8 @@ public class CardView extends BorderPane {
         setID();
     }
 
-    public CardView(Card card){
-        this(new CardViewModel(card));
+    public CardView(Card card, CommandManager cmdManager){
+        this(new CardViewModel(card, cmdManager));
     }
 
     private void config(){
@@ -90,7 +91,8 @@ public class CardView extends BorderPane {
             alertDeleteConfirm.setContentText("Are you sure to delete card \"" + title.getTitle() + "\" ?");
             Optional<ButtonType> result = alertDeleteConfirm.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                cardvm.removeCard();
+                //cardvm.removeCard();
+                cardvm.delete();
             }
         });
         contextMenu.getItems().addAll(sup);

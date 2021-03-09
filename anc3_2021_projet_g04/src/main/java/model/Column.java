@@ -73,10 +73,29 @@ public class Column {
         this.listCards.remove(index);
     }
 
+    // Called method by CardDelete for execute() method
+    public void deleteCard(Card card){
+        this.listCards.remove(card);
+    }
+
     // Called method by CardAdd for unexecute() method
     // A card is added at the end of the column so should be remove at the end too
     public int getNumberOfCards(){
         return this.listCards.size();
+    }
+
+    // Called method by Card
+    public int getCardPosition(Card card){
+        return this.listCards.indexOf(card);
+    }
+
+    // Called method by CardDelete for unexecute() method
+    public void addCardAtPosition(Card card, int pos){
+        listCards.add(null);
+        for(int i = listCards.size() - 1; i > pos; --i){
+            listCards.set(i, listCards.get(i - 1));
+        }
+        listCards.set(pos, card);
     }
 
     /*
