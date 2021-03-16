@@ -34,11 +34,11 @@ public class ColumnViewModel implements TitleManagement{
         }
     }
 
-    public BooleanProperty isLeftPossible(){
+    public BooleanProperty isLeftDisabledProperty(){
         return new SimpleBooleanProperty(column.getBoard().getColumnPosition(column) ==0);
     }
 
-    public BooleanProperty isRightPossible(){
+    public BooleanProperty isRightDisabledProperty(){
         return new SimpleBooleanProperty(column.getBoard().getColumnPosition(column) == column.getBoard().getNumberOfColumn()-1);
     }
 
