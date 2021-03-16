@@ -8,28 +8,28 @@ import javafx.collections.ObservableSet;
 
 public class CommandManager {
 
-    private ObservableList<Command> history = FXCollections.observableArrayList();
-    private int posInList = 0;
-    private IntegerProperty posProp = new SimpleIntegerProperty(0);
+    // TODO: shall we make them final as suggested ?
+    private ObservableList<Command> commands = FXCollections.observableArrayList();
+    private IntegerProperty posInList = new SimpleIntegerProperty(0);
     private StringProperty strLastCommand = new SimpleStringProperty("Annuler");
     private StringProperty strNextCommand = new SimpleStringProperty("Refaire");
 
     private boolean isExecutable(){
-        return posInList < history.size();
+        return posInList.getValue() < commands.size();
     }
 
     private boolean isUnExecutable(){
-        return posInList > 0;
+        return posInList.getValue() > 0;
     }
 
     public void setNewString(){
-        if(posInList > 0) {
-            strLastCommand.setValue("Annuler " + history.get(posInList - 1).toString());
+        if(posInList.getValue() > 0) {
+            strLastCommand.setValue("Annuler " + commands.get(posInList.getValue() - 1).toString());
         }else{
             strLastCommand.setValue("Annuler ");
         }
-        if(posInList < history.size()) {
-            strNextCommand.setValue("Refaire " + history.get(posInList).toString());
+        if(posInList.getValue() < commands.size()) {
+            strNextCommand.setValue("Refaire " + commands.get(posInList.getValue()).toString());
         }else{
             strNextCommand.setValue("Refaire ");
         }
@@ -39,44 +39,41 @@ public class CommandManager {
         if(isExecutable()){
             removeNextCommandsInList();
         }
-        history.add(c);
-        ++posInList;
-        posProp.setValue(posInList);
+        commands.add(c);
+        posInList.setValue(posInList.getValue() + 1);
         setNewString();
     }
 
     private void removeNextCommandsInList(){
-        for(int i = history.size() -1; i >= posInList; --i){
-            history.remove(i);
+        for(int i = commands.size() -1; i >= posInList.getValue(); --i){
+            commands.remove(i);
         }
     }
 
     public void execute(){
         if(isExecutable()) {
-            Command c = history.get(posInList);
+            Command c = commands.get(posInList.getValue());
             c.execute();
-            ++posInList;
-            posProp.setValue(posInList);
+            posInList.setValue(posInList.getValue() + 1);
             setNewString();
         }
     }
 
     public void unexecute(){
         if(isUnExecutable()){
-            Command c = history.get(posInList -1);
+            Command c = commands.get(posInList.getValue() -1);
             c.unexecute();
-            --posInList;
-            posProp.setValue(posInList);
+            posInList.setValue(posInList.getValue() - 1);
             setNewString();
         }
     }
 
     public BooleanBinding isUndoNotPossible(){
-        return posProp.lessThanOrEqualTo(0);
+        return posInList.lessThanOrEqualTo(0);
     }
 
     public BooleanBinding isRedoNotPossible(){
-        return posProp.greaterThanOrEqualTo(new SimpleListProperty<>(history).sizeProperty());
+        return posInList.greaterThanOrEqualTo(new SimpleListProperty<>(commands).sizeProperty());
     }
 
     public StringProperty getTextLastCommand(){

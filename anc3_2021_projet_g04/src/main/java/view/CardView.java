@@ -57,13 +57,13 @@ public class CardView extends BorderPane {
 
     private void configDisabledBindings() {
         // if first col, no btLeft
-        btLeft.disableProperty().bind(cardvm.isInFirstColumnProperty());
+        btLeft.disableProperty().bind(cardvm.isLeftDisabledProperty()); // ... .bind(cardvm.isInFirstColumnProperty());
         // if last col, no btRight
-        btRight.disableProperty().bind(cardvm.isInLastColumnProperty());
+        btRight.disableProperty().bind(cardvm.isRightDisabledProperty()); // ... .bind(cardvm.isInLastColumnProperty());
         // if first card in a column, no btUp
-        btUp.disableProperty().bind(cardvm.isFirstInColumnProperty());
+        btUp.disableProperty().bind(cardvm.isUpDisabledProperty()); // ... .bind(cardvm.isFirstInColumnProperty());
         // if last card in a column, no btDown
-        btDown.disableProperty().bind(cardvm.isLastInColumnProperty());
+        btDown.disableProperty().bind(cardvm.isDownDisabledProperty()); // ... .bind(cardvm.isLastInColumnProperty());
     }
 
     /*

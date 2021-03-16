@@ -1,8 +1,10 @@
 package mvvm;
 
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.StringProperty;
 import model.Card;
+import model.Column;
 import mvvm.commands.*;
 
 public class CardViewModel implements TitleManagement{
@@ -35,25 +37,43 @@ public class CardViewModel implements TitleManagement{
         }
     }
 
-    public BooleanProperty isFirstInColumnProperty(){
-        return card.isFirstInColumn();
+    // TODO: to check the 4 methods below
+    public BooleanProperty isUpDisabledProperty() {
+        Column column= this.card.getColumn();
+        return new SimpleBooleanProperty(column.getCardPosition(card) == 0);
     }
 
-    public BooleanProperty isLastInColumnProperty(){
-        return card.isLastInColumn();
+    public BooleanProperty isDownDisabledProperty() {
+        Column column = this.card.getColumn();
+        return new SimpleBooleanProperty(column.getCardPosition(card)
+                == column.getNumberOfCards() - 1);
     }
 
-    public BooleanProperty isInFirstColumnProperty(){
-        return card.isInFirstColumn();
+    public BooleanProperty isLeftDisabledProperty() {
+        Column column= this.card.getColumn();
+        return new SimpleBooleanProperty(column.getBoard().getColumnPosition(column) == 0);
     }
 
-    public BooleanProperty isInLastColumnProperty(){
-        return card.isInLastColumn();
+    public BooleanProperty isRightDisabledProperty() {
+        Column column= this.card.getColumn();
+        return new SimpleBooleanProperty(column.getBoard().getColumnPosition(column)
+                                                == column.getBoard().getNumberOfColumn() - 1);
     }
 
-    public void removeCard() {
-        this.card.removeCard();
-    }
+
+//    // TODO: remove after checking methods above
+//    public BooleanProperty isFirstInColumnProperty(){
+//        return card.isFirstInColumn();
+//    }
+//    public BooleanProperty isLastInColumnProperty(){
+//        return card.isLastInColumn();
+//    }
+//    public BooleanProperty isInFirstColumnProperty(){
+//        return card.isInFirstColumn();
+//    }
+//    public BooleanProperty isInLastColumnProperty(){
+//        return card.isInLastColumn();
+//    }
 
     @Override
     public void changeTitle(String newTitle) {

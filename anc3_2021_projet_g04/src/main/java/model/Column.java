@@ -8,23 +8,32 @@ import javafx.collections.ObservableList;
 public class Column {
     private Board board;
     private StringProperty title;
-    private final ObservableList<Card> listCards = FXCollections.observableArrayList();
+    private final ObservableList<Card> cards = FXCollections.observableArrayList();
 
     Column(String title, Board board){
         this.title= new SimpleStringProperty(title);
         this.board = board;
-        //listCards.add(null);
+        //cards.add(null);
     }
+
+    public Column(Column column, Board board) {
+        this(column.title.getValue(), board);
+        // boucle
+        for (Card card : column.getCards()) {
+            cards.add(new Card(card, this));
+        }
+    }
+
     public StringProperty getTitle(){
         return this.title;
     }
 
     public void addCard(Card c){
-        this.listCards.add(c);
+        this.cards.add(c);
     }
 
     public void addCard() {
-        Card cardToAdd = new Card("Card", this); //new Card("Card " + (listCards.size() + 1), this);
+        Card cardToAdd = new Card("Card", this); //new Card("Card " + (cards.size() + 1), this);
         this.addCard(cardToAdd);
     }
 
@@ -37,32 +46,32 @@ public class Column {
     }
 
     public void removeCard(Card c){
-        this.listCards.remove(c);
+        this.cards.remove(c);
     }
 
     public ObservableList<Card> getCards() {
-        return FXCollections.unmodifiableObservableList(listCards);
+        return FXCollections.unmodifiableObservableList(cards);
     }
 
     public void changePositioninBoard(int pos){
         this.board.changeColumnPosition(this, pos);
     }
 
-    //TODO: à supprimer dès que sera changer dans les cartes
-    public BooleanProperty isLastInBoard(){
-        return new SimpleBooleanProperty(this.board.isColumnLast(this));
-    }
-    public BooleanProperty isFirstInBoard(){
-        return new SimpleBooleanProperty(this.board.isColumnFirst(this));
-    }
-
-    public boolean isCardFirst(Card card){
-        return getCards().indexOf(card) == 0;
-    }
-
-    public boolean isCardLast(Card card){
-        return getCards().indexOf(card) == listCards.size() - 1;
-    }
+//    //TODO: à supprimer dès que sera changer dans les cartes
+//    public BooleanProperty isLastInBoard(){
+//        return new SimpleBooleanProperty(this.board.isColumnLast(this));
+//    }
+//    public BooleanProperty isFirstInBoard(){
+//        return new SimpleBooleanProperty(this.board.isColumnFirst(this));
+//    }
+//
+//    public boolean isCardFirst(Card card){
+//        return getCards().indexOf(card) == 0;
+//    }
+//
+//    public boolean isCardLast(Card card){
+//        return getCards().indexOf(card) == cards.size() - 1;
+//    }
 
     public void delete(){
         board.deleteColumn(this);
@@ -70,32 +79,32 @@ public class Column {
 
     // Called method by CardAdd for unexecute() method
     public void deleteCard(int index){
-        this.listCards.remove(index);
+        this.cards.remove(index);
     }
 
     // Called method by CardDelete for execute() method
     public void deleteCard(Card card){
-        this.listCards.remove(card);
+        this.cards.remove(card);
     }
 
     // Called method by CardAdd for unexecute() method
-    // A card is added at the end of the column so should be remove at the end too
+    // A card is added at the end of the column so should be removed at the end too
     public int getNumberOfCards(){
-        return this.listCards.size();
+        return this.cards.size();
     }
 
     // Called method by Card
     public int getCardPosition(Card card){
-        return this.listCards.indexOf(card);
+        return this.cards.indexOf(card);
     }
 
     // Called method by CardDelete for unexecute() method
     public void addCardAtPosition(Card card, int pos){
-        listCards.add(null);
-        for(int i = listCards.size() - 1; i > pos; --i){
-            listCards.set(i, listCards.get(i - 1));
+        cards.add(null);
+        for(int i = cards.size() - 1; i > pos; --i){
+            cards.set(i, cards.get(i - 1));
         }
-        listCards.set(pos, card);
+        cards.set(pos, card);
     }
 
     /*
@@ -107,14 +116,14 @@ public class Column {
      */
     public void changeCardPosition(Card card, int posCard, int posColumn) {
         // current card position on the column
-        int curPosCard = this.listCards.indexOf(card);
+        int curPosCard = this.cards.indexOf(card);
         // if card moves up or down, same column => posColumn == 0
         if (posColumn == 0) {
             // card position to reach (current one -1 if up or +1 if down)
             int posCardToReach = curPosCard + posCard;
-            if (posCardToReach >= 0 && posCardToReach < listCards.size()) {
-                Card cardToReplace = listCards.set(posCardToReach, card);
-                listCards.set(curPosCard, cardToReplace);
+            if (posCardToReach >= 0 && posCardToReach < cards.size()) {
+                Card cardToReplace = cards.set(posCardToReach, card);
+                cards.set(curPosCard, cardToReplace);
             }
         } else {
             // column where the card is

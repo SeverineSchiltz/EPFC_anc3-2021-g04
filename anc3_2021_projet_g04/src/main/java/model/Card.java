@@ -14,6 +14,10 @@ public class Card {
         this.column = column;
     }
 
+    public Card(Card card, Column column) {
+        this(card.title.getValue(), column);
+    }
+
     public StringProperty getTitle(){
         return this.title;
     }
@@ -31,27 +35,22 @@ public class Card {
         return this.column.getCardPosition(this);
     }
 
-    //TODO: à supprimer, faut gérer ça dans les view models
-    public BooleanProperty isFirstInColumn(){
-        return new SimpleBooleanProperty(this.column.isCardFirst(this));
-    }
-    public BooleanProperty isLastInColumn(){
-        return new SimpleBooleanProperty(this.column.isCardLast(this));
-    }
-    public BooleanProperty isInFirstColumn(){
-        return this.column.isFirstInBoard();
-    }
-    public BooleanProperty isInLastColumn(){
-        return this.column.isLastInBoard();
-    }
+//    //TODO: à supprimer, faut gérer ça dans les view models
+//    public BooleanProperty isFirstInColumn(){
+//        return new SimpleBooleanProperty(this.column.isCardFirst(this));
+//    }
+//    public BooleanProperty isLastInColumn(){
+//        return new SimpleBooleanProperty(this.column.isCardLast(this));
+//    }
+//    public BooleanProperty isInFirstColumn(){
+//        return this.column.isFirstInBoard();
+//    }
+//    public BooleanProperty isInLastColumn(){
+//        return this.column.isLastInBoard();
+//    }
 
     public void changePositionInColumn(int posCard, int posColumn){
         this.column.changeCardPosition(this, posCard, posColumn);
-    }
-
-    // TODO: maybe to remove
-    public void removeCard() {
-        this.column.removeCard(this);
     }
 
     // Called method by CardDelete for execute() method
