@@ -26,13 +26,13 @@ public class ColumnViewModel implements TitleManagement{
     }
 
     public void changePosition(int pos){
-        this.column.changePositioninBoard(pos);
         if(pos>0){
             cmdManager.addCommand(new ColumnMoveToRight(column));
         }else{
             //cmdManager.addCommand(new ColumnMoveToLeft(column));
             cmdManager.addCommand(new ColumnMoveToLeftWithMemento(column));
         }
+        this.column.changePositioninBoard(pos);
     }
 
     public BooleanProperty isLeftDisabledProperty(){
