@@ -13,6 +13,26 @@ public class Board {
         this.title= new SimpleStringProperty(title);
     }
 
+    public Board(Board board) {
+        this(board.title.getValue());
+        // boucle
+        for (Column column : board.getColumns()) {
+            columns.add(new Column(column, this));
+        }
+    }
+
+    public void restore(Board board) {
+        // board memento va garder une copie du board donc il (board qui est lié/bindé à la vue)
+        // se rechangera en fonction des param qu'on lui donnera
+        changeTitle(board.title.getValue());
+        columns.clear();
+        for (Column column : board.getColumns()) {
+            addColumn(new Column(column, this));
+            // new column car sinon, on reprend des col avec un autre board comme référence
+        }
+    }
+
+
     public StringProperty getTitle(){
         return title;
     }

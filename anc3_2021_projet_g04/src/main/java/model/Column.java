@@ -16,6 +16,14 @@ public class Column {
         //cards.add(null);
     }
 
+    public Column(Column column, Board board) {
+        this(column.title.getValue(), board);
+        // boucle
+        for (Card card : column.getCards()) {
+            cards.add(new Card(card, this));
+        }
+    }
+
     public StringProperty getTitle(){
         return this.title;
     }

@@ -14,6 +14,10 @@ public class Card {
         this.column = column;
     }
 
+    public Card(Card card, Column column) {
+        this(card.title.getValue(), column);
+    }
+
     public StringProperty getTitle(){
         return this.title;
     }
