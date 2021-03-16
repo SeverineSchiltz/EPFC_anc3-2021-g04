@@ -15,12 +15,30 @@ public class Column {
         this.board = board;
         //cards.add(null);
     }
-
     public Column(Column column, Board board) {
         this(column.title.getValue(), board);
         // boucle
         for (Card card : column.getCards()) {
             cards.add(new Card(card, this));
+        }
+    }
+
+    void restore(Column c){
+        this.title.setValue(c.getTitle().getValue());
+        int numNew = c.getNumberOfCards();
+        int numthis = this.getNumberOfCards();
+        int minNum = Math.min(numNew, numthis);
+        for(int i = 0; i < minNum; ++i){
+            cards.get(i).restore(c.getCards().get(i), this);
+        }
+        if(numNew < numthis){
+            for(int i = numthis-1; i >= minNum; --i){
+                cards.remove(i);
+            }
+        }else if(numNew > numthis){
+            for(int i = minNum; i < numNew; ++i){
+                cards.add(new Card(c.getCards().get(i), this));
+            }
         }
     }
 

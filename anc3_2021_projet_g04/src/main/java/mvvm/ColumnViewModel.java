@@ -30,7 +30,8 @@ public class ColumnViewModel implements TitleManagement{
         if(pos>0){
             cmdManager.addCommand(new ColumnMoveToRight(column));
         }else{
-            cmdManager.addCommand(new ColumnMoveToLeft(column));
+            //cmdManager.addCommand(new ColumnMoveToLeft(column));
+            cmdManager.addCommand(new ColumnMoveToLeftWithMemento(column));
         }
     }
 

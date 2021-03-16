@@ -18,6 +18,11 @@ public class Card {
         this(card.title.getValue(), column);
     }
 
+    public void restore(Card c, Column co){
+        this.title.setValue(c.getTitle().getValue());
+        this.column = co;
+    }
+
     public StringProperty getTitle(){
         return this.title;
     }
