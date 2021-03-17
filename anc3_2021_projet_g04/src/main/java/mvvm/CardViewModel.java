@@ -82,7 +82,8 @@ public class CardViewModel implements TitleManagement{
     }
 
     public void delete(){
-        cmdManager.addCommand(new CardDelete(card));
+        //cmdManager.addCommand(new CardDelete(card));
+        cmdManager.addCommand(new CardDeleteWithMemento(card));
         card.delete();
     }
 }

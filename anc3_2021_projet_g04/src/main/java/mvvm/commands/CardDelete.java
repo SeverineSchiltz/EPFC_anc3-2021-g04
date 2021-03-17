@@ -2,6 +2,7 @@ package mvvm.commands;
 
 import model.Card;
 
+//TODO : à supprimer car ne fonctionne pas sans memento!
 public class CardDelete implements Command {
 
     private Card card;

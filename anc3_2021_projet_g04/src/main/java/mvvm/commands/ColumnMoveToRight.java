@@ -1,27 +1,46 @@
 package mvvm.commands;
 
+import model.Board;
 import model.Column;
 
 public class ColumnMoveToRight implements Command{
 
-    private Column column;
+    private String columnTitle;
+    private Board board;
+    private int positionInList;
 
     public ColumnMoveToRight(Column column) {
-        this.column = column;
+        columnTitle = column.getTitle().getValue();
+        this.board = column.getBoard();
+        positionInList = column.getPosition();
+        ++positionInList; //car la position change juste après dans le modèle
     }
+//    @Override
+//    public void execute() {
+//        this.column.changePositioninBoard(1);
+//    }
+//
+//    @Override
+//    public void unexecute() {
+//        this.column.changePositioninBoard(-1);
+//    }
+
     @Override
     public void execute() {
-        this.column.changePositioninBoard(1);
+        this.board.getColumnAtPosition(positionInList).changePositioninBoard(1);
+        ++positionInList;
     }
 
     @Override
     public void unexecute() {
-        this.column.changePositioninBoard(-1);
+        Column c= this.board.getColumnAtPosition(positionInList);
+        c.changePositioninBoard(-1);
+        --positionInList;
     }
 
     @Override
     public String toString() {
-        return "déplacement de la colonne \"" + column + "\" vers la droite";
+        return "déplacement de la colonne \"" + columnTitle + "\" vers la droite";
     }
 
 }

@@ -1,14 +1,15 @@
 package mvvm.commands;
+
 import model.BoardMemento;
 import model.Column;
 
-public class ColumnMoveToLeftWithMemento implements Command {
+public class ColumnDeleteWithMemento implements Command {
 
-    private Column column;
+    private String columnTitle;
     private BoardMemento boardMemento;
 
-    public ColumnMoveToLeftWithMemento(Column column) {
-        this.column = column;
+    public ColumnDeleteWithMemento(Column column) {
+        this.columnTitle = column.getTitle().getValue();
         this.boardMemento = new BoardMemento(column.getBoard());
     }
     @Override
@@ -23,7 +24,7 @@ public class ColumnMoveToLeftWithMemento implements Command {
 
     @Override
     public String toString() {
-        return "déplacement de la colonne \"" + column + "\" vers la gauche";
+        return "Supprimer la colonne \"" + columnTitle + "\"";
     }
 
 }

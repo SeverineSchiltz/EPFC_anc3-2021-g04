@@ -1,26 +1,39 @@
 package mvvm.commands;
 
+import model.Board;
 import model.Column;
 
 public class ColumnChangeTitle implements Command{
 
-    private Column column;
+    private Board board;
+    private int positionInList;
     private String oldTitle;
     private String newTitle;
 
     public ColumnChangeTitle(Column column, String newTitle) {
-        this.column = column;
+        this.board = column.getBoard();
+        positionInList = column.getPosition();
         oldTitle = column.toString();
         this.newTitle = newTitle;
     }
-    @Override
+//    @Override
+//    public void execute() {
+//        column.changeTitle(newTitle);
+//    }
+//
+//    @Override
+//    public void unexecute() {
+//        column.changeTitle(oldTitle);
+//    }
+
+        @Override
     public void execute() {
-        column.changeTitle(newTitle);
+            board.getColumnAtPosition(positionInList).changeTitle(newTitle);
     }
 
     @Override
     public void unexecute() {
-        column.changeTitle(oldTitle);
+        board.getColumnAtPosition(positionInList).changeTitle(oldTitle);
     }
 
     @Override

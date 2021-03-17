@@ -29,8 +29,7 @@ public class ColumnViewModel implements TitleManagement{
         if(pos>0){
             cmdManager.addCommand(new ColumnMoveToRight(column));
         }else{
-            //cmdManager.addCommand(new ColumnMoveToLeft(column));
-            cmdManager.addCommand(new ColumnMoveToLeftWithMemento(column));
+            cmdManager.addCommand(new ColumnMoveToLeft(column));
         }
         this.column.changePositioninBoard(pos);
     }
@@ -51,7 +50,8 @@ public class ColumnViewModel implements TitleManagement{
 //    }
 
     public void delete(){
-        cmdManager.addCommand(new ColumnDelete(column));
+        //cmdManager.addCommand(new ColumnDelete(column));
+        cmdManager.addCommand(new ColumnDeleteWithMemento(column));
         column.delete();
     }
 

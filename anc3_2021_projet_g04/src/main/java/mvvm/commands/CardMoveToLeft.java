@@ -2,6 +2,7 @@ package mvvm.commands;
 
 import model.Card;
 
+//TODO : à refaire avec position!
 public class CardMoveToLeft implements Command {
 
     private Card card;
