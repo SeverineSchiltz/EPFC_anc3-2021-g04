@@ -88,13 +88,13 @@ public class Board {
         return columns.get(index);
     }
 
-
     public void addColumnAtPosition(Column c, int pos){
         columns.add(null);
         for(int i = columns.size()-1; i> pos; --i){
             columns.set(i, columns.get(i-1));
         }
         columns.set(pos, c);
+        c.setBoard(this);
     }
 
     public void changeTitle(String newTitle){
@@ -105,7 +105,5 @@ public class Board {
     public String toString() {
         return this.title.getValue();
     }
-
-
 
 }

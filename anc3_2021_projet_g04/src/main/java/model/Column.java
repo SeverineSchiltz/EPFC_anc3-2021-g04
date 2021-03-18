@@ -104,6 +104,7 @@ public class Column {
             cards.set(i, cards.get(i - 1));
         }
         cards.set(pos, card);
+        card.setColumn(this);
     }
 
     /*
@@ -152,6 +153,14 @@ public class Column {
 
     public void changeTitle(String newTitle){
         title.setValue(newTitle);
+    }
+
+    public Card getCardAtPosition(int index){
+        return cards.get(index);
+    }
+
+    public void setBoard(Board board){
+        this.board = board;
     }
 
 }

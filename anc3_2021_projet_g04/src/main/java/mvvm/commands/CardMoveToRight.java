@@ -1,29 +1,51 @@
 package mvvm.commands;
 
+import model.Board;
 import model.Card;
+import model.Column;
 
-//TODO : à refaire avec position!
 public class CardMoveToRight implements Command {
 
-    private Card card;
+    private String cardTitle;
+    private Board board;
+    private int firstPosColumn;
+    private int firstPosCard;
+    private int secondPosColumn;
+    private int secondPosCard;
 
     public CardMoveToRight(Card card) {
-        this.card = card;
+        board = card.getBoard();
+        firstPosColumn = card.getColumn().getPosition();
+        firstPosCard = card.getPosition();
+        cardTitle = card.toString();
+        secondPosColumn = firstPosColumn +1;
+        Column c = board.getColumnAtPosition(secondPosColumn);
+        secondPosCard = c.getNumberOfCards();
     }
 
     @Override
     public void execute() {
-        this.card.changePositionInColumn(0, 1);
+        Card card = getCardAtPos(firstPosColumn, firstPosCard);
+        card.changePositionInColumn(0, 1);
     }
 
     @Override
     public void unexecute() {
-        this.card.changePositionInColumn(0, -1);
+        Card card = getCardAtPos(secondPosColumn, secondPosCard);
+        Column c = board.getColumnAtPosition(firstPosColumn);
+        card.delete();
+        c.addCardAtPosition(card, firstPosCard);
     }
 
     @Override
     public String toString() {
-        return "Déplacement de la carte \"" + this.card + "\" vers la droite";
+        return "Déplacement de la carte \"" + cardTitle + "\" vers la droite";
+    }
+
+    private Card getCardAtPos(int posColumn, int posCardInColumn){
+        Column column = board.getColumnAtPosition(posColumn);
+        Card card = column.getCardAtPosition(posCardInColumn);
+        return card;
     }
 
 }

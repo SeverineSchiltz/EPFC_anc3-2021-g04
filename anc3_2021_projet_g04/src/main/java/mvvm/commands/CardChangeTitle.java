@@ -1,33 +1,44 @@
 package mvvm.commands;
 
+import model.Board;
 import model.Card;
+import model.Column;
 
-//TODO : à refaire avec position!
 public class CardChangeTitle implements Command {
 
-    private Card card;
     private String oldTitle;
     private String newTitle;
+    private Board board;
+    private int posColumn;
+    private int posCard;
 
     public CardChangeTitle(Card card, String newTitle) {
-        this.card = card;
+        board = card.getBoard();
+        posColumn = card.getColumn().getPosition();
+        posCard = card.getPosition();
         oldTitle = card.toString();
         this.newTitle = newTitle;
     }
 
     @Override
     public void execute() {
-        card.changeTitle(newTitle);
+        getCard().changeTitle(newTitle);
     }
 
     @Override
     public void unexecute() {
-        card.changeTitle(oldTitle);
+        getCard().changeTitle(oldTitle);
     }
 
     @Override
     public String toString() {
         return "Changement de titre de la carte \"" + oldTitle + "\" vers \"" + newTitle + "\"";
+    }
+
+    private Card getCard(){
+        Column column = board.getColumnAtPosition(posColumn);
+        Card card = column.getCardAtPosition(posCard);
+        return card;
     }
 
 }

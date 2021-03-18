@@ -21,7 +21,6 @@ public class CardViewModel implements TitleManagement{
     }
 
     public void changePosition(int posCard, int posColumn){
-        this.card.changePositionInColumn(posCard, posColumn);
         if(posCard == 0) {
             if(posColumn == 1) {
                 cmdManager.addCommand(new CardMoveToRight(this.card));
@@ -35,6 +34,7 @@ public class CardViewModel implements TitleManagement{
                 cmdManager.addCommand(new CardMoveToUp(this.card));
             }
         }
+        this.card.changePositionInColumn(posCard, posColumn);
     }
 
     // TODO: to check the 4 methods below
