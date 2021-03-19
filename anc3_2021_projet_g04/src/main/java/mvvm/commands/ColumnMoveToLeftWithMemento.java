@@ -2,6 +2,7 @@ package mvvm.commands;
 import model.BoardMemento;
 import model.Column;
 
+//TODO : à supprimer sinon provoque des erreurs avec les références dans les commandes
 public class ColumnMoveToLeftWithMemento implements Command {
 
     private Column column;
