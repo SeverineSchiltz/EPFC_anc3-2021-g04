@@ -35,7 +35,7 @@ public class Board {
             }
         }else if(numNew > numthis){
             for(int i = minNum; i < numNew; ++i){
-                columns.add(new Column(b.getColumns().get(i), this));
+                columns.add(new Column(b.getColumns().get(i), this)); // cette ligne est problematique car elle crée une nouvelle référence ce qui pose problème dans les commandes (sans memento) qui se basent sur les références
             }
         }
     }
@@ -101,12 +101,17 @@ public class Board {
         return columns.indexOf(c);
     }
 
+    public Column getColumnAtPosition(int index){
+        return columns.get(index);
+    }
+
     public void addColumnAtPosition(Column c, int pos){
         columns.add(null);
         for(int i = columns.size()-1; i> pos; --i){
             columns.set(i, columns.get(i-1));
         }
         columns.set(pos, c);
+        c.setBoard(this);
     }
 
     public void changeTitle(String newTitle){

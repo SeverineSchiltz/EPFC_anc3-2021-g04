@@ -13,6 +13,7 @@ public class EditableLabel extends VBox {
     private final TextField tfTitle = new TextField();
     private final Label lbTitle = new Label();
     private final TitleManagement tm;
+    private boolean isLabelVisible = true;
 
     public EditableLabel(StringProperty title, TitleManagement tm) {
         customizeThis(title);
@@ -35,11 +36,11 @@ public class EditableLabel extends VBox {
                 setOnExitLbTitle();
             }
         });
-//        tfTitle.setOnKeyPressed(e -> {
-//            if (e.getCode() == KeyCode.ENTER) {
-//                setOnExitTfTitle();
-//            }
-//        });
+        tfTitle.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                setOnExitTfTitle();
+            }
+        });
         tfTitle.setOnMouseExited(e -> {
             setOnExitTfTitle();
         });
@@ -48,9 +49,12 @@ public class EditableLabel extends VBox {
     }
 
     private void setOnExitTfTitle(){
-        tm.changeTitle(tfTitle.getText());
-        this.getChildren().remove(tfTitle);
-        this.getChildren().add(lbTitle);
+        if(!isLabelVisible){
+            isLabelVisible = true; //TODO : pq quand on change ça de place, il n'y a plus qu'une commande et pas 2?
+            tm.changeTitle(tfTitle.getText());
+            this.getChildren().remove(tfTitle);
+            this.getChildren().add(lbTitle);
+        }
     }
     private void setOnExitLbTitle(){
         tfTitle.setText(lbTitle.getText());
@@ -58,6 +62,7 @@ public class EditableLabel extends VBox {
         this.getChildren().add(tfTitle);
         tfTitle.requestFocus();
         tfTitle.selectAll();
+        isLabelVisible = false;
     }
 
     public String getTitle(){

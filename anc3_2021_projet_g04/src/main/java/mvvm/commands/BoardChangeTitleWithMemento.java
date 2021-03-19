@@ -7,9 +7,13 @@ public class BoardChangeTitleWithMemento implements Command {
 
     private Board board;
     private BoardMemento boardMemento;
+    private String oldTitle;
+    private String newTitle;
 
-    public BoardChangeTitleWithMemento(Board board) {
+    public BoardChangeTitleWithMemento(Board board, String newTitle) {
         this.board = board;
+        oldTitle = board.toString();
+        this.newTitle = newTitle;
         this.boardMemento = new BoardMemento(board);
     }
     @Override
@@ -24,7 +28,7 @@ public class BoardChangeTitleWithMemento implements Command {
 
     @Override
     public String toString() {
-        return "Changement de titre de la colonne \"" + board.getTitle() + "\" vers \"" + board.getTitle() + "\"";
+        return "Changement de titre du board \"" + oldTitle + "\" vers \"" + newTitle + "\"";
     }
 
 }

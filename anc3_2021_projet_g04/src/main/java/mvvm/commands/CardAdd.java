@@ -1,10 +1,12 @@
 package mvvm.commands;
 
+import model.Card;
 import model.Column;
 
 public class CardAdd implements Command {
 
     private Column column;
+    private Card card;
 
     public CardAdd(Column column) {
         this.column = column;
@@ -12,12 +14,13 @@ public class CardAdd implements Command {
 
     @Override
     public void execute() {
-        this.column.addCard();
+        column.addCardAtPosition(card, column.getNumberOfCards());
     }
 
     @Override
     public void unexecute() {
         int indexOfCardToDelete = this.column.getNumberOfCards() - 1;
+        card =  column.getCardAtPosition(indexOfCardToDelete);
         this.column.deleteCard(indexOfCardToDelete);
     }
 

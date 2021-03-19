@@ -116,6 +116,10 @@ public class Column {
         return this.cards.indexOf(card);
     }
 
+    public Card getCardAtPosition(int index){
+        return cards.get(index);
+    }
+
     // Called method by CardDelete for unexecute() method
     public void addCardAtPosition(Card card, int pos){
         cards.add(null);
@@ -123,6 +127,7 @@ public class Column {
             cards.set(i, cards.get(i - 1));
         }
         cards.set(pos, card);
+        card.setColumn(this);
     }
 
     /*
@@ -171,6 +176,10 @@ public class Column {
 
     public void changeTitle(String newTitle){
         title.setValue(newTitle);
+    }
+
+    public void setBoard(Board b){
+        this.board = b;
     }
 
 }

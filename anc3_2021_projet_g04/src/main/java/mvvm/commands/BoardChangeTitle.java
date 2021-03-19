@@ -26,7 +26,7 @@ public class BoardChangeTitle implements Command{
 
     @Override
     public String toString() {
-        return "Changement de titre de la colonne \"" + oldTitle + "\" vers \"" + newTitle + "\"";
+        return "Changement de titre du board \"" + oldTitle + "\" vers \"" + newTitle + "\"";
     }
 
 }
