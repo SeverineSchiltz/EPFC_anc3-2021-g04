@@ -4,7 +4,7 @@ import model.Column;
 
 public class ColumnMoveToRight implements Command{
 
-    private Column column;
+    private final Column column;
 
     public ColumnMoveToRight(Column column) {
         this.column = column;

@@ -4,9 +4,9 @@ import model.Card;
 
 public class CardChangeTitle implements Command {
 
-    private Card card;
-    private String oldTitle;
-    private String newTitle;
+    private final Card card;
+    private final String oldTitle;
+    private final String newTitle;
 
     public CardChangeTitle(Card card, String newTitle) {
         this.card = card;

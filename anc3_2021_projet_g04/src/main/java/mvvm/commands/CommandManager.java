@@ -4,15 +4,13 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableSet;
 
 public class CommandManager {
 
-    // TODO: shall we make them final as suggested ?
-    private ObservableList<Command> commands = FXCollections.observableArrayList();
-    private IntegerProperty posInList = new SimpleIntegerProperty(0);
-    private StringProperty strLastCommand = new SimpleStringProperty("Annuler");
-    private StringProperty strNextCommand = new SimpleStringProperty("Refaire");
+    private final ObservableList<Command> commands = FXCollections.observableArrayList();
+    private final IntegerProperty posInList = new SimpleIntegerProperty(0);
+    private final StringProperty strLastCommand = new SimpleStringProperty("Annuler");
+    private final StringProperty strNextCommand = new SimpleStringProperty("Refaire");
 
     private boolean isExecutable(){
         return posInList.getValue() < commands.size();

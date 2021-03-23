@@ -7,17 +7,16 @@ import javafx.collections.ObservableList;
 
 public class Column {
     private Board board;
-    private StringProperty title;
+    private final StringProperty title;
     private final ObservableList<Card> cards = FXCollections.observableArrayList();
 
     Column(String title, Board board){
         this.title= new SimpleStringProperty(title);
         this.board = board;
-        //cards.add(null);
     }
-    public Column(Column column, Board board) {
+
+    Column(Column column, Board board) {
         this(column.title.getValue(), board);
-        // boucle
         for (Card card : column.getCards()) {
             cards.add(new Card(card, this));
         }
@@ -51,7 +50,7 @@ public class Column {
     }
 
     public void addCard() {
-        Card cardToAdd = new Card("Card", this); //new Card("Card " + (cards.size() + 1), this);
+        Card cardToAdd = new Card("Card", this);
         this.addCard(cardToAdd);
     }
 
@@ -75,43 +74,22 @@ public class Column {
         this.board.changeColumnPosition(this, pos);
     }
 
-//    //TODO: à supprimer dès que sera changer dans les cartes
-//    public BooleanProperty isLastInBoard(){
-//        return new SimpleBooleanProperty(this.board.isColumnLast(this));
-//    }
-//    public BooleanProperty isFirstInBoard(){
-//        return new SimpleBooleanProperty(this.board.isColumnFirst(this));
-//    }
-//
-//    public boolean isCardFirst(Card card){
-//        return getCards().indexOf(card) == 0;
-//    }
-//
-//    public boolean isCardLast(Card card){
-//        return getCards().indexOf(card) == cards.size() - 1;
-//    }
-
     public void delete(){
         board.deleteColumn(this);
     }
 
-    // Called method by CardAdd for unexecute() method
     public void deleteCard(int index){
         this.cards.remove(index);
     }
 
-    // Called method by CardDelete for execute() method
     public void deleteCard(Card card){
         this.cards.remove(card);
     }
 
-    // Called method by CardAdd for unexecute() method
-    // A card is added at the end of the column so should be removed at the end too
     public int getNumberOfCards(){
         return this.cards.size();
     }
 
-    // Called method by Card
     public int getCardPosition(Card card){
         return this.cards.indexOf(card);
     }
@@ -120,7 +98,6 @@ public class Column {
         return cards.get(index);
     }
 
-    // Called method by CardDelete for unexecute() method
     public void addCardAtPosition(Card card, int pos){
         cards.add(null);
         for(int i = cards.size() - 1; i > pos; --i){

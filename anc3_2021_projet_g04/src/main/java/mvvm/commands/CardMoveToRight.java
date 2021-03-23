@@ -6,11 +6,13 @@ import model.Column;
 
 public class CardMoveToRight implements Command {
 
-    private Card card;
-    private int posInColumn;
+    private final Column columnOrigin;
+    private final Card card;
+    private final int posInColumn;
 
     public CardMoveToRight(Card card) {
         this.card = card;
+        columnOrigin = card.getColumn();
         posInColumn = card.getPosition();
     }
 
@@ -21,12 +23,8 @@ public class CardMoveToRight implements Command {
 
     @Override
     public void unexecute() {
-        //this.card.changePositionInColumn(0, -1);
-        Column currentColumn = card.getColumn();
-        Board board = currentColumn.getBoard();
-        Column columnToReach = board.getColumnAtPosition(currentColumn.getPosition()-1);
         card.delete();
-        columnToReach.addCardAtPosition(card, posInColumn);
+        columnOrigin.addCardAtPosition(card, posInColumn);
     }
 
     @Override

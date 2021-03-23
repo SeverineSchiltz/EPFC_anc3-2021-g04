@@ -6,7 +6,7 @@ import mvvm.commands.*;
 
 public class ColumnViewModel implements TitleManagement{
     private final Column column;
-    private CommandManager cmdManager;
+    private final CommandManager cmdManager;
 
     public ColumnViewModel(Column column, CommandManager cmdManager){
         this.column = column;
@@ -30,7 +30,6 @@ public class ColumnViewModel implements TitleManagement{
             cmdManager.addCommand(new ColumnMoveToRight(column));
         }else{
             cmdManager.addCommand(new ColumnMoveToLeft(column));
-            //cmdManager.addCommand(new ColumnMoveToLeftWithMemento(column));
         }
         this.column.changePositioninBoard(pos);
     }
@@ -42,13 +41,6 @@ public class ColumnViewModel implements TitleManagement{
     public BooleanProperty isRightDisabledProperty(){
         return new SimpleBooleanProperty(column.getBoard().getColumnPosition(column) == column.getBoard().getNumberOfColumn()-1);
     }
-
-//    public BooleanProperty isFirstInBoardProperty(){
-//        return column.isLastInBoard();
-//    }
-//    public BooleanProperty isLastInBoardProperty(){
-//        return column.isLastInBoard();
-//    }
 
     public void delete(){
         cmdManager.addCommand(new ColumnDelete(column));

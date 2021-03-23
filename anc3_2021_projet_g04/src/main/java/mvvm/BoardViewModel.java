@@ -6,8 +6,8 @@ import mvvm.commands.ColumnAdd;
 import mvvm.commands.CommandManager;
 
 public class BoardViewModel {
-    private Board board;
-    private CommandManager cmdManager;
+    private final Board board;
+    private final CommandManager cmdManager;
 
     BoardViewModel(Board board, CommandManager cmdManager){
         this.board = board;

@@ -4,9 +4,9 @@ import model.Column;
 
 public class ColumnChangeTitle implements Command{
 
-    private Column column;
-    private String oldTitle;
-    private String newTitle;
+    private final Column column;
+    private final String oldTitle;
+    private final String newTitle;
 
     public ColumnChangeTitle(Column column, String newTitle) {
         this.column = column;

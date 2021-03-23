@@ -1,20 +1,18 @@
 package model;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Card {
     private Column column;
-    private StringProperty title;
+    private final StringProperty title;
 
     Card(String title, Column column){
         this.title= new SimpleStringProperty(title);
         this.column = column;
     }
 
-    public Card(Card card, Column column) {
+    Card(Card card, Column column) {
         this(card.title.getValue(), column);
     }
 
@@ -35,30 +33,14 @@ public class Card {
         this.column = column;
     }
 
-    // Called method by CardDelete for constructor
     public int getPosition(){
         return this.column.getCardPosition(this);
     }
-
-//    //TODO: à supprimer, faut gérer ça dans les view models
-//    public BooleanProperty isFirstInColumn(){
-//        return new SimpleBooleanProperty(this.column.isCardFirst(this));
-//    }
-//    public BooleanProperty isLastInColumn(){
-//        return new SimpleBooleanProperty(this.column.isCardLast(this));
-//    }
-//    public BooleanProperty isInFirstColumn(){
-//        return this.column.isFirstInBoard();
-//    }
-//    public BooleanProperty isInLastColumn(){
-//        return this.column.isLastInBoard();
-//    }
 
     public void changePositionInColumn(int posCard, int posColumn){
         this.column.changeCardPosition(this, posCard, posColumn);
     }
 
-    // Called method by CardDelete for execute() method
     public void delete() {
         this.column.deleteCard(this);
     }

@@ -26,7 +26,6 @@ public class EditableLabel extends VBox {
 
     public void customizeThis(StringProperty str) {
         this.lbTitle.textProperty().bind(str);
-        //tfTitle.textProperty().bind(str);
         tfTitle.setText(str.getValue());
 
         this.getChildren().add(lbTitle);
@@ -50,12 +49,14 @@ public class EditableLabel extends VBox {
 
     private void setOnExitTfTitle(){
         if(!isLabelVisible){
-            isLabelVisible = true; //TODO : pq quand on change ça de place, il n'y a plus qu'une commande et pas 2?
+            // keep it at the bof code and not the end bc of "remove" method (calling setOnMouseExited calling setOnKeyPressed)
+            isLabelVisible = true;
             tm.changeTitle(tfTitle.getText());
             this.getChildren().remove(tfTitle);
             this.getChildren().add(lbTitle);
         }
     }
+
     private void setOnExitLbTitle(){
         tfTitle.setText(lbTitle.getText());
         this.getChildren().remove(lbTitle);

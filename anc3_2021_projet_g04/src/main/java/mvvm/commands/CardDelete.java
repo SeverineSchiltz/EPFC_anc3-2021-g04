@@ -4,8 +4,8 @@ import model.Card;
 
 public class CardDelete implements Command {
 
-    private Card card;
-    private int positionInList;
+    private final Card card;
+    private final int positionInList;
 
     public CardDelete(Card card) {
         this.card = card;

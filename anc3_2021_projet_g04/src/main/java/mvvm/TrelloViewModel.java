@@ -6,8 +6,8 @@ import model.Trello;
 import mvvm.commands.*;
 
 public class TrelloViewModel implements TitleManagement {
-    private Trello trello;
-    private CommandManager cmdManager;
+    private final Trello trello;
+    private final CommandManager cmdManager;
     private final StringProperty title = new SimpleStringProperty("");
 
     public TrelloViewModel(Trello trello, CommandManager cmdManager) {

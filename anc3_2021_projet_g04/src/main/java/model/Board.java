@@ -6,16 +6,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class Board {
-    private StringProperty title;
+    private final StringProperty title;
     private final ObservableList<Column> columns = FXCollections.observableArrayList();
 
     Board(String title){
         this.title= new SimpleStringProperty(title);
     }
 
-    public Board(Board board) {
+    Board(Board board) {
         this(board.title.getValue());
-        // boucle
         for (Column column : board.getColumns()) {
             columns.add(new Column(column, this));
         }
@@ -40,6 +39,7 @@ public class Board {
         }
     }
 
+    // To keep this method in case we add id for iteration 3
     //Cette méthode pose problème car elle redonne de nouvelles références aux colonnes et donc pose problème dans les commandes...
 //    public void restore(Board board) {
 //        // board memento va garder une copie du board donc il (board qui est lié/bindé à la vue)
@@ -51,7 +51,6 @@ public class Board {
 //            // new column car sinon, on reprend des col avec un autre board comme référence
 //        }
 //    }
-
 
     public StringProperty getTitle(){
         return title;
@@ -72,14 +71,6 @@ public class Board {
             columns.set(curPos, temp);
         }
     }
-
-//    //TODO: à supprimer dès que sera changer dans les cartes
-//    public boolean isColumnFirst(Column c){
-//        return columns.indexOf(c) == 0;
-//    }
-//    public boolean isColumnLast(Column c){
-//        return columns.indexOf(c) == columns.size()-1;
-//    }
 
     public void addColumn(){
         addColumn(new Column("Column", this));

@@ -1,22 +1,17 @@
 package view;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import model.Card;
 import mvvm.CardViewModel;
 import mvvm.commands.CommandManager;
-
 import java.util.Optional;
 
 public class CardView extends BorderPane {
 
     private final CardViewModel cardvm;
-    private EditableLabel title;
+    private final EditableLabel title;
     private final Button btUp = new Button();
     private final Button btRight = new Button();
     private final Button btDown = new Button();
@@ -36,7 +31,6 @@ public class CardView extends BorderPane {
     }
 
     private void config(){
-        //this.title = new EditableLabel(cardvm.getCardTitleProperty(), cardvm);
         this.setCenter(title);
         title.setAlignment(Pos.CENTER);
         this.setAlignment(btUp, Pos.CENTER);
@@ -56,14 +50,10 @@ public class CardView extends BorderPane {
     }
 
     private void configDisabledBindings() {
-        // if first col, no btLeft
-        btLeft.disableProperty().bind(cardvm.isLeftDisabledProperty()); // ... .bind(cardvm.isInFirstColumnProperty());
-        // if last col, no btRight
-        btRight.disableProperty().bind(cardvm.isRightDisabledProperty()); // ... .bind(cardvm.isInLastColumnProperty());
-        // if first card in a column, no btUp
-        btUp.disableProperty().bind(cardvm.isUpDisabledProperty()); // ... .bind(cardvm.isFirstInColumnProperty());
-        // if last card in a column, no btDown
-        btDown.disableProperty().bind(cardvm.isDownDisabledProperty()); // ... .bind(cardvm.isLastInColumnProperty());
+        btLeft.disableProperty().bind(cardvm.isLeftDisabledProperty());
+        btRight.disableProperty().bind(cardvm.isRightDisabledProperty());
+        btUp.disableProperty().bind(cardvm.isUpDisabledProperty());
+        btDown.disableProperty().bind(cardvm.isDownDisabledProperty());
     }
 
     /*
@@ -91,7 +81,6 @@ public class CardView extends BorderPane {
             alertDeleteConfirm.setContentText("Are you sure to delete card \"" + title.getTitle() + "\" ?");
             Optional<ButtonType> result = alertDeleteConfirm.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                //cardvm.removeCard();
                 cardvm.delete();
             }
         });

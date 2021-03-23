@@ -9,7 +9,7 @@ import mvvm.BoardViewModel;
 
 public class BoardView extends ListView<Column> {
 
-    private BoardViewModel bvm;
+    private final BoardViewModel bvm;
 
     public BoardView(BoardViewModel viewModel) {
         this.bvm = viewModel;

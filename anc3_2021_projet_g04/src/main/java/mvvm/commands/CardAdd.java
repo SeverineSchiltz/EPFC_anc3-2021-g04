@@ -5,7 +5,7 @@ import model.Column;
 
 public class CardAdd implements Command {
 
-    private Column column;
+    private final Column column;
     private Card card;
 
     public CardAdd(Column column) {

@@ -5,9 +5,9 @@ import model.Board;
 
 public class BoardChangeTitle implements Command{
 
-    private Board board;
-    private String oldTitle;
-    private String newTitle;
+    private final Board board;
+    private final String oldTitle;
+    private final String newTitle;
 
     public BoardChangeTitle(Board board, String newTitle) {
         this.board = board;

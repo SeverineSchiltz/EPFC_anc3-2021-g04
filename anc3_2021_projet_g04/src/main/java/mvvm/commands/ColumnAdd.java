@@ -5,12 +5,11 @@ import model.Column;
 
 public class ColumnAdd implements Command{
 
-    private Board board;
+    private final Board board;
     private Column column;
 
     public ColumnAdd(Board board) {
         this.board = board;
-        //column =  board.getColumnAtPosition(board.getNumberOfColumn()-1);
     }
     @Override
     public void execute() {

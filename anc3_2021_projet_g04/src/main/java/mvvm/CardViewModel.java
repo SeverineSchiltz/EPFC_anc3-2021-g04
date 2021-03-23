@@ -9,7 +9,7 @@ import mvvm.commands.*;
 
 public class CardViewModel implements TitleManagement{
     private final Card card;
-    private CommandManager cmdManager;
+    private final CommandManager cmdManager;
 
     public CardViewModel(Card card, CommandManager cmdManager){
         this.card = card;
@@ -37,7 +37,6 @@ public class CardViewModel implements TitleManagement{
         this.card.changePositionInColumn(posCard, posColumn);
     }
 
-    // TODO: to check the 4 methods below
     public BooleanProperty isUpDisabledProperty() {
         Column column= this.card.getColumn();
         return new SimpleBooleanProperty(column.getCardPosition(card) == 0);
@@ -59,21 +58,6 @@ public class CardViewModel implements TitleManagement{
         return new SimpleBooleanProperty(column.getBoard().getColumnPosition(column)
                                                 == column.getBoard().getNumberOfColumn() - 1);
     }
-
-
-//    // TODO: remove after checking methods above
-//    public BooleanProperty isFirstInColumnProperty(){
-//        return card.isFirstInColumn();
-//    }
-//    public BooleanProperty isLastInColumnProperty(){
-//        return card.isLastInColumn();
-//    }
-//    public BooleanProperty isInFirstColumnProperty(){
-//        return card.isInFirstColumn();
-//    }
-//    public BooleanProperty isInLastColumnProperty(){
-//        return card.isInLastColumn();
-//    }
 
     @Override
     public void changeTitle(String newTitle) {

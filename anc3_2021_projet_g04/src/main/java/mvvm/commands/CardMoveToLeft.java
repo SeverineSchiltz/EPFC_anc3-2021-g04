@@ -5,9 +5,9 @@ import model.Column;
 
 public class CardMoveToLeft implements Command {
 
-    private Column columnOrigin;
-    private Card card;
-    private int posInColumn;
+    private final Column columnOrigin;
+    private final Card card;
+    private final int posInColumn;
 
     public CardMoveToLeft(Card card) {
         this.card = card;
@@ -22,7 +22,6 @@ public class CardMoveToLeft implements Command {
 
     @Override
     public void unexecute() {
-        //this.card.changePositionInColumn(0, 1);
         card.delete();
         columnOrigin.addCardAtPosition(card,posInColumn);
     }

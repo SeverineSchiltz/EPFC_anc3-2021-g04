@@ -4,8 +4,8 @@ import model.Column;
 
 public class ColumnDelete implements Command{
 
-    private Column column;
-    private int positionInList;
+    private final Column column;
+    private final int positionInList;
 
     public ColumnDelete(Column column) {
         this.column = column;

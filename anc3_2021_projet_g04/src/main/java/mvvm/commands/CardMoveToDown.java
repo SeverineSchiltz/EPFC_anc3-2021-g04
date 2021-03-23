@@ -4,7 +4,7 @@ import model.Card;
 
 public class CardMoveToDown implements Command {
 
-    private Card card;
+    private final Card card;
 
     public CardMoveToDown(Card card) {
         this.card = card;
