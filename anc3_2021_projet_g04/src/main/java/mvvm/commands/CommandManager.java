@@ -49,11 +49,9 @@ public class CommandManager {
     }
 
     public void execute(){
-        if(isExecutable()) {
-            Command c = commands.get(posInList.getValue());
+        if(posInList.getValue() > 0) {
+            Command c = commands.get(posInList.getValue() - 1); // look for the last cmd added in the list
             c.execute();
-            posInList.setValue(posInList.getValue() + 1);
-            setNewString();
         }
     }
 
@@ -62,6 +60,15 @@ public class CommandManager {
             Command c = commands.get(posInList.getValue() -1);
             c.unexecute();
             posInList.setValue(posInList.getValue() - 1);
+            setNewString();
+        }
+    }
+
+    public void reexecute(){
+        if(isExecutable()) {
+            Command c = commands.get(posInList.getValue());
+            c.execute();
+            posInList.setValue(posInList.getValue() + 1);
             setNewString();
         }
     }

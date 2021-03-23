@@ -31,7 +31,7 @@ public class ColumnViewModel implements TitleManagement{
         }else{
             cmdManager.addCommand(new ColumnMoveToLeft(column));
         }
-        this.column.changePositioninBoard(pos);
+        cmdManager.execute();
     }
 
     public BooleanProperty isLeftDisabledProperty(){
@@ -44,17 +44,17 @@ public class ColumnViewModel implements TitleManagement{
 
     public void delete(){
         cmdManager.addCommand(new ColumnDelete(column));
-        column.delete();
+        cmdManager.execute();
     }
 
     public void addCard() {
-        this.column.addCard();
         cmdManager.addCommand(new CardAdd(this.column));
+        cmdManager.execute();
     }
 
     @Override
     public void changeTitle(String newTitle) {
         cmdManager.addCommand(new ColumnChangeTitle(column, newTitle));
-        column.changeTitle(newTitle);
+        cmdManager.execute();
     }
 }

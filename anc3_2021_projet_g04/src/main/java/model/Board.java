@@ -72,8 +72,14 @@ public class Board {
         }
     }
 
-    public void addColumn(){
-        addColumn(new Column("Column", this));
+    public Column addColumn() {
+        Column c = createNewColumn();
+        addColumn(c);
+        return c;
+    }
+
+    public Column createNewColumn() {
+        return new Column("Column", this);
     }
 
     public void deleteColumn(Column c){

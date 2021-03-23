@@ -29,7 +29,7 @@ public class TrelloViewModel implements TitleManagement {
     }
 
     public void executeCommand() {
-        cmdManager.execute();
+        cmdManager.reexecute();
     }
 
     public void unexecuteCommand() {
@@ -38,7 +38,8 @@ public class TrelloViewModel implements TitleManagement {
 
     @Override
     public void changeTitle(String newTitle) {
-        //cmdManager.addCommand(new BoardChangeTitle(trello.getBoard(), newTitle));
+//        cmdManager.addCommand(new BoardChangeTitle(trello.getBoard(), newTitle));
+//        cmdManager.execute();
         cmdManager.addCommand(new BoardChangeTitleWithMemento(trello.getBoard(), newTitle));
         trello.getBoard().changeTitle(newTitle);
     }

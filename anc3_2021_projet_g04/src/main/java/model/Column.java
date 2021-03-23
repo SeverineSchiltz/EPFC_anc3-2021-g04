@@ -49,10 +49,16 @@ public class Column {
         this.cards.add(c);
     }
 
-    public void addCard() {
-        Card cardToAdd = new Card("Card", this);
-        this.addCard(cardToAdd);
+    public Card addCard() {
+        Card card = createNewCard();
+        this.addCard(card);
+        return card;
     }
+
+    public Card createNewCard() {
+        return new Card("Card", this);
+    }
+
 
     public Board getBoard(){
         return this.board;

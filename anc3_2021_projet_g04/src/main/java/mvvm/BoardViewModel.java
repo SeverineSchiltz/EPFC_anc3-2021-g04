@@ -23,8 +23,8 @@ public class BoardViewModel {
     }
 
     public void addColumn(){
-        board.addColumn();
         cmdManager.addCommand(new ColumnAdd(board));
+        cmdManager.execute();
     }
 
     public CommandManager getCmdManager(){

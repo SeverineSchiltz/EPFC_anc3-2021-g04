@@ -6,10 +6,11 @@ import model.Column;
 public class CardAdd implements Command {
 
     private final Column column;
-    private Card card;
+    private final Card card;
 
     public CardAdd(Column column) {
         this.column = column;
+        this.card = this.column.createNewCard();
     }
 
     @Override
@@ -19,9 +20,7 @@ public class CardAdd implements Command {
 
     @Override
     public void unexecute() {
-        int indexOfCardToDelete = this.column.getNumberOfCards() - 1;
-        card =  column.getCardAtPosition(indexOfCardToDelete);
-        this.column.deleteCard(indexOfCardToDelete);
+        this.card.delete();
     }
 
     @Override

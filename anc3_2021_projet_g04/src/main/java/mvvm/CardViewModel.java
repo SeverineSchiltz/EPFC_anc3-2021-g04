@@ -34,7 +34,7 @@ public class CardViewModel implements TitleManagement{
                 cmdManager.addCommand(new CardMoveToUp(this.card));
             }
         }
-        this.card.changePositionInColumn(posCard, posColumn);
+        cmdManager.execute();
     }
 
     public BooleanProperty isUpDisabledProperty() {
@@ -62,11 +62,11 @@ public class CardViewModel implements TitleManagement{
     @Override
     public void changeTitle(String newTitle) {
         cmdManager.addCommand(new CardChangeTitle(card, newTitle));
-        card.changeTitle(newTitle);
+        cmdManager.execute();
     }
 
     public void delete(){
         cmdManager.addCommand(new CardDelete(card));
-        card.delete();
+        cmdManager.execute();
     }
 }
