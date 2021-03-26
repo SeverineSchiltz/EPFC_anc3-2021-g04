@@ -39,9 +39,8 @@ public class TrelloViewModel implements TitleManagement {
     @Override
     public void changeTitle(String newTitle) {
 //        cmdManager.addCommand(new BoardChangeTitle(trello.getBoard(), newTitle));
-//        cmdManager.execute();
         cmdManager.addCommand(new BoardChangeTitleWithMemento(trello.getBoard(), newTitle));
-        trello.getBoard().changeTitle(newTitle);
+        cmdManager.execute();
     }
 
     public CommandManager getCmdManager() {

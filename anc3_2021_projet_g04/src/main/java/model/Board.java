@@ -20,7 +20,7 @@ public class Board {
         }
     }
 
-    public void restore(Board b){
+    void restore(Board b){
         this.title.setValue(b.getTitle().getValue());
         int numNew = b.getNumberOfColumn();
         int numthis = this.getNumberOfColumn();

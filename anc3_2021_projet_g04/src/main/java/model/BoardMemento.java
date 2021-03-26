@@ -13,9 +13,7 @@ public class BoardMemento {
     }
 
     public void restore() {
-        Board tmp = new Board(currentBoard);
         currentBoard.restore(copiedBoard);
-        copiedBoard = tmp;
     }
 
 }
