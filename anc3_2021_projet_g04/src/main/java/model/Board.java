@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 public class Board {
     private final StringProperty title;
     private final ObservableList<Column> columns = FXCollections.observableArrayList();
+//    private final int id;
 
     Board(String title){
         this.title= new SimpleStringProperty(title);
