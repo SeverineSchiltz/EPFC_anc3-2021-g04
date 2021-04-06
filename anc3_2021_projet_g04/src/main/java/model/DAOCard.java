@@ -44,6 +44,16 @@ public class DAOCard implements DAOModel<Card> {
     }
 
     @Override
+    public void add(Card element) {
+
+    }
+
+    @Override
+    public void update(Card element) {
+
+    }
+
+    @Override
     public void delete(Card element) {
 
     }

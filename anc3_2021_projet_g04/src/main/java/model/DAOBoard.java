@@ -38,6 +38,16 @@ public class DAOBoard implements DAOModel<Board> { // enter the element type !
     }
 
     @Override
+    public void add(Board element) {
+
+    }
+
+    @Override
+    public void update(Board element) {
+
+    }
+
+    @Override
     public void delete(Board element) {
 
     }

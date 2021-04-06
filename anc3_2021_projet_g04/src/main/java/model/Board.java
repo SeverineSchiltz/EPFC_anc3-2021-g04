@@ -9,7 +9,7 @@ public class Board {
     private final StringProperty title;
     private final ObservableList<Column> columns = FXCollections.observableArrayList();
     private int id;
-
+    private DAOColumn daoCo = new DAOColumn();
     Board(int id, String title){
         this.id = id;
         this.title= new SimpleStringProperty(title);
@@ -75,6 +75,8 @@ public class Board {
         if(curPos+pos >=0 && curPos+pos< columns.size()){
             Column temp = columns.set(curPos+pos, c);
             columns.set(curPos, temp);
+            daoCo.update(temp);
+            daoCo.update(c);
         }
     }
 

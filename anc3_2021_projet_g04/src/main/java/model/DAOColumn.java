@@ -45,6 +45,37 @@ public class DAOColumn implements DAOModel<Column> {
     }
 
     @Override
+    public void add(Column element) {
+//        try {
+//            String sql = "INSERT INTO column(name, position, idBoard) VALUES(?,?,?);";
+//            Connection conn = DriverManager.getConnection(url);
+//            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+//            preparedStatement.setInt(1, column.getPosition());
+//            preparedStatement.setInt(2, column.getBoard().getId());
+//            preparedStatement.setInt(3, column.getId());
+//            preparedStatement.execute();
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
+    }
+
+    @Override
+    public void update(Column column) {
+        try {
+            String sql = "UPDATE column SET name  = ?, position=?, idBoard= ? WHERE id = ?;";
+            Connection conn = DriverManager.getConnection(url);
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, column.getTitle().getValue());
+            preparedStatement.setInt(2, column.getPosition());
+            preparedStatement.setInt(3, column.getBoard().getId());
+            preparedStatement.setInt(4, column.getId());
+            preparedStatement.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    @Override
     public void delete(Column element) {
 
     }
