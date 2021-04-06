@@ -11,16 +11,24 @@ public class Trello {
     }
 
     private void initData() {
-        this.title = "Trello";
-        this.board = new Board("Mon Tableau");
-        int nCard = 0;
-        for (int i = 1; i<4; ++i){
-            Column c = new Column("Colonne " + i, board);
-            for (int j = 1; j<=i; ++j){
-                ++nCard;
-                c.addCard(new Card("Carte " + nCard, c));
+//        this.title = "Trello";
+//        this.board = new Board("Mon Tableau");
+//        int nCard = 0;
+//        for (int i = 1; i<4; ++i){
+//            Column c = new Column("Colonne " + i, board);
+//            for (int j = 1; j<=i; ++j){
+//                ++nCard;
+//                c.addCard(new Card("Carte " + nCard, c));
+//            }
+//            this.board.addColumn(c);
+//        }
+
+        this.board = new DAOBoard().getById(1);
+        for(Column co: DAOColumn.getAllByBoard(board)){
+            board.addColumn(co);
+            for(Card ca : DAOCard.getAllByColumn(co)){
+                co.addCard(ca);
             }
-            this.board.addColumn(c);
         }
     }
 

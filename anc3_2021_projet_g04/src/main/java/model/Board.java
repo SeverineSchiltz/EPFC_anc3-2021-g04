@@ -8,17 +8,22 @@ import javafx.collections.ObservableList;
 public class Board {
     private final StringProperty title;
     private final ObservableList<Column> columns = FXCollections.observableArrayList();
-//    private final int id;
+    private int id;
 
-    Board(String title){
+    Board(int id, String title){
+        this.id = id;
         this.title= new SimpleStringProperty(title);
     }
 
     Board(Board board) {
-        this(board.title.getValue());
+        this(board.getId(), board.title.getValue());
         for (Column column : board.getColumns()) {
             columns.add(new Column(column, this));
         }
+    }
+
+    public int getId(){
+        return id;
     }
 
     void restore(Board b){

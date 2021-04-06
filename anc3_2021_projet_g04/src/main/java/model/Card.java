@@ -6,10 +6,17 @@ import javafx.beans.property.StringProperty;
 public class Card {
     private Column column;
     private final StringProperty title;
+    private int id;
 
     Card(String title, Column column){
         this.title= new SimpleStringProperty(title);
         this.column = column;
+    }
+
+    Card(int id, String title, Column column){
+        this.title= new SimpleStringProperty(title);
+        this.column = column;
+        this.id = id;
     }
 
     Card(Card card, Column column) {

@@ -6,20 +6,31 @@ import javafx.collections.ObservableList;
 
 
 public class Column {
+    private int id;
     private Board board;
     private final StringProperty title;
     private final ObservableList<Card> cards = FXCollections.observableArrayList();
 
+    Column(int id, String title, Board board){
+        this.title= new SimpleStringProperty(title);
+        this.board = board;
+        this.id = id;
+    }
     Column(String title, Board board){
         this.title= new SimpleStringProperty(title);
         this.board = board;
     }
 
+
     Column(Column column, Board board) {
-        this(column.title.getValue(), board);
+        this(column.getId(), column.title.getValue(), board);
         for (Card card : column.getCards()) {
             cards.add(new Card(card, this));
         }
+    }
+
+    public int getId(){
+        return id;
     }
 
     void restore(Column c){
