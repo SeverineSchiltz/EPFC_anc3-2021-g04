@@ -115,6 +115,8 @@ public class Board {
         columns.add(null);
         for(int i = columns.size()-1; i> pos; --i){
             columns.set(i, columns.get(i-1));
+            //TODO : attention n'a pas l'air de changer de position en DB! A vérifier!
+            daoCo.update(columns.get(i-1));
         }
         columns.set(pos, c);
         c.setBoard(this);
