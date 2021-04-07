@@ -9,7 +9,8 @@ public class Board {
     private final StringProperty title;
     private final ObservableList<Column> columns = FXCollections.observableArrayList();
     private int id;
-    private DAOColumn daoCo = new DAOColumn();
+    private static DAOColumn daoCo = new DAOColumn();
+
     Board(int id, String title){
         this.id = id;
         this.title= new SimpleStringProperty(title);
@@ -81,13 +82,13 @@ public class Board {
     }
 
     public Column addColumn() {
-        Column c = createNewColumn();
+        Column c = Column.createNewDefaultColumn(this);
         addColumn(c);
         return c;
     }
 
     public Column createNewColumn() {
-        return new Column("Column", this);
+        return Column.createNewDefaultColumn(this);
     }
 
     public void deleteColumn(Column c){
@@ -117,6 +118,9 @@ public class Board {
         }
         columns.set(pos, c);
         c.setBoard(this);
+        //TODO : setID...
+        int newID = daoCo.add(c);
+        c.setID(newID);
     }
 
     public void changeTitle(String newTitle){

@@ -38,14 +38,14 @@ public class DAOCard implements DAOModel<Card> {
         return null;
     }
 
-    @Override
+
     public void save(Card element) {
 
     }
 
     @Override
-    public void add(Card element) {
-
+    public int add(Card element) {
+        return 0;
     }
 
     @Override

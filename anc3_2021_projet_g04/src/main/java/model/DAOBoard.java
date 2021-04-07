@@ -32,14 +32,14 @@ public class DAOBoard implements DAOModel<Board> { // enter the element type !
         return null;
     }
 
-    @Override
+
     public void save(Board element) {
 
     }
 
     @Override
-    public void add(Board element) {
-
+    public int add(Board element) {
+        return 0;
     }
 
     @Override

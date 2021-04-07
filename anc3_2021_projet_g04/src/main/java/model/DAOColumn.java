@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.sql.Statement.RETURN_GENERATED_KEYS;
+
 public class DAOColumn implements DAOModel<Column> {
 
-
+    //TODO : question, vaut-il mieux les avoir static ou lié à l'instance?
     public static List<Column> getAllByBoard(Board board) {
         try {
             String sql = "SELECT * FROM column WHERE idBoard = ? ORDER BY position;";
@@ -39,24 +41,35 @@ public class DAOColumn implements DAOModel<Column> {
         return null;
     }
 
-    @Override
     public void save(Column element) {
-
+        //TODO : Vérifier en DB si existe puis faire update ou add
     }
 
     @Override
-    public void add(Column element) {
-//        try {
-//            String sql = "INSERT INTO column(name, position, idBoard) VALUES(?,?,?);";
-//            Connection conn = DriverManager.getConnection(url);
-//            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-//            preparedStatement.setInt(1, column.getPosition());
-//            preparedStatement.setInt(2, column.getBoard().getId());
-//            preparedStatement.setInt(3, column.getId());
-//            preparedStatement.execute();
-//        } catch (SQLException throwables) {
-//            throwables.printStackTrace();
-//        }
+    public int add(Column column) {
+        int newID = 0;
+        try {
+            String sql = "INSERT INTO column(name, position, idBoard) VALUES(?,?,?);";
+            Connection conn = DriverManager.getConnection(url);
+            PreparedStatement preparedStatement = conn.prepareStatement(sql, RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, column.getTitle().getValue());
+            preparedStatement.setInt(2, column.getPosition());
+            preparedStatement.setInt(3, column.getBoard().getId());
+            //preparedStatement.execute();
+            preparedStatement.executeUpdate();
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    newID = generatedKeys.getInt(1);
+                }
+                else {
+                    throw new SQLException("Creating column failed, no ID obtained.");
+                }
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return newID;
     }
 
     @Override

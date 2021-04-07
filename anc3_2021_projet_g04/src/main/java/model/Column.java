@@ -12,15 +12,14 @@ public class Column {
     private final ObservableList<Card> cards = FXCollections.observableArrayList();
 
     Column(int id, String title, Board board){
-        this.title= new SimpleStringProperty(title);
-        this.board = board;
+        this(title, board);
         this.id = id;
     }
+
     Column(String title, Board board){
         this.title= new SimpleStringProperty(title);
         this.board = board;
     }
-
 
     Column(Column column, Board board) {
         this(column.getId(), column.title.getValue(), board);
@@ -31,6 +30,10 @@ public class Column {
 
     public int getId(){
         return id;
+    }
+
+    public void setID(int id){
+        this.id = id;
     }
 
     void restore(Column c){
@@ -175,5 +178,21 @@ public class Column {
     public void setBoard(Board b){
         this.board = b;
     }
+
+    static Column createNewColumn(String title, Board board){
+        //TODO : Vaut-il mieux récupérer l'id dans la DB ou bien peut-on gérer ça avec un compteur (qui irait rechercher le dernière id)?
+        // Si il ft récupérer l'id en DB, l'id n'est pas final, cela pose-t-il problème?
+        Column c = new Column(title, board);
+
+        return c;
+    }
+
+    static Column createNewDefaultColumn(Board board){
+        Column c = createNewColumn("Column", board);
+
+        return c;
+    }
+
+
 
 }
