@@ -23,7 +23,7 @@ public class Trello {
 //            this.board.addColumn(c);
 //        }
 
-        this.board = new DAOBoard().getById(1);
+        this.board = DAOBoard.getInstance().getById(1);
         for(Column co: DAOColumn.getInstance().getAllByBoard(board)){
             board.addColumn(co);
             for(Card ca : DAOCard.getAllByColumn(co)){

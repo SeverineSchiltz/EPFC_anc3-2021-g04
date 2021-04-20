@@ -1,11 +1,21 @@
 package model;
 
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class DAOBoard implements DAOModel<Board> { // enter the element type !
+
+    private static DAOBoard daoB = new DAOBoard();
+
+    private DAOBoard(){ }
+
+    public static DAOBoard getInstance(){
+        return daoB;
+    }
 
     @Override
     public Board getById(int idBoard) {
@@ -50,6 +60,12 @@ public class DAOBoard implements DAOModel<Board> { // enter the element type !
     @Override
     public void delete(Board element) {
 
+    }
+
+    public void updateAllColumns(ObservableList<Column> columns){
+        for (Column c : columns) {
+            DAOColumn.getInstance().update(c);
+        }
     }
 
 

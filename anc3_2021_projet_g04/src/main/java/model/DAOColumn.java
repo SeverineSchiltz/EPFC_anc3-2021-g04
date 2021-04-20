@@ -54,7 +54,6 @@ public class DAOColumn implements DAOModel<Column> {
         int newID = 0;
         try (Connection conn = DriverManager.getConnection(url)) {
             String sql = "INSERT INTO column(name, position, idBoard) VALUES(?,?,?);";
-            //Connection conn = DriverManager.getConnection(url);
             PreparedStatement preparedStatement = conn.prepareStatement(sql, RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, column.getTitle().getValue());
             preparedStatement.setInt(2, column.getPosition());
@@ -79,7 +78,6 @@ public class DAOColumn implements DAOModel<Column> {
     public void update(Column column) {
         try (Connection conn = DriverManager.getConnection(url)) {
             String sql = "UPDATE column SET name  = ?, position=?, idBoard= ? WHERE id = ?;";
-            //Connection conn = DriverManager.getConnection(url);
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, column.getTitle().getValue());
             preparedStatement.setInt(2, column.getPosition());
@@ -92,12 +90,26 @@ public class DAOColumn implements DAOModel<Column> {
     }
 
     @Override
-    public void delete(Column element) {
+    public void delete(Column column) {
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "DELETE FROM column WHERE id = ?;";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, column.getId());
+            preparedStatement.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
     }
 
     public static DAOColumn getInstance(){
         return daoCo;
+    }
+
+    public void deleteAllCardsInColumn(Column c){
+        for (Card card : c.getCards()) {
+            //TODO : ajouter la méthode d'Ines
+        }
     }
 
 

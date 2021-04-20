@@ -5,6 +5,8 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+
 public class Board {
     private final StringProperty title;
     private final ObservableList<Column> columns = FXCollections.observableArrayList();
@@ -92,6 +94,7 @@ public class Board {
 
     public void deleteColumn(Column c){
         columns.remove(c);
+        DAOColumn.getInstance().delete(c);
     }
 
     public void deleteColumn(int index){
@@ -114,14 +117,13 @@ public class Board {
         columns.add(null);
         for(int i = columns.size()-1; i> pos; --i){
             columns.set(i, columns.get(i-1));
-            //TODO : attention n'a pas l'air de changer de position en DB! A vérifier!
-            DAOColumn.getInstance().update(columns.get(i-1));
         }
         columns.set(pos, c);
         c.setBoard(this);
-        //TODO : setID...
         int newID = DAOColumn.getInstance().add(c);
         c.setID(newID);
+        //TODO à optimiser car n'est pas le plus efficace
+        DAOBoard.getInstance().updateAllColumns(getColumns());
     }
 
     public void changeTitle(String newTitle){
