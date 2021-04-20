@@ -14,13 +14,20 @@ public class Card {
     }
 
     Card(int id, String title, Column column){
-        this.title= new SimpleStringProperty(title);
-        this.column = column;
+        this(title, column);
         this.id = id;
     }
 
     Card(Card card, Column column) {
         this(card.title.getValue(), column);
+    }
+
+    public int getId(){
+        return id;
+    }
+
+    public void setID(int id){
+        this.id = id;
     }
 
     void restore(Card c, Column co){
@@ -54,6 +61,7 @@ public class Card {
 
     public void changeTitle(String newTitle){
         title.setValue(newTitle);
+        DAOCard.getInstance().update(this);
     }
 
     @Override

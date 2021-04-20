@@ -104,6 +104,7 @@ public class Column {
 
     public void deleteCard(Card card){
         this.cards.remove(card);
+        DAOCard.getInstance().delete(card);
     }
 
     public int getNumberOfCards(){
@@ -125,6 +126,8 @@ public class Column {
         }
         cards.set(pos, card);
         card.setColumn(this);
+        int newID = DAOCard.getInstance().add(card);
+        card.setID(newID);
     }
 
     /*
@@ -144,6 +147,8 @@ public class Column {
             if (posCardToReach >= 0 && posCardToReach < cards.size()) {
                 Card cardToReplace = cards.set(posCardToReach, card);
                 cards.set(curPosCard, cardToReplace);
+                DAOCard.getInstance().update(cardToReplace);
+                DAOCard.getInstance().update(card);
             }
         } else {
             // column where the card is
@@ -162,6 +167,7 @@ public class Column {
                 columnToReach.addCard(card);
                 // remove card on the column before the move
                 column.removeCard(card);
+                DAOCard.getInstance().update(card);
             }
         }
     }
