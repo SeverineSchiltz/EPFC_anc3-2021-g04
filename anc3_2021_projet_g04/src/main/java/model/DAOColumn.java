@@ -9,8 +9,12 @@ import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
 public class DAOColumn implements DAOModel<Column> {
 
+    private static DAOColumn daoCo = new DAOColumn();
+
+    private DAOColumn(){ }
+
     //TODO : question, vaut-il mieux les avoir static ou lié à l'instance?
-    public static List<Column> getAllByBoard(Board board) {
+    public List<Column> getAllByBoard(Board board) {
         try {
             String sql = "SELECT * FROM column WHERE idBoard = ? ORDER BY position;";
             Connection conn = DriverManager.getConnection(url);
@@ -92,4 +96,10 @@ public class DAOColumn implements DAOModel<Column> {
     public void delete(Column element) {
 
     }
+
+    public static DAOColumn getInstance(){
+        return daoCo;
+    }
+
+
 }

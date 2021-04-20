@@ -57,4 +57,5 @@ public class DAOCard implements DAOModel<Card> {
     public void delete(Card element) {
 
     }
+
 }

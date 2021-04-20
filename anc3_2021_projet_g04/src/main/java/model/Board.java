@@ -9,7 +9,6 @@ public class Board {
     private final StringProperty title;
     private final ObservableList<Column> columns = FXCollections.observableArrayList();
     private int id;
-    private static DAOColumn daoCo = new DAOColumn();
 
     Board(int id, String title){
         this.id = id;
@@ -76,8 +75,8 @@ public class Board {
         if(curPos+pos >=0 && curPos+pos< columns.size()){
             Column temp = columns.set(curPos+pos, c);
             columns.set(curPos, temp);
-            daoCo.update(temp);
-            daoCo.update(c);
+            DAOColumn.getInstance().update(temp);
+            DAOColumn.getInstance().update(c);
         }
     }
 
@@ -116,12 +115,12 @@ public class Board {
         for(int i = columns.size()-1; i> pos; --i){
             columns.set(i, columns.get(i-1));
             //TODO : attention n'a pas l'air de changer de position en DB! A vérifier!
-            daoCo.update(columns.get(i-1));
+            DAOColumn.getInstance().update(columns.get(i-1));
         }
         columns.set(pos, c);
         c.setBoard(this);
         //TODO : setID...
-        int newID = daoCo.add(c);
+        int newID = DAOColumn.getInstance().add(c);
         c.setID(newID);
     }
 
