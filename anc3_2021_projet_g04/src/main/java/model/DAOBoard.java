@@ -9,9 +9,9 @@ public class DAOBoard implements DAOModel<Board> { // enter the element type !
 
     @Override
     public Board getById(int idBoard) {
-        try {
+        try (Connection conn = DriverManager.getConnection(url)) {
             String sql = "SELECT * FROM board WHERE id = ? ;";
-            Connection conn = DriverManager.getConnection(url);
+            //Connection conn = DriverManager.getConnection(url);
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, idBoard);
             ResultSet result = preparedStatement.executeQuery();

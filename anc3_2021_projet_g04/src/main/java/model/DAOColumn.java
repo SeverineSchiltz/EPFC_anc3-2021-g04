@@ -15,9 +15,9 @@ public class DAOColumn implements DAOModel<Column> {
 
     //TODO : question, vaut-il mieux les avoir static ou lié à l'instance?
     public List<Column> getAllByBoard(Board board) {
-        try {
+        try (Connection conn = DriverManager.getConnection(url)) {
             String sql = "SELECT * FROM column WHERE idBoard = ? ORDER BY position;";
-            Connection conn = DriverManager.getConnection(url);
+            //Connection conn = DriverManager.getConnection(url);
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1,board.getId());
             ResultSet result = preparedStatement.executeQuery();
@@ -52,9 +52,9 @@ public class DAOColumn implements DAOModel<Column> {
     @Override
     public int add(Column column) {
         int newID = 0;
-        try {
+        try (Connection conn = DriverManager.getConnection(url)) {
             String sql = "INSERT INTO column(name, position, idBoard) VALUES(?,?,?);";
-            Connection conn = DriverManager.getConnection(url);
+            //Connection conn = DriverManager.getConnection(url);
             PreparedStatement preparedStatement = conn.prepareStatement(sql, RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, column.getTitle().getValue());
             preparedStatement.setInt(2, column.getPosition());
@@ -69,7 +69,6 @@ public class DAOColumn implements DAOModel<Column> {
                     throw new SQLException("Creating column failed, no ID obtained.");
                 }
             }
-
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -78,9 +77,9 @@ public class DAOColumn implements DAOModel<Column> {
 
     @Override
     public void update(Column column) {
-        try {
+        try (Connection conn = DriverManager.getConnection(url)) {
             String sql = "UPDATE column SET name  = ?, position=?, idBoard= ? WHERE id = ?;";
-            Connection conn = DriverManager.getConnection(url);
+            //Connection conn = DriverManager.getConnection(url);
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, column.getTitle().getValue());
             preparedStatement.setInt(2, column.getPosition());

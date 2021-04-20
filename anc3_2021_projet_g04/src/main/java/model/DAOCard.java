@@ -8,9 +8,8 @@ import java.util.Optional;
 public class DAOCard implements DAOModel<Card> {
 
     public static List<Card> getAllByColumn(Column column) {
-        try {
+        try (Connection conn = DriverManager.getConnection(url)) {
             String sql = "SELECT * FROM card WHERE idColumn = ? ORDER BY position;";
-            Connection conn = DriverManager.getConnection(url);
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1,column.getId());
             ResultSet result = preparedStatement.executeQuery();

@@ -115,8 +115,7 @@ public class DAOInitialisation {
     }
 
     public static void main(String[] args) {
-        try {
-            Connection conn = DriverManager.getConnection(url);
+        try (Connection conn = DriverManager.getConnection(url)) {
             configDB(conn);
             createTables(conn);
             seedData(conn);
