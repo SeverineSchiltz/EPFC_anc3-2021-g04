@@ -23,7 +23,7 @@ public class BoardChangeTitleWithMemento implements Command {
 
     @Override
     public void unexecute() {
-        boardMemento.restore();
+        board.restore(boardMemento);
     }
 
     @Override

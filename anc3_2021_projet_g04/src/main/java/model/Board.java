@@ -28,7 +28,8 @@ public class Board {
         return id;
     }
 
-    void restore(Board b){
+    public void restore(BoardMemento m){
+        Board b = m.getCopiedBoard();
         this.title.setValue(b.getTitle().getValue());
         int numNew = b.getNumberOfColumn();
         int numthis = this.getNumberOfColumn();
