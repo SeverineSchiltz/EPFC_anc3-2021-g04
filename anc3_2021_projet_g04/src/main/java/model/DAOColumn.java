@@ -1,5 +1,7 @@
 package model;
 
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,22 @@ public class DAOColumn implements DAOModel<Column> {
 
     @Override
     public Column getById(int id) {
-        return null;
+        Column column = null;
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "SELECT * FROM column WHERE id = ? ;";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet result = preparedStatement.executeQuery();
+            if (result.next()) {
+                String title = result.getString("name");
+                int idBoard = result.getInt("idBoard");
+                Board board = DAOBoard.getInstance().getById(idBoard);
+                column = new Column(id, title, board);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return column;
     }
 
     @Override
@@ -45,8 +62,14 @@ public class DAOColumn implements DAOModel<Column> {
         return null;
     }
 
-    public void save(Column element) {
-        //TODO : Vérifier en DB si existe puis faire update ou add
+    public void save(Column column) {
+        Column c = getById(column.getId());
+        if(c == null){
+            add(column);
+        }else{
+            update(column);
+        }
+        saveAllCardsInColumn(column);
     }
 
     @Override
@@ -71,6 +94,8 @@ public class DAOColumn implements DAOModel<Column> {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        column.setID(newID);
+        //addAllCardsInColumn(column);
         return newID;
     }
 
@@ -87,10 +112,12 @@ public class DAOColumn implements DAOModel<Column> {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        //updateAllCard(column.getCards());
     }
 
     @Override
     public void delete(Column column) {
+        deleteAllCardsInColumn(column);
         try (Connection conn = DriverManager.getConnection(url)) {
             String sql = "DELETE FROM column WHERE id = ?;";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -106,11 +133,16 @@ public class DAOColumn implements DAOModel<Column> {
         return daoCo;
     }
 
-    public void deleteAllCardsInColumn(Column c){
+    private void deleteAllCardsInColumn(Column c){
         for (Card card : c.getCards()) {
-            //TODO : ajouter la méthode d'Ines
+            DAOCard.getInstance().delete(card);
         }
     }
 
+    private void saveAllCardsInColumn(Column c){
+        for (Card card : c.getCards()) {
+            DAOCard.getInstance().save(card);
+        }
+    }
 
 }

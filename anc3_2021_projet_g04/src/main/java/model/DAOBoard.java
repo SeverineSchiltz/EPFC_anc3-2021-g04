@@ -43,7 +43,7 @@ public class DAOBoard implements DAOModel<Board> { // enter the element type !
     }
 
 
-    public void save(Board element) {
+    public void save(Board board) {
 
     }
 
@@ -53,8 +53,17 @@ public class DAOBoard implements DAOModel<Board> { // enter the element type !
     }
 
     @Override
-    public void update(Board element) {
-
+    public void update(Board board) {
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "UPDATE board SET name  = ? WHERE id = ?;";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, board.getTitle().getValue());
+            preparedStatement.setInt(2, board.getId());
+            preparedStatement.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        //updateAllColumns(board.getColumns());
     }
 
     @Override
@@ -62,11 +71,6 @@ public class DAOBoard implements DAOModel<Board> { // enter the element type !
 
     }
 
-    public void updateAllColumns(ObservableList<Column> columns){
-        for (Column c : columns) {
-            DAOColumn.getInstance().update(c);
-        }
-    }
 
 
 }
