@@ -23,7 +23,9 @@ public class DAOCard implements DAOModel<Card> {
             while (result.next()) {
                 int id = result.getInt("id");
                 String title = result.getString("name");
+                int position = result.getInt("position");
                 Card c = new Card(id, title, column);
+                c.setPositionInColumn(position); // TODO: to remove if we add constructor with position => ask what's the best
                 lc.add(c);
             }
             return lc;
@@ -64,13 +66,12 @@ public class DAOCard implements DAOModel<Card> {
             while (result.next()) {
                 int id = result.getInt("id");
                 String title = result.getString("name");
-                //int position = result.getInt("position"); // quid position?
+                //int position = result.getInt("position");
                 int idColumn = result.getInt("idColumn");
                 Column column = DAOColumn.getInstance().getById(idColumn);
                 Card card = new Card(id, title, column);
                 cards.add(card);
             }
-            preparedStatement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -78,12 +79,14 @@ public class DAOCard implements DAOModel<Card> {
     }
 
 
-    //TODO: attention: this method is not used because not working at this stage
+    //TODO: attention: this method is not yet used
     public void save(Card card) {
-        Column column = card.getColumn();
-        if(getAllByColumn(column).contains(card))
+        Card c = getById(card.getId());
+        if (c == null) {
+            add(card);
+        } else {
             update(card);
-        add(card);
+        }
     }
 
     @Override
@@ -105,7 +108,6 @@ public class DAOCard implements DAOModel<Card> {
                     throw new SQLException("Creating card failed, no ID obtained.");
                 }
             }
-            preparedStatement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -118,11 +120,10 @@ public class DAOCard implements DAOModel<Card> {
             String sql = "UPDATE card SET name = ?, position = ?, idColumn = ? WHERE id = ? ;";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, card.getTitle().getValue());
-            preparedStatement.setInt(2, card.getPosition());
+            preparedStatement.setInt(2, card.getPositionInColumn());
             preparedStatement.setInt(3, card.getColumn().getId());
             preparedStatement.setInt(4, card.getId());
             preparedStatement.execute();
-            preparedStatement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -135,7 +136,6 @@ public class DAOCard implements DAOModel<Card> {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, card.getId());
             preparedStatement.execute();
-            preparedStatement.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

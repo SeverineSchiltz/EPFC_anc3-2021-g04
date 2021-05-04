@@ -7,6 +7,7 @@ public class Card {
     private Column column;
     private final StringProperty title;
     private int id;
+    private int positionInColumn;
 
     Card(String title, Column column){
         this.title= new SimpleStringProperty(title);
@@ -28,6 +29,14 @@ public class Card {
 
     public void setID(int id){
         this.id = id;
+    }
+
+    public int getPositionInColumn(){
+        return this.positionInColumn;
+    }
+
+    public void setPositionInColumn(int position){
+        this.positionInColumn = position;
     }
 
     void restore(Card c, Column co){

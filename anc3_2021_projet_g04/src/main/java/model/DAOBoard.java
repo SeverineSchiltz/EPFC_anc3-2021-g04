@@ -21,7 +21,6 @@ public class DAOBoard implements DAOModel<Board> { // enter the element type !
     public Board getById(int idBoard) {
         try (Connection conn = DriverManager.getConnection(url)) {
             String sql = "SELECT * FROM board WHERE id = ? ;";
-            //Connection conn = DriverManager.getConnection(url);
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, idBoard);
             ResultSet result = preparedStatement.executeQuery();
@@ -44,11 +43,17 @@ public class DAOBoard implements DAOModel<Board> { // enter the element type !
 
 
     public void save(Board board) {
-
+        Board b = getById(board.getId());
+        if (b == null) {
+            add(board); // useful? we don't add boards
+        } else {
+            update(board);
+        }
+        saveAllColumnsInBoard(board);
     }
 
     @Override
-    public int add(Board element) {
+    public int add(Board board) {
         return 0;
     }
 
@@ -67,10 +72,28 @@ public class DAOBoard implements DAOModel<Board> { // enter the element type !
     }
 
     @Override
-    public void delete(Board element) {
-
+    public void delete(Board board) {
+        deleteAllColumnsInBoard(board);
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "DELETE FROM board WHERE id = ?;";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, board.getId());
+            preparedStatement.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
+    private void deleteAllColumnsInBoard(Board board){
+        for (Column column : board.getColumns()) {
+            DAOColumn.getInstance().delete(column);
+        }
+    }
 
+    private void saveAllColumnsInBoard(Board board){
+        for (Column column : board.getColumns()) {
+            DAOColumn.getInstance().save(column);
+        }
+    }
 
 }

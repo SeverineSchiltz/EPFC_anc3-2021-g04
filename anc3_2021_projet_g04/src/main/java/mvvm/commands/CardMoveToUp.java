@@ -12,6 +12,7 @@ public class CardMoveToUp implements Command {
 
     @Override
     public void execute() {
+        System.out.println(card.getPositionInColumn()); // test
         this.card.changePositionInColumn(-1, 0);
     }
 

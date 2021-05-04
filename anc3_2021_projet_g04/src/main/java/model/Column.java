@@ -102,7 +102,13 @@ public class Column {
         this.cards.remove(index);
     }
 
-    public void deleteCard(Card card){
+    public void deleteCard(Card card) {
+        int pos = card.getPosition();
+        for(int i = cards.size() - 1; i > pos; --i) {
+            Card tmp = cards.get(i);
+            tmp.setPositionInColumn(i - 1);
+            DAOCard.getInstance().update(tmp);
+        }
         this.cards.remove(card);
         DAOCard.getInstance().delete(card);
     }
@@ -120,12 +126,14 @@ public class Column {
     }
 
     public void addCardAtPosition(Card card, int pos){
-        cards.add(null);
-        for(int i = cards.size() - 1; i > pos; --i){
-            cards.set(i, cards.get(i - 1));
+        for(int i = cards.size() - 1; i >= pos; --i) {
+            Card tmp = cards.get(i);
+            tmp.setPositionInColumn(i + 1);
+            DAOCard.getInstance().update(tmp);
         }
-        cards.set(pos, card);
+        cards.add(pos, card);
         card.setColumn(this);
+        card.setPositionInColumn(pos);
         int newID = DAOCard.getInstance().add(card);
         card.setID(newID);
     }
@@ -138,6 +146,34 @@ public class Column {
     (4) left    posCard:  0     posColumn: -1
      */
     public void changeCardPosition(Card card, int posCard, int posColumn) {
+        // current card position on the column
+        int curPosCard = this.cards.indexOf(card); //int curPosCard = card.getPositionInColumn(); ?
+        // if card moves up or down, same column => posColumn == 0
+        if (posColumn == 0) {
+            // card position to reach (current one -1 if up or +1 if down)
+            int posCardToReach = curPosCard + posCard;
+            if (posCardToReach >= 0 && posCardToReach < cards.size()) {
+                Card cardToReplace = cards.set(posCardToReach, card);
+                cards.set(curPosCard, cardToReplace);
+                // set card positions for current card and card to replace
+                card.setPositionInColumn(posCardToReach);
+                cardToReplace.setPositionInColumn(curPosCard);
+                // update
+                DAOCard.getInstance().update(cardToReplace);
+                DAOCard.getInstance().update(card);
+            }
+        } else {
+            // TODO: review column to reach
+            Column columnToReach = getBoard().getColumns().get(this.getPosition() + posColumn);
+            // delete card from this column
+            deleteCard(card);
+            // add card to column to reach
+            columnToReach.addCardAtPosition(card, columnToReach.getNumberOfCards());
+        }
+    }
+
+    // TODO: method to delete after review
+    public void changeCardPositionOldVersion(Card card, int posCard, int posColumn) {
         // current card position on the column
         int curPosCard = this.cards.indexOf(card);
         // if card moves up or down, same column => posColumn == 0
