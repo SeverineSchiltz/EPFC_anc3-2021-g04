@@ -95,7 +95,12 @@ public class DAOColumn implements DAOModel<Column> {
             throwables.printStackTrace();
         }
         column.setID(newID);
-        //addAllCardsInColumn(column);
+        return newID;
+    }
+
+    public int addWithCards(Column column){
+        int newID = add(column);
+        addAllCardsInColumn(column);
         return newID;
     }
 
@@ -142,6 +147,12 @@ public class DAOColumn implements DAOModel<Column> {
     private void saveAllCardsInColumn(Column c){
         for (Card card : c.getCards()) {
             DAOCard.getInstance().save(card);
+        }
+    }
+
+    private void addAllCardsInColumn(Column c){
+        for (Card card : c.getCards()) {
+            DAOCard.getInstance().add(card);
         }
     }
 

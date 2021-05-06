@@ -71,6 +71,19 @@ public class DAOBoard implements DAOModel<Board> { // enter the element type !
         //updateAllColumns(board.getColumns());
     }
 
+    public void updateColumnsAsFromPosition(Board board, int pos) {
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "UPDATE column SET position = position +1 WHERE position >= ? AND idBoard = ?;";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, pos);
+            preparedStatement.setInt(2, board.getId());
+            preparedStatement.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        //updateAllColumns(board.getColumns());
+    }
+
     @Override
     public void delete(Board board) {
         deleteAllColumnsInBoard(board);

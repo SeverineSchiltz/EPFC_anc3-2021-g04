@@ -46,7 +46,7 @@ public class Board {
                 columns.add(new Column(b.getColumns().get(i), this)); // cette ligne est problematique car elle crée une nouvelle référence ce qui pose problème dans les commandes (sans memento) qui se basent sur les références
             }
         }
-        DAOBoard.getInstance().update(b);
+        DAOBoard.getInstance().save(b);
     }
 
     // To keep this method in case we add id for iteration 3
@@ -122,10 +122,13 @@ public class Board {
         }
         columns.set(pos, c);
         c.setBoard(this);
-        int newID = DAOColumn.getInstance().add(c);
+        DAOBoard.getInstance().updateColumnsAsFromPosition(this, pos);
+        //int newID = DAOColumn.getInstance().add(c);
+        int newID = DAOColumn.getInstance().addWithCards(c);
         c.setID(newID);
         //TODO à optimiser car n'est pas le plus efficace
-        DAOBoard.getInstance().save(this);
+        //DAOBoard.getInstance().save(this);
+
     }
 
     public void changeTitle(String newTitle){

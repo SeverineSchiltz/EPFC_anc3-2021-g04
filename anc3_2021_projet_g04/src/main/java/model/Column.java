@@ -215,6 +215,7 @@ public class Column {
 
     public void changeTitle(String newTitle){
         title.setValue(newTitle);
+        DAOColumn.getInstance().update(this);
     }
 
     public void setBoard(Board b){
