@@ -59,7 +59,23 @@ public class DAOColumn implements DAOModel<Column> {
 
     @Override
     public List<Column> getAll() {
-        return null;
+        List<Column> columns = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "SELECT * FROM column ORDER BY id;";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            ResultSet result = preparedStatement.executeQuery();
+            while (result.next()) {
+                int id = result.getInt("id");
+                String title = result.getString("name");
+                int idBoard = result.getInt("idBoard");
+                Board board = DAOBoard.getInstance().getById(idBoard);
+                Column column = new Column(id, title, board);
+                columns.add(column);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return columns;
     }
 
     public void save(Column column) {
@@ -94,6 +110,7 @@ public class DAOColumn implements DAOModel<Column> {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        // TODO: ask Séverine
         column.setID(newID);
         //addAllCardsInColumn(column);
         return newID;

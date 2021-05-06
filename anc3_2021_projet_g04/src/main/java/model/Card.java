@@ -23,6 +23,11 @@ public class Card {
         this(card.title.getValue(), column);
     }
 
+    Card(int id, String title, Column column, int position){
+        this(id, title, column);
+        this.positionInColumn = position;
+    }
+
     public int getId(){
         return id;
     }

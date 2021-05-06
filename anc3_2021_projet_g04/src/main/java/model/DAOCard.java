@@ -13,6 +13,10 @@ public class DAOCard implements DAOModel<Card> {
 
     private DAOCard(){ }
 
+    public static DAOCard getInstance(){
+        return daoCard;
+    }
+
     public static List<Card> getAllByColumn(Column column) {
         try (Connection conn = DriverManager.getConnection(url)) {
             String sql = "SELECT * FROM card WHERE idColumn = ? ORDER BY position;";
@@ -24,8 +28,7 @@ public class DAOCard implements DAOModel<Card> {
                 int id = result.getInt("id");
                 String title = result.getString("name");
                 int position = result.getInt("position");
-                Card c = new Card(id, title, column);
-                c.setPositionInColumn(position); // TODO: to remove if we add constructor with position => ask what's the best
+                Card c = new Card(id, title, column, position);
                 lc.add(c);
             }
             return lc;
@@ -45,7 +48,6 @@ public class DAOCard implements DAOModel<Card> {
             ResultSet result = preparedStatement.executeQuery();
             if (result.next()) {
                 String title = result.getString("name");
-                //int position = result.getInt("position");
                 int idColumn = result.getInt("idColumn");
                 Column column = DAOColumn.getInstance().getById(idColumn);
                 card = new Card(id, title, column);
@@ -66,7 +68,6 @@ public class DAOCard implements DAOModel<Card> {
             while (result.next()) {
                 int id = result.getInt("id");
                 String title = result.getString("name");
-                //int position = result.getInt("position");
                 int idColumn = result.getInt("idColumn");
                 Column column = DAOColumn.getInstance().getById(idColumn);
                 Card card = new Card(id, title, column);
@@ -111,6 +112,8 @@ public class DAOCard implements DAOModel<Card> {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        // TODO: ask Séverine
+        card.setID(newID);
         return newID;
     }
 
@@ -139,10 +142,6 @@ public class DAOCard implements DAOModel<Card> {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-    }
-
-    public static DAOCard getInstance(){
-        return daoCard;
     }
 
 }

@@ -147,7 +147,7 @@ public class Column {
      */
     public void changeCardPosition(Card card, int posCard, int posColumn) {
         // current card position on the column
-        int curPosCard = this.cards.indexOf(card); //int curPosCard = card.getPositionInColumn(); ?
+        int curPosCard = this.cards.indexOf(card);
         // if card moves up or down, same column => posColumn == 0
         if (posColumn == 0) {
             // card position to reach (current one -1 if up or +1 if down)
@@ -158,13 +158,14 @@ public class Column {
                 // set card positions for current card and card to replace
                 card.setPositionInColumn(posCardToReach);
                 cardToReplace.setPositionInColumn(curPosCard);
-                // update
+                // update card an card to replace
                 DAOCard.getInstance().update(cardToReplace);
                 DAOCard.getInstance().update(card);
             }
         } else {
-            // TODO: review column to reach
-            Column columnToReach = getBoard().getColumns().get(this.getPosition() + posColumn);
+            // get column to reach based on the current position + or - 1 (posColumn)
+            int posColumnToReach = this.getPosition() + posColumn;
+            Column columnToReach = this.board.getColumns().get(posColumnToReach);
             // delete card from this column
             deleteCard(card);
             // add card to column to reach
@@ -172,7 +173,7 @@ public class Column {
         }
     }
 
-    // TODO: method to delete after review
+    /* Old version of the method (before the DAO implementation)
     public void changeCardPositionOldVersion(Card card, int posCard, int posColumn) {
         // current card position on the column
         int curPosCard = this.cards.indexOf(card);
@@ -183,8 +184,6 @@ public class Column {
             if (posCardToReach >= 0 && posCardToReach < cards.size()) {
                 Card cardToReplace = cards.set(posCardToReach, card);
                 cards.set(curPosCard, cardToReplace);
-                DAOCard.getInstance().update(cardToReplace);
-                DAOCard.getInstance().update(card);
             }
         } else {
             // column where the card is
@@ -203,10 +202,9 @@ public class Column {
                 columnToReach.addCard(card);
                 // remove card on the column before the move
                 column.removeCard(card);
-                DAOCard.getInstance().update(card);
             }
         }
-    }
+    } */
 
     @Override
     public String toString() {

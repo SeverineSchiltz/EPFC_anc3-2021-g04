@@ -28,6 +28,10 @@ public class Board {
         return id;
     }
 
+    public void setID(int id){
+        this.id = id;
+    }
+
     public void restore(BoardMemento m){
         Board b = m.getCopiedBoard();
         this.title.setValue(b.getTitle().getValue());

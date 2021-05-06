@@ -27,7 +27,7 @@ public class Trello {
         for(Column co: DAOColumn.getInstance().getAllByBoard(board)){
             board.addColumn(co);
             for(Card ca : DAOCard.getAllByColumn(co)){
-                System.out.println(ca.getPositionInColumn()); // checks
+                //System.out.println(ca.getPositionInColumn()); // checks
                 co.addCard(ca);
             }
         }
