@@ -123,12 +123,8 @@ public class Board {
         columns.set(pos, c);
         c.setBoard(this);
         DAOBoard.getInstance().updateColumnsAsFromPosition(this, pos);
-        //int newID = DAOColumn.getInstance().add(c);
         int newID = DAOColumn.getInstance().addWithCards(c);
         c.setID(newID);
-        //TODO à optimiser car n'est pas le plus efficace
-        //DAOBoard.getInstance().save(this);
-
     }
 
     public void changeTitle(String newTitle){

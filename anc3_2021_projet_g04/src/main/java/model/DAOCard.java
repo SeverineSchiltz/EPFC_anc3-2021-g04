@@ -78,8 +78,6 @@ public class DAOCard implements DAOModel<Card> {
         return cards;
     }
 
-
-    //TODO: attention: this method is not yet used
     public void save(Card card) {
         Card c = getById(card.getId());
         if (c == null) {
@@ -93,9 +91,17 @@ public class DAOCard implements DAOModel<Card> {
     public int add(Card card) {
         int newID = 0;
         try (Connection conn = DriverManager.getConnection(url)) {
-            String sql = "INSERT INTO card(name, position, idColumn) VALUES(?, ?, ?) ;";
+            String sql = "";
             // RETURN_GENERATED_KEYS added in the prepareStatement argument
-            PreparedStatement preparedStatement = conn.prepareStatement(sql, RETURN_GENERATED_KEYS);
+            PreparedStatement preparedStatement;
+            if(card.getId() == 0){ //Vérifier que la carte n'a pas déjà un id assigné
+                sql = "INSERT INTO card(name, position, idColumn) VALUES(?, ?, ?) ;";
+                preparedStatement = conn.prepareStatement(sql, RETURN_GENERATED_KEYS);
+            }else{
+                sql = "INSERT INTO card(name, position, idColumn, id) VALUES(?, ?, ?, ?) ;";
+                preparedStatement = conn.prepareStatement(sql, RETURN_GENERATED_KEYS);
+                preparedStatement.setInt(4, card.getId());
+            }
             preparedStatement.setString(1, card.getTitle().getValue());
             preparedStatement.setInt(2, card.getPosition());
             preparedStatement.setInt(3, card.getColumn().getId());

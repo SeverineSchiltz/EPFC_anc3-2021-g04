@@ -223,16 +223,12 @@ public class Column {
     }
 
     static Column createNewColumn(String title, Board board){
-        //TODO : Vaut-il mieux récupérer l'id dans la DB ou bien peut-on gérer ça avec un compteur (qui irait rechercher le dernière id)?
-        // Si il ft récupérer l'id en DB, l'id n'est pas final, cela pose-t-il problème?
         Column c = new Column(title, board);
-
         return c;
     }
 
     static Column createNewDefaultColumn(Board board){
         Column c = createNewColumn("Column", board);
-
         return c;
     }
 
