@@ -15,7 +15,6 @@ public class DAOColumn implements DAOModel<Column> {
 
     private DAOColumn(){ }
 
-    //TODO : question, vaut-il mieux les avoir static ou lié à l'instance?
     public List<Column> getAllByBoard(Board board) {
         try (Connection conn = DriverManager.getConnection(url)) {
             String sql = "SELECT * FROM column WHERE idBoard = ? ORDER BY position;";
@@ -92,8 +91,16 @@ public class DAOColumn implements DAOModel<Column> {
     public int add(Column column) {
         int newID = 0;
         try (Connection conn = DriverManager.getConnection(url)) {
-            String sql = "INSERT INTO column(name, position, idBoard) VALUES(?,?,?);";
-            PreparedStatement preparedStatement = conn.prepareStatement(sql, RETURN_GENERATED_KEYS);
+            String sql;
+            PreparedStatement preparedStatement;
+            if(column.getId() == 0){
+                sql = "INSERT INTO column(name, position, idBoard) VALUES(?,?,?);";
+                preparedStatement = conn.prepareStatement(sql, RETURN_GENERATED_KEYS);
+            }else{
+                sql = "INSERT INTO column(name, position, idBoard, id) VALUES(?,?,?,?);";
+                preparedStatement = conn.prepareStatement(sql, RETURN_GENERATED_KEYS);
+                preparedStatement.setInt(4, column.getId());
+            }
             preparedStatement.setString(1, column.getTitle().getValue());
             preparedStatement.setInt(2, column.getPosition());
             preparedStatement.setInt(3, column.getBoard().getId());
@@ -112,7 +119,12 @@ public class DAOColumn implements DAOModel<Column> {
         }
         // TODO: ask Séverine
         column.setID(newID);
-        //addAllCardsInColumn(column);
+        return newID;
+    }
+
+    public int addWithCards(Column column){
+        int newID = add(column);
+        addAllCardsInColumn(column);
         return newID;
     }
 
@@ -159,6 +171,12 @@ public class DAOColumn implements DAOModel<Column> {
     private void saveAllCardsInColumn(Column c){
         for (Card card : c.getCards()) {
             DAOCard.getInstance().save(card);
+        }
+    }
+
+    private void addAllCardsInColumn(Column c){
+        for (Card card : c.getCards()) {
+            DAOCard.getInstance().add(card);
         }
     }
 
