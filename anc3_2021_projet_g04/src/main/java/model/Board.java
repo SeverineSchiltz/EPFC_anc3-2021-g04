@@ -95,8 +95,10 @@ public class Board {
     }
 
     public void deleteColumn(Column c){
+        int pos = c.getPosition();
         columns.remove(c);
         DAOColumn.getInstance().delete(c);
+        DAOBoard.getInstance().updateColumnsAsFromPosition(this, pos, -1);
     }
 
     public void deleteColumn(int index){
@@ -122,7 +124,7 @@ public class Board {
         }
         columns.set(pos, c);
         c.setBoard(this);
-        DAOBoard.getInstance().updateColumnsAsFromPosition(this, pos);
+        DAOBoard.getInstance().updateColumnsAsFromPosition(this, pos, 1);
         int newID = DAOColumn.getInstance().addWithCards(c);
         c.setID(newID);
     }
