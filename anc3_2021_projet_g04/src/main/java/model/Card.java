@@ -21,7 +21,7 @@ public class Card {
 
     Card(Card card, Column column) {
         this(card.getId(), card.title.getValue(), column);
-        setPositionInColumn(card.getPositionInColumn()); //TODO : à faire aussi dans les autres constructeurs!
+        setPositionInColumn(card.getPositionInColumn());
     }
 
     Card(int id, String title, Column column, int position){

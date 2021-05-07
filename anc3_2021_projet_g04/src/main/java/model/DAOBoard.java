@@ -87,8 +87,6 @@ public class DAOBoard implements DAOModel<Board> { // enter the element type !
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        // TODO: ask Séverine
-        board.setID(newID);
         return newID;
     }
 

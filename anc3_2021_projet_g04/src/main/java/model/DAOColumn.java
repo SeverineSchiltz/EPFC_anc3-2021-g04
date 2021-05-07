@@ -117,8 +117,6 @@ public class DAOColumn implements DAOModel<Column> {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        // TODO: ask Séverine
-        column.setID(newID);
         return newID;
     }
 

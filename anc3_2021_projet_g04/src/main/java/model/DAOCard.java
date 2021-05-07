@@ -118,8 +118,6 @@ public class DAOCard implements DAOModel<Card> {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        // TODO: ask Séverine
-        card.setID(newID);
         return newID;
     }
 
