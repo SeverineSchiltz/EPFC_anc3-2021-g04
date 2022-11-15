@@ -1,9 +1,9 @@
-How to make jar with javaFX with intelliJ:
+How to make jar file with javaFX on intelliJ:
 
 1) Make the first class main without "extends Application"
 
 2) Add Artifact: 
-	File/Project Structure/Artifact/ 
+	File/Project Structure/Artifacts/ 
 	add (+) => Jar/From module to dependency
 	Select Main class
 	Select "extract to the target JAR"
